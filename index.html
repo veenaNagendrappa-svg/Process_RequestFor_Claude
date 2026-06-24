@@ -923,7 +923,7 @@ body.rotation-mode #btnBuildRotation{display:none;}
 /* Meta row kv pairs */
 .alloc-meta-row{display:flex;align-items:center;gap:6px;padding:4px 0 6px;flex-wrap:wrap;}
 .alloc-req-kv{display:inline-flex;align-items:baseline;gap:4px;}
-.alloc-req-lbl{font-size:10px;color:#9ca3af;font-weight:500;letter-spacing:.01em;white-space:nowrap;text-transform:uppercase;}
+.alloc-req-lbl{font-size:10px;color:#9ca3af;font-weight:500;letter-spacing:.01em;white-space:nowrap;}
 .alloc-req-val{font-size:11.5px;color:#111827;font-weight:600;white-space:nowrap;}
 /* Badges — v23 palette */
 /* Qty counter — plain text, no filled badges */
@@ -1200,6 +1200,17 @@ body.rotation-mode #btnBuildRotation{display:none;}
 }
 .alb-pill.active{color:#1976d2;border-bottom-color:#1976d2;font-weight:700}
 .alb-div{width:1px;height:16px;background:#e0e0e0;margin:0 2px}
+/* Show chips — dashed border style matching Request Grid */
+.show-chip{
+  height:26px;padding:0 10px;
+  border:1.5px dashed #bbb;border-radius:999px;
+  background:white;font-family:inherit;font-size:11px;font-weight:500;
+  color:#555;cursor:pointer;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:4px;
+}
+.show-chip:hover{border-color:#1976d2;color:#1976d2;}
+.show-chip.active{border-color:#1976d2;border-style:solid;color:#1976d2;font-weight:600;background:#eff6ff;}
+.show-chip.active::before{content:'✓ ';font-size:10px;}
 .alb-legend-item{display:flex;align-items:center;gap:4px;font-size:11px;color:#888}
 .alb-swatch{width:12px;height:10px;border-radius:2px;display:inline-block}
 
@@ -1385,24 +1396,65 @@ body.rotation-mode #btnBuildRotation{display:none;}
 /* Context rows — placements and requests */
 .alloc-ctx-row{display:flex;border-bottom:1px solid #f0f0f0;}
 .alloc-ctx-row.ctx-plc{border-left:3px solid #2563eb;background:#f8faff;}
-.alloc-ctx-row.ctx-req{border-left:3px solid #f87171;background:#fff8f8;}
-.alloc-ctx-left{width:300px;min-width:300px;padding:4px 8px 4px 24px;border-right:2px solid #ddd;position:sticky;left:0;z-index:5;}
+.alloc-ctx-row.ctx-req{border-left:3px solid #b60000;background:white;}
+.alloc-ctx-left{width:220px;min-width:220px;padding:3px 6px 3px 8px;border-right:2px solid #ddd;position:sticky;left:0;z-index:5;display:flex;align-items:center;gap:5px;background:inherit;}
 .alloc-ctx-row.ctx-plc .alloc-ctx-left{background:#f8faff;}
-.alloc-ctx-row.ctx-req .alloc-ctx-left{background:#fff8f8;}
+.alloc-ctx-row.ctx-req .alloc-ctx-left{background:white;}
 .alloc-ctx-line1{display:flex;align-items:center;gap:5px;margin-bottom:2px;}
 .alloc-ctx-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 .alloc-ctx-row.ctx-plc .alloc-ctx-dot{background:#2563eb;}
-.alloc-ctx-row.ctx-req .alloc-ctx-dot{background:#f87171;}
 .alloc-ctx-id{font-size:10.5px;font-weight:700;white-space:nowrap;}
 .alloc-ctx-row.ctx-plc .alloc-ctx-id{color:#2563eb;}
-.alloc-ctx-row.ctx-req .alloc-ctx-id{color:#c2410c;}
 .alloc-ctx-ep{font-size:10px;color:#6b7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .alloc-ctx-line2{font-size:9.5px;color:#8a93a2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .alloc-ctx-cells{flex:1;display:flex;}
-.alloc-ctx-cell{width:46px;min-width:46px;text-align:center;font-size:9px;font-weight:600;padding:3px 1px;border-right:1px solid #e8e8e8;}
+.alloc-ctx-cell{width:46px;min-width:46px;text-align:left;font-size:10px;font-weight:500;padding:2px 3px;border-right:1px solid #e8e8e8;}
 .alloc-ctx-cell.plc-active{background:#dbeafe;color:#1d4ed8;}
-.alloc-ctx-cell.req-active{background:#fef2f2;color:#b91c1c;}
+.alloc-ctx-cell.req-active{background:white;color:#1976d2;cursor:pointer;}
 .alloc-ctx-cell.wknd{background:#fafafa;}
+/* Competing request row label + view button */
+.cr-row-label{font-size:11px;font-weight:500;color:#555;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cr-row-view{
+  opacity:0;pointer-events:none;flex-shrink:0;
+  font-size:10px;font-family:inherit;font-weight:600;
+  padding:2px 8px;border-radius:4px;border:none;cursor:pointer;
+  color:#fff;background:#1976d2;white-space:nowrap;transition:opacity .15s;
+}
+.alloc-ctx-row.ctx-req:hover .cr-row-view{opacity:1;pointer-events:all;}
+.cr-row-view:hover{background:#1565c0;}
+/* Competing requests side sheet */
+.cr-sheet{
+  position:fixed;top:0;right:0;bottom:0;width:380px;
+  background:white;box-shadow:-4px 0 24px rgba(0,0,0,.12);
+  z-index:301;transform:translateX(100%);
+  transition:transform .25s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;overflow:hidden;visibility:hidden;
+}
+.cr-sheet.open{transform:translateX(0);visibility:visible;}
+.cr-hdr{padding:14px 16px 10px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.cr-title{font-size:13px;font-weight:700;color:#111827;}
+.cr-sub{font-size:11px;color:#6b7280;margin-top:1px;}
+.cr-close{background:none;border:none;cursor:pointer;color:#9ca3af;font-size:20px;line-height:1;padding:0;}
+.cr-close:hover{color:#374151;}
+.cr-body{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:6px;}
+.cr-card{border-radius:6px;border:1px solid #e8e8e8;border-left:3px solid #bdbdbd;background:#f9f9f9;padding:9px 12px;}
+.cr-card-hdr{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:3px;}
+.cr-card-id{font-size:12px;font-weight:600;color:#1976d2;display:flex;align-items:center;gap:4px;}
+.cr-card-id a{color:#1976d2;text-decoration:underline;cursor:pointer;}
+.cr-card-id a:hover{color:#1565c0;}
+.cr-card-badge{font-size:9px;font-weight:500;padding:1px 7px;border-radius:8px;white-space:nowrap;flex-shrink:0;background:#efefef;color:#777;}
+.cr-card-meta{font-size:10px;color:#374151;margin:3px 0;line-height:1.6;}
+.cr-card-meta .sep{color:#d1d5db;margin:0 2px;}
+.cr-card-requested{font-size:10px;font-weight:600;color:#374151;margin:3px 0;}
+.cr-card-status-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:5px;padding-top:5px;border-top:1px solid #efefef;}
+.cr-status-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:500;padding:1px 6px;border-radius:8px;white-space:nowrap;}
+.cr-st-open{background:#efefef;color:#333;border:0.5px solid #bdbdbd;}
+.cr-st-offered{background:#efefef;color:#555;border:0.5px solid #bdbdbd;}
+.cr-st-published{background:#efefef;color:#555;border:0.5px solid #bdbdbd;}
+.cr-st-rejected{background:#efefef;color:#555;border:0.5px solid #bdbdbd;}
+.cr-st-reassigned{background:#efefef;color:#555;border:0.5px solid #bdbdbd;}
+.cr-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;}
+.cr-empty p{font-size:11px;color:#9ca3af;}
 
 /* ── Alloc placement rows — base ── */
 .ag-plc-row{
@@ -2650,8 +2702,11 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
     <div class="alloc-req-row2">
       <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
         <div class="alloc-meta-fields" id="allocMetaRow"></div>
-        <button onclick="toggleAllocFilterBar()" id="allocChangeFiltersBtn" style="flex-shrink:0;background:none;border:none;color:#1976d2;font-size:11px;font-weight:500;cursor:pointer;padding:2px 4px;white-space:nowrap;display:flex;align-items:center;gap:3px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+        <span style="color:#d1d5db;font-size:11px;flex-shrink:0;">·</span>
+        <button onclick="toggleAllocFilterBar()" id="allocChangeFiltersBtn"
+          aria-expanded="false" aria-controls="allocFilterBarEl"
+          style="flex-shrink:0;background:none;border:none;color:#1976d2;font-size:11px;font-weight:500;cursor:pointer;padding:2px 0;white-space:nowrap;display:flex;align-items:center;gap:3px;text-decoration:underline;text-underline-offset:2px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
           Change filters
         </button>
       </div>
@@ -2679,7 +2734,7 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
   </div>
 
   <!-- Filter bar — collapsed by default, expands on Change filters -->
-  <div class="alloc-filter-bar" id="allocFilterBarEl" style="display:none;">
+  <div class="alloc-filter-bar" id="allocFilterBarEl" style="display:none;" role="region" aria-label="Allocation filters">
 
     <!-- Region — read only -->
     <div class="aff-field">
@@ -2728,44 +2783,46 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
   <!-- Group-by bar + availability legend -->
   <div class="alloc-legend-bar">
     <!-- Date range navigator -->
-    <button style="width:24px;height:26px;border:1px solid #ddd;border-right:none;border-radius:4px 0 0 4px;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" onclick="shiftDateRange(-1)"><svg width="12" height="12" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+    <button aria-label="Previous Month" style="width:24px;height:26px;border:1px solid #ddd;border-right:none;border-radius:4px 0 0 4px;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" onclick="shiftDateRange(-1)"><svg width="12" height="12" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
     <div style="height:26px;border:1px solid #ddd;background:white;padding:0 8px;display:flex;align-items:center;font-size:11px;font-weight:600;color:#333;white-space:nowrap;min-width:120px;justify-content:center;flex-shrink:0;" id="allocDateRange">—</div>
-    <button style="width:24px;height:26px;border:1px solid #ddd;border-left:none;border-radius:0 4px 4px 0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" onclick="shiftDateRange(1)"><svg width="12" height="12" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
-    <!-- View By -->
-    <div class="aff-view-toggle" style="margin-left:4px;" id="viewByToggle">
+    <button aria-label="Next Month" style="width:24px;height:26px;border:1px solid #ddd;border-left:none;border-radius:0 4px 4px 0;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" onclick="shiftDateRange(1)"><svg width="12" height="12" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+
+    <!-- View By — chip/pill control matching Request Grid -->
+    <div class="aff-view-toggle" style="margin-left:8px;" id="viewByToggle">
       <button class="aff-view-btn" id="affViewWeek" onclick="setAllocViewBy('week',this)">Week</button>
       <button class="aff-view-btn active" id="affViewDay" onclick="setAllocViewBy('day',this)">Day</button>
-      <button class="aff-view-btn" id="affViewRequested" onclick="setAllocViewBy('requested',this)" style="display:none;border-left:none;border-radius:0 4px 4px 0;">Requested dates</button>
-    </div>
-    <div style="width:1px;height:16px;background:#e0e0e0;margin:0 6px;flex-shrink:0;"></div>
-    <span class="alb-lbl">Group By</span>
-    <button class="alb-pill active" onclick="setAllocGroupBy('shift',this)">Shift</button>
-    <button class="alb-pill" onclick="setAllocGroupBy('pt',this)">Placement Type</button>
-
-    <div style="width:1px;height:16px;background:#e0e0e0;margin:0 4px"></div>
-    <span class="alb-lbl">Availability</span>
-    <span class="alb-legend-item"><span class="alb-swatch" style="background:#e8f5e9;border:1px solid #a5d6a7"></span> Available</span>
-    <span class="alb-legend-item"><span class="alb-swatch" style="background:#ffebee;border:1px solid #ef9a9a"></span> Negative</span>
-
-    <!-- Availability loading indicator -->
-    <div class="avail-loading-indicator" id="availLoadingIndicator">
-      <div class="avail-spinner"></div>
-      Checking availability…
+      <button class="aff-view-btn" id="affViewRequested" onclick="setAllocViewBy('requested',this)" style="display:none;">Requested dates</button>
     </div>
 
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
-      <div style="width:1px;height:16px;background:#e0e0e0"></div>
-      <!-- Show context buttons — v23 style -->
-      <button class="alloc-ctx-btn" id="allocShowPlcBtn" onclick="toggleAllocShow('placements',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-        Show all Placements
-      </button>
-      <button class="alloc-ctx-btn" id="allocShowReqBtn" onclick="toggleAllocShow('requests',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-        Show all Pending Requests
-      </button>
-      <div style="width:1px;height:16px;background:#e0e0e0"></div>
-      <!-- Requested dates now integrated into View By 3-way control -->
+    <!-- Show chip group — immediately after View By, matching Request Grid Show pattern -->
+    <div style="display:flex;align-items:center;gap:4px;margin-left:8px;flex-shrink:0;">
+      <span class="alb-lbl">Show</span>
+      <button class="show-chip" id="allocShowPlcBtn" onclick="toggleAllocShow('placements',this)" aria-pressed="false">Placements</button>
+      <button class="show-chip" id="allocShowReqBtn" onclick="toggleAllocShow('requests',this)" aria-pressed="false">Pending requests</button>
+    </div>
+
+    <!-- Group availability by — dropdown matching Request Grid pattern -->
+    <div style="display:flex;align-items:center;gap:6px;margin-left:8px;flex-shrink:0;">
+      <span class="alb-lbl">Group availability by</span>
+      <select id="allocGroupBySelect" onchange="setAllocGroupBy(this.value)" style="height:26px;border:1px solid #ddd;border-radius:4px;background:white;font-size:11px;color:#333;padding:0 6px;cursor:pointer;">
+        <option value="shift" selected>Shift</option>
+        <option value="pt">Placement Type</option>
+      </select>
+    </div>
+
+    <!-- Availability legend + loading indicator -->
+    <div style="display:flex;align-items:center;gap:6px;margin-left:8px;flex-shrink:0;">
+      <div style="width:1px;height:16px;background:#e0e0e0;"></div>
+      <span class="alb-legend-item"><span class="alb-swatch" style="background:#e8f5e9;border:1px solid #a5d6a7"></span> Available</span>
+      <span class="alb-legend-item"><span class="alb-swatch" style="background:#ffebee;border:1px solid #ef9a9a"></span> Negative</span>
+      <div class="avail-loading-indicator" id="availLoadingIndicator">
+        <div class="avail-spinner"></div>
+        Checking availability…
+      </div>
+    </div>
+
+    <!-- EP Balance (right) -->
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
       <button class="ep-toggle-btn" id="allocEpToggleBtn" onclick="toggleEp('side')" style="display:flex;align-items:center;gap:5px;">
         <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
         EP Balance
@@ -3027,6 +3084,20 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
 </div>
 
 <!-- modal removed — replaced by inline allocator -->
+
+<!-- Competing Requests side sheet -->
+<div class="cr-sheet" id="crSheet" role="dialog" aria-modal="true" aria-labelledby="crTitle">
+  <div class="cr-hdr">
+    <div>
+      <div class="cr-title" id="crTitle">Competing requests</div>
+      <div class="cr-sub" id="crSub"></div>
+    </div>
+    <button class="cr-close" id="crCloseBtn" onclick="closeCrSheet()" aria-label="Close competing requests panel">×</button>
+  </div>
+  <div class="cr-body" id="crBody">
+    <div class="cr-empty"><p>No competing requests</p></div>
+  </div>
+</div>
 
 <!-- ══ FULFILLMENT CHOICE MODAL ══ -->
 
@@ -7137,8 +7208,14 @@ let allocDraftPlacements = []; // {agId, shiftLabel, qty, reqId}
 
 function setAllocGroupBy(mode, btn){
   allocGroupBy = mode;
-  document.querySelectorAll('.alb-pill').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
+  // Update dropdown if called from pill (legacy) or directly
+  const sel = document.getElementById('allocGroupBySelect');
+  if(sel) sel.value = mode === 'pt' ? 'pt' : 'shift';
+  // Legacy pill support — remove active from any pills
+  document.querySelectorAll('.alb-pill').forEach(b=>{
+    if(b.id !== 'allocShowPlcBtn' && b.id !== 'allocShowReqBtn') b.classList.remove('active');
+  });
+  if(btn && btn.tagName === 'BUTTON' && btn.id !== 'allocShowPlcBtn' && btn.id !== 'allocShowReqBtn') btn.classList.add('active');
   renderAllocRows(currentAllocReqId);
 }
 
@@ -8365,13 +8442,13 @@ function toggleAllocShow(type, btn){
   else allocShowRequests = !allocShowRequests;
 
   const isOn = type==='placements' ? allocShowPlacements : allocShowRequests;
-  btn.classList.toggle('active-placements', type==='placements' && isOn);
-  btn.classList.toggle('active-requests',   type==='requests'  && isOn);
+  if(btn){
+    btn.classList.toggle('active', isOn);
+    btn.setAttribute('aria-pressed', String(isOn));
+  }
 
   const lgPlc = document.getElementById('legendPlcItem');
-  const lgReq = document.getElementById('legendReqItem');
   if(lgPlc) lgPlc.style.display = allocShowPlacements ? 'inline-flex' : 'none';
-  if(lgReq) lgReq.style.display = allocShowRequests   ? 'inline-flex' : 'none';
 
   renderAllocRows(currentAllocReqId);
 }
@@ -8380,56 +8457,195 @@ function insertAllocContextRows(){
   document.querySelectorAll('.alloc-ctx-row').forEach(r=>r.remove());
   if(!allocShowRequests) return;
 
-  const focusReq = REQ_META[currentAllocReqId];
+  // Competing pending requests — exclude current request, pending status only
+  const others = Object.values(REQ_META).filter(r=>
+    r.id !== currentAllocReqId && r.status === 'pending'
+  );
+  if(!others.length) return;
 
-  /* ── PENDING REQUESTS ── */
-  if(allocShowRequests){
-    const others = Object.values(REQ_META).filter(r=>
-      r.id !== currentAllocReqId && r.status === 'pending'
-    );
-    // Attach under the first shift row of each agency in the grid
-    const shiftRows = document.querySelectorAll('#agRows .ag-shift');
-    shiftRows.forEach((shiftRow, idx)=>{
-      if(idx >= others.length) return;
-      const r = others[idx];
-      const ctx = buildAllocCtxRow({
-        id: r.reqNum || r.id,
-        ep: r.ep,
-        meta: `${r.discipline} · ${r.type} · ×${r.qty}`,
-        type: 'req',
-        inRange: false,
-      }, r);
-      shiftRow.insertAdjacentElement('afterend', ctx);
+  const agRows = document.querySelectorAll('#agRows .ag-row');
+  agRows.forEach(agRow => {
+    const lblEl = agRow.querySelector('.ag-lbl');
+    if(!lblEl) return;
+    const agName = lblEl.textContent.trim();
+
+    // Group by EP code — collect requests per EP
+    const epGroups = {};
+    others.forEach(r => {
+      const epKey = r.epCode || r.ep || 'UNK';
+      if(!epGroups[epKey]) epGroups[epKey] = { ep: epKey, reqs: [] };
+      epGroups[epKey].reqs.push(r);
     });
-  }
+
+    // Find insert point: after last placement row under this agency
+    let insertAfter = agRow;
+    let sibling = agRow.nextElementSibling;
+    while(sibling && !sibling.classList.contains('ag-row')){
+      if(sibling.classList.contains('ag-shift') || sibling.classList.contains('ag-plc-row')){
+        insertAfter = sibling;
+      }
+      sibling = sibling.nextElementSibling;
+    }
+
+    const cols = document.querySelectorAll('.ag-th:not(.hidden-col)').length || 28;
+    const cellW = 46;
+    const epKeys = Object.keys(epGroups).sort();
+
+    // Build count map: epKey → count of requests active per column day
+    const countMap = {};
+    epKeys.forEach(epKey => {
+      const reqs = epGroups[epKey].reqs;
+      countMap[epKey] = Array(cols).fill(0);
+      for(let i = 0; i < cols; i++){
+        const d = new Date(BASE); d.setDate(d.getDate() + allocDateOffset + i);
+        if(d.getDay() === 0 || d.getDay() === 6) continue;
+        countMap[epKey][i] = reqs.filter(r => isDateInRange(d, r)).length;
+      }
+    });
+
+    // Build segments for greedy lane packing
+    const segments = [];
+    epKeys.forEach(epKey => {
+      const counts = countMap[epKey];
+      let i = 0;
+      while(i < cols){
+        if(!counts[i]){ i++; continue; }
+        let end = i;
+        while(end + 1 < cols){
+          const next = end + 1;
+          const dd = new Date(BASE); dd.setDate(dd.getDate() + allocDateOffset + next);
+          if(dd.getDay() === 0 || dd.getDay() === 6){ end++; continue; }
+          if(counts[next]){ end++; } else break;
+        }
+        segments.push({ key: epKey, start: i, end, count: counts[i] });
+        i = end + 1;
+      }
+    });
+
+    // Greedy lane packing
+    const lanes = [];
+    segments.forEach(seg => {
+      let placed = false;
+      for(const lane of lanes){
+        if(!lane.some(s => seg.start <= s.end && seg.end >= s.start)){
+          lane.push(seg); placed = true; break;
+        }
+      }
+      if(!placed) lanes.push([seg]);
+    });
+
+    if(!lanes.length) return;
+
+    const safeAgName = agName.replace(/'/g, "\\'");
+
+    lanes.forEach((lane, laneIdx) => {
+      const div = document.createElement('div');
+      div.className = 'alloc-ctx-row ctx-req';
+      div.setAttribute('data-ag', agName);
+
+      // Left label cell — only on first lane row
+      const leftHtml = laneIdx === 0
+        ? `<div class="alloc-ctx-left">
+            <span class="cr-row-label">Competing requests</span>
+            <button class="cr-row-view" onclick="event.stopPropagation();openCrSheet('${safeAgName}',null)" aria-label="View all competing requests for ${agName}">View</button>
+           </div>`
+        : `<div class="alloc-ctx-left"></div>`;
+
+      // Cell content
+      let cellsHtml = '<div class="alloc-ctx-cells">';
+      lane.sort((a, b) => a.start - b.start);
+      let i = 0, segIdx = 0;
+      while(i < cols){
+        const d = new Date(BASE); d.setDate(d.getDate() + allocDateOffset + i);
+        const wknd = d.getDay() === 0 || d.getDay() === 6;
+        if(segIdx < lane.length && lane[segIdx].start === i){
+          const seg = lane[segIdx++];
+          const epCode = epGroups[seg.key]?.ep || seg.key;
+          const safeEp = (epCode || '').replace(/'/g, "\\'");
+          const spanCols = seg.end - seg.start + 1;
+          cellsHtml += `<div class="alloc-ctx-cell req-active"
+            style="width:${cellW * spanCols}px;min-width:${cellW * spanCols}px;max-width:${cellW * spanCols}px;padding:2px 3px;color:#1976d2;cursor:pointer;"
+            onclick="event.stopPropagation();openCrSheet('${safeAgName}','${safeEp}')"
+            role="button" aria-label="${seg.count} competing request${seg.count !== 1 ? 's' : ''} from ${epCode}">${seg.count} ${epCode}</div>`;
+          i = seg.end + 1;
+        } else {
+          cellsHtml += `<div class="alloc-ctx-cell${wknd ? ' wknd' : ''}" style="width:${cellW}px;min-width:${cellW}px;max-width:${cellW}px;"></div>`;
+          i++;
+        }
+      }
+      cellsHtml += '</div>';
+
+      div.innerHTML = leftHtml + cellsHtml;
+      insertAfter.insertAdjacentElement('afterend', div);
+      insertAfter = div;
+    });
+  });
 }
 
-function buildAllocCtxRow(data, refReq){
-  const isPlc = data.type === 'plc';
-  const div = document.createElement('div');
-  div.className = `alloc-ctx-row ${isPlc ? 'ctx-plc' : 'ctx-req'}`;
+/* ── Competing Requests side sheet ── */
+function openCrSheet(agencyName, epCode){
+  const sheet  = document.getElementById('crSheet');
+  const title  = document.getElementById('crTitle');
+  const sub    = document.getElementById('crSub');
+  const body   = document.getElementById('crBody');
 
-  // Build cells
-  let cellsHtml = '';
-  for(let i=0;i<28;i++){
-    const d = new Date(BASE); d.setDate(d.getDate()+i);
-    const wknd = d.getDay()===0||d.getDay()===6;
-    const inRange = refReq ? isDateInRange(d, refReq) : data.inRange;
-    const cls = wknd ? 'wknd' : inRange ? (isPlc ? 'plc-active' : 'req-active') : '';
-    cellsHtml += `<div class="alloc-ctx-cell${cls?' '+cls:''}">${inRange && !wknd ? (isPlc ? '●' : '◌') : ''}</div>`;
+  title.textContent = 'Competing requests';
+  sub.textContent   = epCode ? `${agencyName} · ${epCode}` : agencyName;
+
+  let reqs = Object.values(REQ_META).filter(r =>
+    r.id !== currentAllocReqId && r.status === 'pending'
+  );
+  if(epCode) reqs = reqs.filter(r => (r.epCode || r.ep) === epCode);
+
+  if(!reqs.length){
+    body.innerHTML = `<div class="cr-empty"><p>No competing requests${epCode ? ' for ' + epCode : ''}</p></div>`;
+    sheet.classList.add('open');
+    setTimeout(() => document.getElementById('crCloseBtn')?.focus(), 50);
+    return;
   }
 
-  div.innerHTML = `
-    <div class="alloc-ctx-left">
-      <div class="alloc-ctx-line1">
-        <span class="alloc-ctx-dot"></span>
-        <span class="alloc-ctx-id">${data.id}</span>
-        <span class="alloc-ctx-ep">${data.ep}</span>
+  body.innerHTML = reqs.map(r => {
+    const reqNum  = r.reqNum || r.id;
+    const ep      = r.ep || '';
+    const campus  = r.campus || '';
+    const disc    = r.discipline || '';
+    const type    = r.type || '';
+    const year    = r.year || '';
+    const dates   = r.dates || '';
+    const qty     = r.qty || 0;
+    // Prototype: all open (real impl pulls from SP data)
+    const open = qty, offered = 0, published = 0, rejected = 0, reassigned = 0;
+    const reqLink = `<a href="#" onclick="event.preventDefault();alert('Navigate to request ${reqNum}')"
+      title="Open request in new tab">${reqNum}
+      <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+      </svg></a>`;
+
+    return `<div class="cr-card">
+      <div class="cr-card-hdr">
+        <span class="cr-card-id">${reqLink}</span>
+        <span class="cr-card-badge">Pending</span>
       </div>
-      <div class="alloc-ctx-line2">${data.meta}</div>
-    </div>
-    <div class="alloc-ctx-cells">${cellsHtml}</div>`;
-  return div;
+      <div class="cr-card-meta">${ep}${campus ? ' · ' + campus : ''}${disc ? '<span class="sep">·</span>' + disc : ''}${type ? '<span class="sep">·</span>' + type : ''}${year ? '<span class="sep">·</span>' + year : ''}</div>
+      <div class="cr-card-meta">${dates}</div>
+      <div class="cr-card-requested">Requested: ${qty}</div>
+      <div class="cr-card-status-row">
+        <span class="cr-status-pill cr-st-open">Open: ${open}</span>
+        <span class="cr-status-pill cr-st-offered">Offered: ${offered}</span>
+        <span class="cr-status-pill cr-st-published">Published: ${published}</span>
+        <span class="cr-status-pill cr-st-rejected">Rejected: ${rejected}</span>
+        <span class="cr-status-pill cr-st-reassigned">Reassigned: ${reassigned}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  sheet.classList.add('open');
+  setTimeout(() => document.getElementById('crCloseBtn')?.focus(), 50);
+}
+
+function closeCrSheet(){
+  document.getElementById('crSheet').classList.remove('open');
 }
 
 function findAgRowInDOM(agName){
@@ -10508,7 +10724,10 @@ function toggleAllocFilterBar(){
   if(!bar) return;
   const isOpen = bar.style.display !== 'none';
   bar.style.display = isOpen ? 'none' : 'flex';
-  if(btn) btn.style.color = isOpen ? '#1976d2' : '#003179';
+  if(btn){
+    btn.setAttribute('aria-expanded', String(!isOpen));
+    btn.style.color = isOpen ? '#1976d2' : '#003179';
+  }
 }
 
 function spToggleCard(cardId){
