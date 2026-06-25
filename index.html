@@ -485,15 +485,14 @@ th,td{border:1px solid #e8e8e8;padding:0}
 /* Chip in day cells — qty-epcode stacked, matching existing shorthand */
 /* ── Option C cell: qty top, shift label below ── */
 .req-chip{
-  display:flex;flex-direction:column-reverse;align-items:flex-start;
-  padding:4px 4px 3px 6px;cursor:pointer;width:100%;height:100%;
+  display:inline-flex;flex-direction:column-reverse;align-items:flex-start;
+  padding:3px 4px 2px 6px;cursor:pointer;
   box-sizing:border-box;line-height:1.2;
 }
 .req-chip:hover{opacity:.85}
 .req-chip .chip-shift{
   font-size:9px;font-weight:400;color:#666;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  width:100%;margin-top:1px;
 }
 .req-chip .chip-qty{
   font-size:14px;font-weight:500;color:#111;line-height:1.15;
@@ -1395,25 +1394,26 @@ body.rotation-mode #btnBuildRotation{display:none;}
 
 /* Context rows — placements and requests */
 .alloc-ctx-row{display:flex;border-bottom:1px solid #f0f0f0;}
-.alloc-ctx-row.ctx-plc{border-left:3px solid #2563eb;background:#f8faff;}
-.alloc-ctx-row.ctx-req{border-left:3px solid #b60000;background:white;}
+.alloc-ctx-row.ctx-plc{border-left:3px solid #78afff;background:#f0f5ff;border-bottom:1px solid #dbeafe;}
+.alloc-ctx-row.ctx-req{background:white;border-bottom:1px solid #e8e8e8;}
 .alloc-ctx-left{width:220px;min-width:220px;padding:3px 6px 3px 8px;border-right:2px solid #ddd;position:sticky;left:0;z-index:5;display:flex;align-items:center;gap:5px;background:inherit;}
-.alloc-ctx-row.ctx-plc .alloc-ctx-left{background:#f8faff;}
+.alloc-ctx-row.ctx-plc .alloc-ctx-left{background:#f0f5ff;}
 .alloc-ctx-row.ctx-req .alloc-ctx-left{background:white;}
-.alloc-ctx-line1{display:flex;align-items:center;gap:5px;margin-bottom:2px;}
-.alloc-ctx-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.alloc-ctx-row.ctx-plc .alloc-ctx-dot{background:#2563eb;}
-.alloc-ctx-id{font-size:10.5px;font-weight:700;white-space:nowrap;}
-.alloc-ctx-row.ctx-plc .alloc-ctx-id{color:#2563eb;}
-.alloc-ctx-ep{font-size:10px;color:#6b7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.alloc-ctx-line2{font-size:9.5px;color:#8a93a2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.alloc-ctx-row.ctx-req:hover{background:#f5f8ff;}
+.alloc-ctx-row.ctx-req:hover .alloc-ctx-left{background:#f5f8ff;}
+/* Competing request row left — matches Request Grid label style */
+.cr-req-left{flex-direction:row;align-items:center;gap:5px;}
+.cr-req-lbl-wrap{flex:1;min-width:0;overflow:hidden;}
+.cr-req-lbl-top{display:flex;align-items:center;flex-wrap:nowrap;overflow:hidden;white-space:nowrap;}
+.cr-req-ep{font-size:11px;font-weight:600;color:#1976d2;white-space:nowrap;}
+.cr-req-plain{font-size:11px;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cr-req-status{font-size:11px;color:#888;white-space:nowrap;flex-shrink:0;}
+/* Alloc ctx cells */
+.alloc-ctx-cell{width:46px;min-width:46px;text-align:left;font-size:10px;font-weight:500;padding:0;border-right:1px solid #e8e8e8;}
 .alloc-ctx-cells{flex:1;display:flex;}
-.alloc-ctx-cell{width:46px;min-width:46px;text-align:left;font-size:10px;font-weight:500;padding:2px 3px;border-right:1px solid #e8e8e8;}
 .alloc-ctx-cell.plc-active{background:#dbeafe;color:#1d4ed8;}
-.alloc-ctx-cell.req-active{background:white;color:#1976d2;cursor:pointer;}
 .alloc-ctx-cell.wknd{background:#fafafa;}
-/* Competing request row label + view button */
-.cr-row-label{font-size:11px;font-weight:500;color:#555;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+/* View button — hover only, primary blue */
 .cr-row-view{
   opacity:0;pointer-events:none;flex-shrink:0;
   font-size:10px;font-family:inherit;font-weight:600;
@@ -1459,25 +1459,25 @@ body.rotation-mode #btnBuildRotation{display:none;}
 /* ── Alloc placement rows — base ── */
 .ag-plc-row{
   display:flex;align-items:stretch;
-  border-bottom:1px solid #e5e7eb;
-  border-left:3px solid #d1d5db;
-  background:white;
+  border-bottom:1px solid #dbeafe;
+  border-left:3px solid #78afff;
+  background:#f0f5ff;
   min-height:22px;
 }
-.ag-plc-row:hover{background:#fafafa;}
+.ag-plc-row:hover{background:#e6eeff;}
 .ag-plc-left{
   width:220px;min-width:220px;flex-shrink:0;
-  border-right:2px solid #e5e7eb;position:sticky;left:0;z-index:5;
+  border-right:2px solid #c7d9f5;position:sticky;left:0;z-index:5;
   background:inherit;display:flex;align-items:center;
   padding:3px 6px;gap:6px;
 }
-.ag-plc-lbl{font-size:11px;font-weight:500;color:#444;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ag-plc-beyond{font-size:9px;font-weight:500;color:#6b7280;white-space:nowrap;}
+.ag-plc-lbl{font-size:11px;font-weight:500;color:#1e40af;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ag-plc-beyond{font-size:9px;font-weight:500;color:#3b82f6;white-space:nowrap;}
 .ag-plc-view{
   opacity:0;pointer-events:none;flex-shrink:0;
   font-size:10px;font-family:inherit;font-weight:600;
   padding:2px 8px;border-radius:4px;border:none;cursor:pointer;
-  color:#fff;background:#6b7280;white-space:nowrap;transition:opacity .15s;
+  color:#fff;background:#1976d2;white-space:nowrap;transition:opacity .15s;
 }
 .ag-plc-row:hover .ag-plc-view{opacity:1;pointer-events:all;}
 .ag-plc-cells{flex:1;display:flex;width:max-content;}
@@ -3620,15 +3620,40 @@ const AGENCIES = [
        shiftLabel:'Any shift',shiftBadge:'sb-all',chipStyle:'ep',chipLabel:'Any',
        shiftId:'all',ptId:'pt-peri',
        dates:'13 May – 9 Jun 2026',comment:'',cells:{}},
-      {id:'r92100',reqNum:'Req: 92100',status:'pending',
-       ep:'Deakin',campus:'Geelong',epCode:'DKN',
-       discipline:'Nursing',type:'Perioperative',year:'Yr 3',qty:3,dur:'28 days',
+      {id:'r92900',reqNum:'Req: 92900',status:'pending',
+       ep:'Monash',campus:'Clayton',epCode:'MON',
+       discipline:'Nursing',type:'General Medical',year:'Yr 2',qty:3,dur:'28 days',
        shiftLabel:'AM only',shiftBadge:'sb-am',chipStyle:'ep',chipLabel:'AM',
-       shiftId:'s-am',ptId:'pt-peri',
-       dates:'13 May – 9 Jun 2026',
-       comment:'NUR1525 – Medical Surgical, Intermediate Medical Surgical, Peri Operative Students complete 7 total clinical days over a 7 week rotation.',
+       shiftId:'s-am',ptId:'pt-gm',
+       dates:'13 May – 9 Jun 2026',comment:'',
        roster:{days:['Mon'],shift:'AM (06:30-15:30)'},
-       cells:{0:1,7:1,14:1,21:1}},
+       cells:{0:3,7:3,14:3,21:3}},
+      {id:'r92901',reqNum:'Req: 92901',status:'pending',
+       ep:'Deakin',campus:'Geelong',epCode:'DKN',
+       discipline:'Nursing',type:'Perioperative',year:'Yr 3',qty:2,dur:'14 days',
+       shiftLabel:'Night only',shiftBadge:'sb-ngt',chipStyle:'ep',chipLabel:'Night',
+       shiftId:'s-ngt',ptId:'pt-peri',
+       dates:'13 May – 26 May 2026',comment:'',allChip:true},
+      {id:'r92902',reqNum:'Req: 92902',status:'pending',
+       ep:'RMIT',campus:'Melbourne',epCode:'RMIT',
+       discipline:'Nursing',type:'Oncology',year:'Yr 3',qty:1,dur:'28 days',
+       shiftLabel:'Any shift',shiftBadge:'sb-all',chipStyle:'ep',chipLabel:'Any',
+       shiftId:'all',ptId:'pt-onc',
+       dates:'13 May – 9 Jun 2026',comment:'',allChip:true},
+      {id:'r92903',reqNum:'Req: 92903',status:'pending',
+       ep:'CSU',campus:'Wagga Wagga',epCode:'CSU',
+       discipline:'Nursing',type:'Cardiology',year:'Yr 2',qty:4,dur:'28 days',
+       shiftLabel:'AM only',shiftBadge:'sb-am',chipStyle:'ep',chipLabel:'AM',
+       shiftId:'s-am',ptId:'pt-card',
+       dates:'17 Aug – 13 Sep 2026',comment:'',
+       roster:{days:['Mon'],shift:'AM (06:30-15:30)'},
+       cells:{0:4,7:4,14:4,21:4}},
+      {id:'r92904',reqNum:'Req: 92904',status:'pending',
+       ep:'VU',campus:'Footscray',epCode:'VU',
+       discipline:'Nursing',type:'General Medical',year:'Yr 2',qty:2,dur:'7 days',
+       shiftLabel:'Night only',shiftBadge:'sb-ngt',chipStyle:'ep',chipLabel:'Night',
+       shiftId:'s-ngt',ptId:'pt-gm',
+       dates:'20 May – 26 May 2026',comment:'',allChip:true},
       {id:'r87520',reqNum:'Req: 87520',status:'pending',
        ep:'ACU',campus:'Melbourne',epCode:'QACURR513A',
        discipline:'Nursing',type:'General Medical',year:'Yr 3',qty:1,dur:'18 days',
@@ -7732,9 +7757,9 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
     });
     const lanes = buildLanes(epMap);
     if(lanes.length){
-      const beyondHint=(reqDatesOnly&&hasActivityBeyond)?` <span class="ag-plc-beyond">+more dates</span>`:'';
+      
       const viewTotal=visibleChipPlcs.length;
-      const labelHtml=`<span class="ag-plc-lbl">Placements${beyondHint}</span>`;
+      const labelHtml=`<span class="ag-plc-lbl">Placements</span>`;
       const viewBtn=`<button class="ag-plc-view" onclick="event.stopPropagation();openVpSheetForAgency('${safeAgName}',${viewTotal})">View</button>`;
       const chipFn=(seg,w)=>{
         const safeEp=seg.key.replace(/'/g,"\'");
@@ -8457,191 +8482,158 @@ function insertAllocContextRows(){
   document.querySelectorAll('.alloc-ctx-row').forEach(r=>r.remove());
   if(!allocShowRequests) return;
 
-  // Competing pending requests — exclude current request, pending status only
   const others = Object.values(REQ_META).filter(r=>
     r.id !== currentAllocReqId && r.status === 'pending'
   );
   if(!others.length) return;
+  const displayList = others.slice(0, 5); // prototype only — production shows all
+
+  const cols = document.querySelectorAll('.ag-th:not(.hidden-col)').length || 28;
+  const cellW = 46;
 
   const agRows = document.querySelectorAll('#agRows .ag-row');
   agRows.forEach(agRow => {
     const lblEl = agRow.querySelector('.ag-lbl');
     if(!lblEl) return;
-    const agName = lblEl.textContent.trim();
 
-    // Group by EP code — collect requests per EP
-    const epGroups = {};
-    others.forEach(r => {
-      const epKey = r.epCode || r.ep || 'UNK';
-      if(!epGroups[epKey]) epGroups[epKey] = { ep: epKey, reqs: [] };
-      epGroups[epKey].reqs.push(r);
-    });
-
-    // Find insert point: after last placement row under this agency
+    // Insert after placements, before next agency row
     let insertAfter = agRow;
-    let sibling = agRow.nextElementSibling;
-    while(sibling && !sibling.classList.contains('ag-row')){
-      if(sibling.classList.contains('ag-shift') || sibling.classList.contains('ag-plc-row')){
-        insertAfter = sibling;
+    let sib = agRow.nextElementSibling;
+    while(sib && !sib.classList.contains('ag-row')){
+      if(sib.classList.contains('ag-shift') ||
+         sib.classList.contains('ag-plc-row') ||
+         (sib.classList.contains('alloc-ctx-row') && sib.classList.contains('ctx-plc'))){
+        insertAfter = sib;
       }
-      sibling = sibling.nextElementSibling;
+      sib = sib.nextElementSibling;
     }
 
-    const cols = document.querySelectorAll('.ag-th:not(.hidden-col)').length || 28;
-    const cellW = 46;
-    const epKeys = Object.keys(epGroups).sort();
+    displayList.forEach(r => {
+      const reqId  = (r.reqNum||r.id).toString().replace(/^Req:\s*/i,'').trim();
+      const reqNum = r.reqNum || `Req: ${r.id}`;
+      const open   = Math.max((r.qty||0) - (r.allocated||0), 0) || r.qty || 0;
+      const safeId = String(r.id).replace(/'/g,"\\'");
+      const shiftIsUnspec = !r.shiftLabel || ['Any shift','All shifts','Any'].includes(r.shiftLabel);
+      const shiftLbl = shiftIsUnspec ? '' : (r.shiftLabel||'').replace(' only','').replace(' shift','');
 
-    // Build count map: epKey → count of requests active per column day
-    const countMap = {};
-    epKeys.forEach(epKey => {
-      const reqs = epGroups[epKey].reqs;
-      countMap[epKey] = Array(cols).fill(0);
+      const allocated = r.allocated || 0;
+      const shortDates = r.dates ? r.dates.replace(/\s+\d{4}/g,'').replace(/(\d{2}\/\d{2}\/\d{4})/g, d => d.slice(0,5)) : '';
+
+      // Left label — matches Request Grid exactly: R-ID · 0/QTY · dates · Pending
+      const leftHtml = `
+        <div class="alloc-ctx-left cr-req-left">
+          <div class="cr-req-lbl-wrap">
+            <div class="cr-req-lbl-top">
+              <span class="cr-req-ep">${reqId}</span>
+              <span class="cr-req-plain"> · ${allocated}/${r.qty||0}${r.dates ? ' · ' + r.dates : ''}</span>
+              <span class="cr-req-status"> · Pending</span>
+            </div>
+          </div>
+          <button class="cr-row-view"
+            onclick="event.stopPropagation();event.preventDefault();openCrSheet('${safeId}')"
+            aria-label="View placements for ${reqNum}">View</button>
+        </div>`;
+
+      // Cells — exact same chip as Request Grid: rc-p, chip-shift + chip-qty
+      let cellsHtml = '<div class="alloc-ctx-cells">';
       for(let i = 0; i < cols; i++){
         const d = new Date(BASE); d.setDate(d.getDate() + allocDateOffset + i);
-        if(d.getDay() === 0 || d.getDay() === 6) continue;
-        countMap[epKey][i] = reqs.filter(r => isDateInRange(d, r)).length;
-      }
-    });
-
-    // Build segments for greedy lane packing
-    const segments = [];
-    epKeys.forEach(epKey => {
-      const counts = countMap[epKey];
-      let i = 0;
-      while(i < cols){
-        if(!counts[i]){ i++; continue; }
-        let end = i;
-        while(end + 1 < cols){
-          const next = end + 1;
-          const dd = new Date(BASE); dd.setDate(dd.getDate() + allocDateOffset + next);
-          if(dd.getDay() === 0 || dd.getDay() === 6){ end++; continue; }
-          if(counts[next]){ end++; } else break;
-        }
-        segments.push({ key: epKey, start: i, end, count: counts[i] });
-        i = end + 1;
-      }
-    });
-
-    // Greedy lane packing
-    const lanes = [];
-    segments.forEach(seg => {
-      let placed = false;
-      for(const lane of lanes){
-        if(!lane.some(s => seg.start <= s.end && seg.end >= s.start)){
-          lane.push(seg); placed = true; break;
-        }
-      }
-      if(!placed) lanes.push([seg]);
-    });
-
-    if(!lanes.length) return;
-
-    const safeAgName = agName.replace(/'/g, "\\'");
-
-    lanes.forEach((lane, laneIdx) => {
-      const div = document.createElement('div');
-      div.className = 'alloc-ctx-row ctx-req';
-      div.setAttribute('data-ag', agName);
-
-      // Left label cell — only on first lane row
-      const leftHtml = laneIdx === 0
-        ? `<div class="alloc-ctx-left">
-            <span class="cr-row-label">Competing requests</span>
-            <button class="cr-row-view" onclick="event.stopPropagation();openCrSheet('${safeAgName}',null)" aria-label="View all competing requests for ${agName}">View</button>
-           </div>`
-        : `<div class="alloc-ctx-left"></div>`;
-
-      // Cell content
-      let cellsHtml = '<div class="alloc-ctx-cells">';
-      lane.sort((a, b) => a.start - b.start);
-      let i = 0, segIdx = 0;
-      while(i < cols){
-        const d = new Date(BASE); d.setDate(d.getDate() + allocDateOffset + i);
         const wknd = d.getDay() === 0 || d.getDay() === 6;
-        if(segIdx < lane.length && lane[segIdx].start === i){
-          const seg = lane[segIdx++];
-          const epCode = epGroups[seg.key]?.ep || seg.key;
-          const safeEp = (epCode || '').replace(/'/g, "\\'");
-          const spanCols = seg.end - seg.start + 1;
-          cellsHtml += `<div class="alloc-ctx-cell req-active"
-            style="width:${cellW * spanCols}px;min-width:${cellW * spanCols}px;max-width:${cellW * spanCols}px;padding:2px 3px;color:#1976d2;cursor:pointer;"
-            onclick="event.stopPropagation();openCrSheet('${safeAgName}','${safeEp}')"
-            role="button" aria-label="${seg.count} competing request${seg.count !== 1 ? 's' : ''} from ${epCode}">${seg.count} ${epCode}</div>`;
-          i = seg.end + 1;
-        } else {
-          cellsHtml += `<div class="alloc-ctx-cell${wknd ? ' wknd' : ''}" style="width:${cellW}px;min-width:${cellW}px;max-width:${cellW}px;"></div>`;
-          i++;
+        let mergedCells = r.cells;
+        if(r.rosterShifts && !mergedCells){
+          mergedCells = {};
+          r.rosterShifts.forEach(rs => Object.assign(mergedCells, rs.cells));
         }
+        const hasCell = (mergedCells && mergedCells[i]) ||
+                        (!r.roster && !r.rosterShifts && r.allChip && isDateInRange(d, r));
+        const matchingLeg = r.rosterShifts ? r.rosterShifts.find(rs => rs.cells && rs.cells[i]) : null;
+        const cellShift = matchingLeg ? (matchingLeg.chipLabel||'') : (shiftIsUnspec ? '' : shiftLbl);
+
+        let chip = '';
+        if(hasCell && open > 0){
+          const shiftPart = cellShift ? ` ${cellShift}` : '';
+          chip = `<span class="req-chip rc-p" data-rid="${r.id}" style="display:block;padding:3px 4px 2px 6px;font-size:11px;font-weight:500;color:#111;white-space:nowrap;">${open}${shiftPart}</span>`;
+        }
+
+        cellsHtml += `<div class="alloc-ctx-cell${wknd?' wknd':''}"
+          style="width:${cellW}px;min-width:${cellW}px;background:white;${hasCell&&!wknd?'cursor:pointer;':''}"
+          ${hasCell&&!wknd ? `onclick="event.stopPropagation();openCrSheet('${safeId}')" role="button"` : ''}
+          >${chip}</div>`;
       }
       cellsHtml += '</div>';
 
+      const div = document.createElement('div');
+      div.className = 'alloc-ctx-row ctx-req';
+      div.setAttribute('data-req-id', r.id);
+      div.setAttribute('role', 'row');
+      div.setAttribute('aria-label', `Competing request ${reqNum}`);
+      div.onclick = (e) => { if(!e.defaultPrevented) openCrSheet(safeId); };
       div.innerHTML = leftHtml + cellsHtml;
+
       insertAfter.insertAdjacentElement('afterend', div);
       insertAfter = div;
     });
   });
 }
 
-/* ── Competing Requests side sheet ── */
-function openCrSheet(agencyName, epCode){
-  const sheet  = document.getElementById('crSheet');
-  const title  = document.getElementById('crTitle');
-  const sub    = document.getElementById('crSub');
-  const body   = document.getElementById('crBody');
+/* ── Competing Requests side sheet — placement breakdown per request ── */
+function openCrSheet(reqId){
+  const sheet = document.getElementById('crSheet');
+  const title = document.getElementById('crTitle');
+  const sub   = document.getElementById('crSub');
+  const body  = document.getElementById('crBody');
 
-  title.textContent = 'Competing requests';
-  sub.textContent   = epCode ? `${agencyName} · ${epCode}` : agencyName;
-
-  let reqs = Object.values(REQ_META).filter(r =>
-    r.id !== currentAllocReqId && r.status === 'pending'
-  );
-  if(epCode) reqs = reqs.filter(r => (r.epCode || r.ep) === epCode);
-
-  if(!reqs.length){
-    body.innerHTML = `<div class="cr-empty"><p>No competing requests${epCode ? ' for ' + epCode : ''}</p></div>`;
+  const r = REQ_META[reqId];
+  if(!r){
+    body.innerHTML = `<div class="cr-empty"><p>Request not available</p></div>`;
     sheet.classList.add('open');
-    setTimeout(() => document.getElementById('crCloseBtn')?.focus(), 50);
+    setTimeout(()=>document.getElementById('crCloseBtn')?.focus(), 50);
     return;
   }
 
-  body.innerHTML = reqs.map(r => {
-    const reqNum  = r.reqNum || r.id;
-    const ep      = r.ep || '';
-    const campus  = r.campus || '';
-    const disc    = r.discipline || '';
-    const type    = r.type || '';
-    const year    = r.year || '';
-    const dates   = r.dates || '';
-    const qty     = r.qty || 0;
-    // Prototype: all open (real impl pulls from SP data)
-    const open = qty, offered = 0, published = 0, rejected = 0, reassigned = 0;
-    const reqLink = `<a href="#" onclick="event.preventDefault();alert('Navigate to request ${reqNum}')"
-      title="Open request in new tab">${reqNum}
-      <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px">
-        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-        <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-      </svg></a>`;
+  const reqNum = r.reqNum || `Req: ${r.id}`;
+  title.textContent = reqNum;
+  sub.textContent   = `${r.ep||''}${r.campus?' · '+r.campus:''}`;
 
-    return `<div class="cr-card">
-      <div class="cr-card-hdr">
-        <span class="cr-card-id">${reqLink}</span>
-        <span class="cr-card-badge">Pending</span>
-      </div>
-      <div class="cr-card-meta">${ep}${campus ? ' · ' + campus : ''}${disc ? '<span class="sep">·</span>' + disc : ''}${type ? '<span class="sep">·</span>' + type : ''}${year ? '<span class="sep">·</span>' + year : ''}</div>
-      <div class="cr-card-meta">${dates}</div>
-      <div class="cr-card-requested">Requested: ${qty}</div>
-      <div class="cr-card-status-row">
-        <span class="cr-status-pill cr-st-open">Open: ${open}</span>
-        <span class="cr-status-pill cr-st-offered">Offered: ${offered}</span>
-        <span class="cr-status-pill cr-st-published">Published: ${published}</span>
-        <span class="cr-status-pill cr-st-rejected">Rejected: ${rejected}</span>
-        <span class="cr-status-pill cr-st-reassigned">Reassigned: ${reassigned}</span>
-      </div>
-    </div>`;
-  }).join('');
+  const qty        = r.qty || 0;
+  // Prototype: all open — real impl pulls status counts from SP data
+  const open       = qty;
+  const offered    = 0;
+  const published  = 0;
+  const rejected   = 0;
+  const reassigned = 0;
+
+  const reqLink = `<a href="#" onclick="event.preventDefault();alert('Navigate to request ${reqNum}')"
+    title="Open request in new tab">${reqNum}
+    <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+      <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+    </svg></a>`;
+
+  body.innerHTML = `<div class="cr-card">
+    <div class="cr-card-hdr">
+      <span class="cr-card-id">${reqLink}</span>
+      <span class="cr-card-badge">Pending</span>
+    </div>
+    <div class="cr-card-meta">
+      ${r.ep||''}${r.campus?'<span class="sep">·</span>'+r.campus:''}
+      ${r.discipline?'<span class="sep">·</span>'+r.discipline:''}
+      ${r.type?'<span class="sep">·</span>'+r.type:''}
+      ${r.year?'<span class="sep">·</span>'+r.year:''}
+    </div>
+    <div class="cr-card-meta">${r.dates||''}</div>
+    <div class="cr-card-requested">Requested: ${qty}</div>
+    <div class="cr-card-status-row">
+      <span class="cr-status-pill cr-st-open">Open: ${open}</span>
+      <span class="cr-status-pill cr-st-offered">Offered: ${offered}</span>
+      <span class="cr-status-pill cr-st-published">Published: ${published}</span>
+      <span class="cr-status-pill cr-st-rejected">Rejected: ${rejected}</span>
+      <span class="cr-status-pill cr-st-reassigned">Reassigned: ${reassigned}</span>
+    </div>
+  </div>`;
 
   sheet.classList.add('open');
-  setTimeout(() => document.getElementById('crCloseBtn')?.focus(), 50);
+  setTimeout(()=>document.getElementById('crCloseBtn')?.focus(), 50);
 }
 
 function closeCrSheet(){
