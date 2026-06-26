@@ -1413,49 +1413,6 @@ body.rotation-mode #btnBuildRotation{display:none;}
 .alloc-ctx-cells{flex:1;display:flex;}
 .alloc-ctx-cell.plc-active{background:#dbeafe;color:#1d4ed8;}
 .alloc-ctx-cell.wknd{background:#fafafa;}
-/* View button — hover only, primary blue */
-.cr-row-view{
-  opacity:0;pointer-events:none;flex-shrink:0;
-  font-size:10px;font-family:inherit;font-weight:600;
-  padding:2px 8px;border-radius:4px;border:none;cursor:pointer;
-  color:#fff;background:#1976d2;white-space:nowrap;transition:opacity .15s;
-}
-.alloc-ctx-row.ctx-req:hover .cr-row-view{opacity:1;pointer-events:all;}
-.cr-row-view:hover{background:#1565c0;}
-/* Competing requests side sheet */
-.cr-sheet{
-  position:fixed;top:0;right:0;bottom:0;width:380px;
-  background:white;box-shadow:-4px 0 24px rgba(0,0,0,.12);
-  z-index:301;transform:translateX(100%);
-  transition:transform .25s cubic-bezier(.4,0,.2,1);
-  display:flex;flex-direction:column;overflow:hidden;visibility:hidden;
-}
-.cr-sheet.open{transform:translateX(0);visibility:visible;}
-.cr-hdr{padding:14px 16px 10px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.cr-title{font-size:13px;font-weight:700;color:#111827;}
-.cr-sub{font-size:11px;color:#6b7280;margin-top:1px;}
-.cr-close{background:none;border:none;cursor:pointer;color:#9ca3af;font-size:20px;line-height:1;padding:0;}
-.cr-close:hover{color:#374151;}
-.cr-body{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:6px;}
-.cr-card{border-radius:6px;border:1px solid #e8e8e8;border-left:3px solid #bdbdbd;background:#f9f9f9;padding:9px 12px;}
-.cr-card-hdr{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:3px;}
-.cr-card-id{font-size:12px;font-weight:600;color:#1976d2;display:flex;align-items:center;gap:4px;}
-.cr-card-id a{color:#1976d2;text-decoration:underline;cursor:pointer;}
-.cr-card-id a:hover{color:#1565c0;}
-.cr-card-badge{font-size:9px;font-weight:500;padding:1px 7px;border-radius:8px;white-space:nowrap;flex-shrink:0;background:#efefef;color:#777;}
-.cr-card-meta{font-size:10px;color:#374151;margin:3px 0;line-height:1.6;}
-.cr-card-meta .sep{color:#d1d5db;margin:0 2px;}
-.cr-card-requested{font-size:10px;font-weight:600;color:#374151;margin:3px 0;}
-.cr-card-status-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:5px;padding-top:5px;border-top:1px solid #efefef;}
-.cr-status-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:500;padding:1px 6px;border-radius:8px;white-space:nowrap;}
-.cr-st-open{background:#efefef;color:#333;border:0.5px solid #bdbdbd;}
-.cr-st-offered{background:#efefef;color:#555;border:0.5px solid #bdbdbd;}
-.cr-st-published{background:#efefef;color:#555;border:0.5px solid #bdbdbd;}
-.cr-st-rejected{background:#efefef;color:#555;border:0.5px solid #bdbdbd;}
-.cr-st-reassigned{background:#efefef;color:#555;border:0.5px solid #bdbdbd;}
-.cr-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;}
-.cr-empty p{font-size:11px;color:#9ca3af;}
-
 /* ── Alloc placement rows — base ── */
 .ag-plc-row{
   display:flex;align-items:stretch;
@@ -2798,7 +2755,7 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
     <div style="display:flex;align-items:center;gap:4px;margin-left:8px;flex-shrink:0;">
       <span class="alb-lbl">Show</span>
       <button class="show-chip" id="allocShowPlcBtn" onclick="toggleAllocShow('placements',this)" aria-pressed="false">Placements</button>
-      <button class="show-chip" id="allocShowReqBtn" onclick="toggleAllocShow('requests',this)" aria-pressed="false">Pending requests</button>
+      <button class="show-chip" id="allocShowReqBtn" onclick="toggleAllocShow('requests',this)" aria-pressed="false">Competing requests</button>
     </div>
 
     <!-- Group availability by — dropdown matching Request Grid pattern -->
@@ -3084,20 +3041,6 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
 </div>
 
 <!-- modal removed — replaced by inline allocator -->
-
-<!-- Competing Requests side sheet -->
-<div class="cr-sheet" id="crSheet" role="dialog" aria-modal="true" aria-labelledby="crTitle">
-  <div class="cr-hdr">
-    <div>
-      <div class="cr-title" id="crTitle">Competing requests</div>
-      <div class="cr-sub" id="crSub"></div>
-    </div>
-    <button class="cr-close" id="crCloseBtn" onclick="closeCrSheet()" aria-label="Close competing requests panel">×</button>
-  </div>
-  <div class="cr-body" id="crBody">
-    <div class="cr-empty"><p>No competing requests</p></div>
-  </div>
-</div>
 
 <!-- ══ FULFILLMENT CHOICE MODAL ══ -->
 
@@ -6422,14 +6365,16 @@ function reinstateRequest(rid){
   showAllocToast('Request reinstated', `${r.reqNum} moved back to Pending`);
 }
 
-function renderTooltipActions(r){
+function renderTooltipActions(r, isCompeting){
   const el = document.getElementById('ttActions');
   const isPartial = !r.reqType && r.allocated && r.allocated > 0 && r.allocated < r.qty;
-  const remaining = isPartial ? r.qty - r.allocated : r.qty;
   let html = '';
 
   if(r.status === 'pending'){
-    if(isPartial){
+    if(isCompeting){
+      el.className = 'tt-actions';
+      html += `<button class="tt-btn tt-btn-p" onclick="navigateToAllocOptions('${r.id}')">Process ↗</button>`;
+    } else if(isPartial){
       el.className = 'tt-actions two-secondary';
       html += `<button class="tt-btn tt-btn-p" onclick="navigateToAllocOptions('${r.id}')">Process ↗</button>`;
       html += `<button class="tt-btn tt-btn-warn" onclick="openGridReject('${r.id}','remaining')">Reject Remaining</button>`;
@@ -6505,7 +6450,7 @@ function onChipEnter(e){
   } else {
     rrow.style.display='none';
   }
-  renderTooltipActions(r);
+  renderTooltipActions(r, e.currentTarget.closest('.ctx-req') !== null);
   // Progress section — shown when partially allocated
   const progressWrap=document.getElementById('ttProgressWrap');
   if(!r.reqType && r.allocated && r.allocated > 0 && r.allocated < r.qty){
@@ -8519,9 +8464,13 @@ function insertAllocContextRows(){
       const allocated = r.allocated || 0;
       const shortDates = r.dates ? r.dates.replace(/\s+\d{4}/g,'').replace(/(\d{2}\/\d{2}\/\d{4})/g, d => d.slice(0,5)) : '';
 
-      // Left label — matches Request Grid exactly: R-ID · 0/QTY · dates · Pending
+      // Left label — matches Request Grid exactly, no View button (hover panel handles interaction)
       const leftHtml = `
-        <div class="alloc-ctx-left cr-req-left">
+        <div class="alloc-ctx-left cr-req-left"
+          data-rid="${r.id}"
+          onmouseenter="onChipEnter(event)"
+          onmousemove="onChipMove(event)"
+          onmouseleave="onChipLeave()">
           <div class="cr-req-lbl-wrap">
             <div class="cr-req-lbl-top">
               <span class="cr-req-ep">${reqId}</span>
@@ -8529,9 +8478,6 @@ function insertAllocContextRows(){
               <span class="cr-req-status"> · Pending</span>
             </div>
           </div>
-          <button class="cr-row-view"
-            onclick="event.stopPropagation();event.preventDefault();openCrSheet('${safeId}')"
-            aria-label="View placements for ${reqNum}">View</button>
         </div>`;
 
       // Cells — exact same chip as Request Grid: rc-p, chip-shift + chip-qty
@@ -8556,8 +8502,9 @@ function insertAllocContextRows(){
         }
 
         cellsHtml += `<div class="alloc-ctx-cell${wknd?' wknd':''}"
-          style="width:${cellW}px;min-width:${cellW}px;background:white;${hasCell&&!wknd?'cursor:pointer;':''}"
-          ${hasCell&&!wknd ? `onclick="event.stopPropagation();openCrSheet('${safeId}')" role="button"` : ''}
+          style="width:${cellW}px;min-width:${cellW}px;background:white;"
+          data-rid="${r.id}"
+          ${hasCell&&!wknd ? `onmouseenter="onChipEnter(event)" onmousemove="onChipMove(event)" onmouseleave="onChipLeave()"` : ''}
           >${chip}</div>`;
       }
       cellsHtml += '</div>';
@@ -8567,7 +8514,6 @@ function insertAllocContextRows(){
       div.setAttribute('data-req-id', r.id);
       div.setAttribute('role', 'row');
       div.setAttribute('aria-label', `Competing request ${reqNum}`);
-      div.onclick = (e) => { if(!e.defaultPrevented) openCrSheet(safeId); };
       div.innerHTML = leftHtml + cellsHtml;
 
       insertAfter.insertAdjacentElement('afterend', div);
@@ -8576,69 +8522,6 @@ function insertAllocContextRows(){
   });
 }
 
-/* ── Competing Requests side sheet — placement breakdown per request ── */
-function openCrSheet(reqId){
-  const sheet = document.getElementById('crSheet');
-  const title = document.getElementById('crTitle');
-  const sub   = document.getElementById('crSub');
-  const body  = document.getElementById('crBody');
-
-  const r = REQ_META[reqId];
-  if(!r){
-    body.innerHTML = `<div class="cr-empty"><p>Request not available</p></div>`;
-    sheet.classList.add('open');
-    setTimeout(()=>document.getElementById('crCloseBtn')?.focus(), 50);
-    return;
-  }
-
-  const reqNum = r.reqNum || `Req: ${r.id}`;
-  title.textContent = reqNum;
-  sub.textContent   = `${r.ep||''}${r.campus?' · '+r.campus:''}`;
-
-  const qty        = r.qty || 0;
-  // Prototype: all open — real impl pulls status counts from SP data
-  const open       = qty;
-  const offered    = 0;
-  const published  = 0;
-  const rejected   = 0;
-  const reassigned = 0;
-
-  const reqLink = `<a href="#" onclick="event.preventDefault();alert('Navigate to request ${reqNum}')"
-    title="Open request in new tab">${reqNum}
-    <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px">
-      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-      <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-    </svg></a>`;
-
-  body.innerHTML = `<div class="cr-card">
-    <div class="cr-card-hdr">
-      <span class="cr-card-id">${reqLink}</span>
-      <span class="cr-card-badge">Pending</span>
-    </div>
-    <div class="cr-card-meta">
-      ${r.ep||''}${r.campus?'<span class="sep">·</span>'+r.campus:''}
-      ${r.discipline?'<span class="sep">·</span>'+r.discipline:''}
-      ${r.type?'<span class="sep">·</span>'+r.type:''}
-      ${r.year?'<span class="sep">·</span>'+r.year:''}
-    </div>
-    <div class="cr-card-meta">${r.dates||''}</div>
-    <div class="cr-card-requested">Requested: ${qty}</div>
-    <div class="cr-card-status-row">
-      <span class="cr-status-pill cr-st-open">Open: ${open}</span>
-      <span class="cr-status-pill cr-st-offered">Offered: ${offered}</span>
-      <span class="cr-status-pill cr-st-published">Published: ${published}</span>
-      <span class="cr-status-pill cr-st-rejected">Rejected: ${rejected}</span>
-      <span class="cr-status-pill cr-st-reassigned">Reassigned: ${reassigned}</span>
-    </div>
-  </div>`;
-
-  sheet.classList.add('open');
-  setTimeout(()=>document.getElementById('crCloseBtn')?.focus(), 50);
-}
-
-function closeCrSheet(){
-  document.getElementById('crSheet').classList.remove('open');
-}
 
 function findAgRowInDOM(agName){
   const rows = document.querySelectorAll('#agRows .ag-row');
