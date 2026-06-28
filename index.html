@@ -1331,6 +1331,16 @@ body.rotation-mode #btnBuildRotation{display:none;}
 .ag-alloc-btn:hover{ background:#e3f2fd; }
 .ag-inline-alloc.open ~ .ag-alloc-btn,
 .ag-shift:has(.ag-inline-alloc.open) .ag-alloc-btn{ opacity:0;pointer-events:none; }
+/* View button on generated placement rows — same hover pattern as Allocate */
+.ag-plc-view-btn{
+  margin-left:4px;flex-shrink:0;
+  height:20px;padding:0 7px;border:1px solid #6b7280;border-radius:3px;
+  background:white;color:#374151;font-family:inherit;font-size:10px;
+  font-weight:600;cursor:pointer;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity .15s;
+}
+.ag-plc-row:hover .ag-plc-view-btn{ opacity:1;pointer-events:all; }
+.ag-plc-view-btn:hover{ background:#f3f4f6; }
 
 /* Inline branch — path choice on first click */
 .alloc-branch{display:flex;align-items:center;gap:5px;margin-left:auto;flex-shrink:0;}
@@ -3187,6 +3197,18 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
 
 <!-- ══ SIDE PANEL — Finalise Placements (v23 style) ══ -->
 <div class="sp-overlay" id="spOverlay" onclick="closePanel()"></div>
+
+<!-- View placement confirmation dialog -->
+<div id="viewPlacementModal" style="display:none;position:fixed;inset:0;z-index:600;align-items:center;justify-content:center;background:rgba(0,0,0,0.35);">
+  <div style="background:white;border-radius:8px;padding:24px;max-width:380px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+    <div style="font-size:15px;font-weight:700;color:#111827;margin-bottom:10px;">View placement</div>
+    <div style="font-size:13px;color:#374151;margin-bottom:20px;line-height:1.5;">You will be redirected to the placement page. Any unsaved changes on this screen will be lost.</div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button onclick="cancelViewPlacement()" style="height:34px;padding:0 16px;border:1px solid #d1d5db;border-radius:5px;background:white;color:#374151;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;">Cancel</button>
+      <button onclick="doViewPlacement()" style="height:34px;padding:0 16px;border:none;border-radius:5px;background:#1976d2;color:white;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;">View placement</button>
+    </div>
+  </div>
+</div>
 <div class="side-panel" id="side-panel">
   <button class="sp-close" onclick="closePanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
 
@@ -7877,6 +7899,8 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
               <div class="ag-plc-line1" style="display:flex;align-items:center;gap:5px;">
                 <span style="font-size:11px;font-weight:700;color:${barColor2};">${plcLbl}</span>
                 <span class="sbadge ${status}">${statusLbl}</span>
+                ${g.dateChanged ? '<span title="Placement dates differ from request dates" style="color:#f59e0b;font-size:11px;flex-shrink:0;" aria-label="Date deviation warning">⚠</span>' : ''}
+                <button class="ag-plc-view-btn" onclick="event.stopPropagation();confirmViewPlacement('${currentAllocReqId}')" aria-label="View placement">View</button>
               </div>
             </div>
           </div>
@@ -7937,6 +7961,9 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
           ? `<button onclick="event.stopPropagation();removeDraftGroup(${safeIndicesBar})" title="Remove draft"
                style="background:none;border:none;cursor:pointer;color:${barBorder};opacity:.6;font-size:13px;font-weight:700;padding:0 2px;line-height:1;flex-shrink:0;" aria-label="Remove draft placement">✕</button>`
           : '';
+        const viewBtnHtml = !isDraft
+          ? `<button class="ag-plc-view-btn" onclick="event.stopPropagation();confirmViewPlacement('${currentAllocReqId}')" aria-label="View placement">View</button>`
+          : '';
 
         let cellsHtml='';
         let barEmitted=false;
@@ -7986,6 +8013,7 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
                 <span style="font-size:11px;font-weight:700;color:${barColor2};">${plcLbl}</span>
                 <span class="sbadge ${status}">${statusLbl}</span>
                 ${dateWarnIcon}
+                ${viewBtnHtml}
               </div>
             </div>
           </div>
@@ -11968,6 +11996,24 @@ function spToggleRoster() {
     const hdr = document.getElementById('sp-col-supervisor-hdr');
     spToggleCollapsible('sp-col-supervisor');
   }
+}
+
+function confirmViewPlacement(reqId) {
+  const modal = document.getElementById('viewPlacementModal');
+  if(modal) {
+    modal.style.display = 'flex';
+    modal.dataset.reqId = reqId;
+  }
+}
+function doViewPlacement() {
+  const modal = document.getElementById('viewPlacementModal');
+  const reqId = modal?.dataset.reqId || '';
+  modal.style.display = 'none';
+  showToast('Navigating\u2026', `Would navigate to /network/request/edit/${reqId}#request-placement`);
+}
+function cancelViewPlacement() {
+  const modal = document.getElementById('viewPlacementModal');
+  if(modal) modal.style.display = 'none';
 }
 
 function updateRosterLabel() {
