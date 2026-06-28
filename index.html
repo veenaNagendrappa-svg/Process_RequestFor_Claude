@@ -1821,9 +1821,9 @@ canvas#epChart{display:block;width:100%}
 .pt-row-act.danger{border-color:#fecaca;color:#dc2626;}
 .pt-row-act.danger:hover{background:#fef2f2;}
 .sbadge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:999px;}
-.sbadge.draft{background:#dbeafe;color:#1d4ed8;}
-.sbadge.offered{background:#fef3c7;color:#92400e;}
-.sbadge.published{background:#dcfce7;color:#15803d;}
+.sbadge.draft{background:#eeedfe;color:#534ab7;}
+.sbadge.offered{background:rgba(255,193,7,0.25);color:#92400e;}
+.sbadge.published{background:rgba(3,105,255,0.15);color:#0369ff;}
 .sbadge.rotation{background:#f5f3ff;color:#7c3aed;}
 
 /* ── Rotation composition mode ── */
@@ -1968,7 +1968,7 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
 .sp-overlay.open{display:block;}
 .side-panel{
   position:fixed;top:0;right:0;bottom:0;
-  width:clamp(440px, 50vw, 860px);
+  width:50vw;min-width:520px;max-width:860px;
   background:white;border-left:1px solid #e2e5ea;
   box-shadow:-8px 0 30px rgba(0,0,0,.12);z-index:301;
   display:flex;flex-direction:column;
@@ -2385,6 +2385,102 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
 .plc-detail-back{background:none;border:1px solid #e5e7eb;border-radius:6px;padding:6px 14px;font-size:12px;font-weight:500;color:#374151;cursor:pointer;}
 .plc-detail-back:hover{background:#f9fafb;}
 
+
+/* ── Review & Allocate panel — form style ── */
+.sp-form-section { padding: 16px 20px 0; }
+.sp-form-section-title {
+  font-size: 11px; font-weight: 700; color: #1976d2;
+  text-transform: uppercase; letter-spacing: .06em;
+  padding-bottom: 8px; border-bottom: 1px solid #e2e5ea;
+  margin-bottom: 14px;
+}
+.sp-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+.sp-form-grid.full { grid-template-columns: 1fr; }
+.sp-form-field { display: flex; flex-direction: column; gap: 4px; }
+.sp-form-field.span2 { grid-column: span 2; }
+.sp-form-label {
+  font-size: 11px; font-weight: 500; color: #374151; letter-spacing: .01em;
+}
+.sp-form-label .req { color: #dc2626; margin-left: 2px; }
+.sp-form-input, .sp-form-select {
+  height: 34px; border: 1px solid #d1d5db; border-radius: 5px;
+  padding: 0 10px; font-family: inherit; font-size: 12px;
+  color: #111827; background: white; outline: none;
+  transition: border-color .15s;
+}
+.sp-form-input:focus, .sp-form-select:focus { border-color: #1976d2; box-shadow: 0 0 0 2px rgba(25,118,210,.12); }
+.sp-form-input[readonly], .sp-form-input.read { background: #f9fafb; color: #6b7280; cursor: default; }
+.sp-form-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%238a93a2' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; }
+.sp-form-textarea {
+  border: 1px solid #d1d5db; border-radius: 5px; padding: 8px 10px;
+  font-family: inherit; font-size: 12px; color: #111827;
+  resize: vertical; min-height: 72px; outline: none;
+}
+.sp-form-textarea:focus { border-color: #1976d2; box-shadow: 0 0 0 2px rgba(25,118,210,.12); }
+.sp-yn-group { display: flex; gap: 0; }
+.sp-yn-btn {
+  height: 30px; padding: 0 14px; font-family: inherit; font-size: 12px;
+  font-weight: 500; cursor: pointer; border: 1px solid #d1d5db;
+  background: white; color: #374151; transition: all .12s;
+}
+.sp-yn-btn:first-child { border-radius: 16px 0 0 16px; }
+.sp-yn-btn:last-child  { border-radius: 0 16px 16px 0; border-left: none; }
+.sp-yn-btn.active-yes  { background: #1976d2; border-color: #1976d2; color: white; }
+.sp-yn-btn.active-no   { background: #1976d2; border-color: #1976d2; color: white; }
+.sp-form-divider { border: none; border-top: 1px solid #f0f2f5; margin: 16px 0 0; }
+.sp-form-sub-title {
+  font-size: 11px; font-weight: 700; color: #1976d2;
+  padding: 14px 20px 8px; text-transform: uppercase; letter-spacing: .06em;
+}
+.sp-collapsible-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px; cursor: pointer; user-select: none;
+  border-top: 1px solid #e2e5ea; background: #f8f9fb;
+}
+.sp-collapsible-hdr:hover { background: #f0f2f5; }
+.sp-collapsible-label {
+  font-size: 11px; font-weight: 700; color: #374151;
+  text-transform: uppercase; letter-spacing: .06em;
+  display: flex; align-items: center; gap: 6px;
+}
+.sp-collapsible-chev { transition: transform .2s; color: #9ca3af; flex-shrink: 0; }
+.sp-collapsible-chev.open { transform: rotate(90deg); }
+.sp-collapsible-body { overflow: hidden; transition: max-height .25s ease; }
+.sp-toggle-wrap { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+.sp-toggle-track {
+  width: 36px; height: 20px; border-radius: 10px; background: #d1d5db;
+  position: relative; cursor: pointer; transition: background .15s; flex-shrink: 0;
+}
+.sp-toggle-track.on { background: #1976d2; }
+.sp-toggle-knob {
+  position: absolute; top: 2px; left: 2px; width: 16px; height: 16px;
+  border-radius: 50%; background: white; transition: left .15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.sp-toggle-track.on .sp-toggle-knob { left: 18px; }
+.sp-toggle-label { font-size: 12px; color: #374151; }
+/* Supervisor section */
+.sp-sup-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+.sp-sup-table th { font-size: 10px; font-weight: 600; color: #6b7280; text-align: left; padding: 6px 8px; border-bottom: 1px solid #e2e5ea; text-transform: uppercase; letter-spacing: .04em; }
+.sp-sup-table td { padding: 8px; border-bottom: 1px solid #f0f2f5; color: #374151; }
+.sp-sup-empty { font-size: 12px; color: #9ca3af; font-style: italic; padding: 10px 0; }
+.sp-add-sup-btn { height: 32px; padding: 0 14px; border: 1px solid #1976d2; border-radius: 5px; background: white; color: #1976d2; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+.sp-add-sup-btn:hover { background: #eff6ff; }
+/* Comment section */
+.sp-comment-textarea { width: 100%; min-height: 80px; border: 1px solid #d1d5db; border-radius: 5px; padding: 8px 10px; font-family: inherit; font-size: 12px; resize: vertical; outline: none; box-sizing: border-box; }
+.sp-comment-textarea:focus { border-color: #1976d2; }
+.sp-private-label { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #374151; cursor: pointer; }
+.sp-save-comment-btn { height: 30px; padding: 0 14px; border: 1px solid #1976d2; border-radius: 5px; background: white; color: #1976d2; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+
+
+/* ── Panel field deviation highlighting ── */
+.sp-diff-input.changed { border-color: #f59e0b !important; color: #92400e !important; background: #fffbeb !important; }
+.sp-diff-tag {
+  display: none; font-size: 10px; color: #92400e; background: #fef3c7;
+  border: 1px solid #fcd34d; border-radius: 4px; padding: 1px 6px;
+  margin-top: 3px; white-space: nowrap;
+}
+.sp-diff-tag.visible { display: inline-block; }
 </style>
 </head>
 <body>
@@ -2690,7 +2786,7 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
         </button>
         <button class="btn-alloc-action btn-reassign-req" id="btnReassign" onclick="openAllocReassign()">Reassign</button>
         <button class="btn-alloc-action btn-reject-req" id="btnReject" onclick="openAllocReject()">Reject</button>
-        <button class="btn-alloc-action btn-publish-req" id="btnPublish" onclick="allocPublishRequest()" style="display:none" aria-label="Publish placements">Publish</button>
+        <button class="btn-alloc-action btn-publish-req" id="btnPublish" onclick="allocPublishRequest()" style="display:none" aria-label="Publish placements">Allocate &amp; Publish</button>
         <div style="display:none" id="buildRotDivider"></div>
         <button class="btn-build-rotation" id="btnBuildRotation" onclick="startRotationFromHeader()" style="display:none">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="12" y2="18"/></svg>
@@ -2938,8 +3034,8 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
         <div id="rrDistribution" style="padding:0 14px"></div>
         <div style="flex:1"></div>
         <div style="padding:12px 14px;border-top:1px solid #e5e7eb;display:flex;flex-direction:column;gap:6px;flex-shrink:0">
-          <button class="btn-sp-offer"    onclick="generatePlacements('offered')">Generate &amp; Offer</button>
-          <button class="btn-sp-generate" onclick="generatePlacements('published')">Publish</button>
+          <button class="btn-sp-offer"    onclick="generatePlacements('offered')">Allocate &amp; Offer</button>
+          <button class="btn-sp-generate" onclick="generatePlacements('published')">Allocate &amp; Publish</button>
           <button onclick="showRotationBuilding()" style="height:34px;border:1px solid #e2e5ea;background:white;border-radius:6px;cursor:pointer;font-family:inherit;font-size:11px;color:#374151;">← Back</button>
         </div>
       </div>
@@ -2982,7 +3078,7 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
       <span class="pt-cb-remaining" id="ptCbRemaining" style="display:none">—</span>
       <button class="btn-pt-review" id="btnPtReviewBar" onclick="rotationMode ? showRotationReview() : openPanel()" disabled
         style="height:28px;padding:0 14px;border:none;border-radius:5px;background:#2563eb;color:white;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;">
-        Review &amp; Generate →
+        Review &amp; Allocate →
       </button>
       <button class="pt-cb-expand" onclick="event.stopPropagation();toggleTrayExpand()">
         <svg class="pt-cb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11"><path d="M18 15l-6-6-6 6"/></svg>
@@ -3054,7 +3150,7 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
       <button class="btn-pt-clear-sel" id="btnPtClearSel" onclick="clearRotationSelection()">Clear Selection</button>
       <button class="btn-pt-reject" id="btnPtReject" onclick="rejectRemainingFromRail()">Reject remaining</button>
       <button class="btn-pt-clear" onclick="clearDrafts()">Clear drafts</button>
-      <button class="btn-pt-review" id="btnPtReview" onclick="rotationMode ? showRotationReview() : openPanel()" disabled>Review &amp; Generate →</button>
+      <button class="btn-pt-review" id="btnPtReview" onclick="rotationMode ? showRotationReview() : openPanel()" disabled>Review &amp; Allocate →</button>
     </div>
 
   </div><!-- /placement-tray -->
@@ -3065,7 +3161,7 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
   <div class="alloc-bottom-bar" id="allocBottomBar">
     <span class="abb-status" id="abbStatus">0 placements drafted</span>
     <button class="btn-abb-clear" onclick="clearDrafts()">Clear all</button>
-    <button class="btn-abb-review" onclick="rotationMode ? showRotationReview() : openPanel()">Review &amp; Generate →</button>
+    <button class="btn-abb-review" onclick="rotationMode ? showRotationReview() : openPanel()">Review &amp; Allocate →</button>
   </div>
 
 </div><!-- /screen-alloc -->
@@ -3103,349 +3199,385 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <span id="sp-agency-name"></span>
     </div>
-    <div class="sp-title" id="sp-title">Finalise Placements</div>
+    <div class="sp-title" id="sp-title">Review placements</div>
     <div class="sp-subtitle" id="sp-subtitle"></div>
   </div>
 
   <div class="sp-body" id="sp-body">
-    <div class="sp-pills" id="sp-pills"></div>
-    <div class="sp-div"></div>
 
-    <!-- ── PLACEMENT DETAIL FIELDS ── -->
-    <div class="sp-section-heading first" style="border-top:none;padding-top:2px;">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h6M3 15h6"/></svg>
-      Placement Details
-    </div>
-    <div id="sp-detail-grid">
-      <!-- Populated by renderPlacementDetailFields() -->
-    </div>
-    <div class="sp-div"></div>
+    <!-- ── PLACEMENT DETAILS ── -->
+    <div class="sp-form-section">
+      <div class="sp-form-section-title">Response: allocate placement</div>
+      <div class="sp-form-grid">
 
-    <!-- ── ROSTER SECTION — above supervisor per Felix feedback ── -->
-    <div class="collapsible-hdr open" id="roster-hdr" onclick="toggleCollapsible('roster-hdr','roster-body')">
-      <div class="section-label" style="margin-bottom:0">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        Roster
+        <div class="sp-form-field">
+          <label class="sp-form-label">Number of placements <span class="req">*</span></label>
+          <input class="sp-form-input sp-diff-input" id="spf-num" data-diff="qty" type="number" min="1" value="1" oninput="validateSpfNum();checkDiff('qty',this.value)">
+            <span class="sp-diff-tag" data-diff-tag="qty"></span>
+        </div>
+        <div class="sp-form-field">
+          <label class="sp-form-label">Discipline</label>
+          <input class="sp-form-input sp-diff-input" id="spf-discipline" data-diff="discipline" oninput="checkDiff('discipline',this.value)" value="Nursing">
+          <span class="sp-diff-tag" data-diff-tag="discipline"></span>
+        </div>
+        <div class="sp-form-field">
+          <label class="sp-form-label">Placement type <span class="req">*</span></label>
+          <select class="sp-form-select sp-diff-input" id="spf-placementtype" data-diff="type" onchange="checkDiff('type',this.value)">
+            <option>Aged Care</option><option>General</option><option>Surgical</option><option>Emergency</option>
+          </select>
+          <span class="sp-diff-tag" data-diff-tag="type"></span>
+        </div>
+        <div class="sp-form-field">
+          <label class="sp-form-label">Year level <span class="req">*</span></label>
+          <select class="sp-form-select sp-diff-input" id="spf-yearlevel" data-diff="year" onchange="checkDiff('year',this.value)">
+            <option>Not Specified</option><option>Year 1</option><option>Year 2</option><option>Year 3</option>
+          </select>
+          <span class="sp-diff-tag" data-diff-tag="year"></span>
+        </div>
+        <div class="sp-form-field">
+          <label class="sp-form-label">Region <span class="req">*</span></label>
+          <select class="sp-form-select sp-diff-input" id="spf-region" data-diff="region" onchange="checkDiff('region',this.value)">
+            <option>ACT Metropolitan Hospitals</option><option>Victoria</option><option>NSW</option>
+          </select>
+          <span class="sp-diff-tag" data-diff-tag="region"></span>
+        </div>
+        <div class="sp-form-field">
+          <label class="sp-form-label">Agency <span class="req">*</span></label>
+          <input class="sp-form-input sp-diff-input" id="spf-agency" data-diff="agency" oninput="checkDiff('agency',this.value)" placeholder="Search…">
+            <span class="sp-diff-tag" data-diff-tag="agency"></span>
+        </div>
+
       </div>
-      <svg class="collapsible-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink:0"><path d="m9 18 6-6-6-6"/></svg>
-    </div>
-    <div class="collapsible-body" id="roster-body" style="max-height:9999px;opacity:1">
-
-    <!-- Request roster preview — shown when the request carries a roster pattern -->
-    <div id="roster-from-request" style="display:none;margin-bottom:10px;">
-      <div style="display:flex;align-items:center;gap:6px;padding:7px 10px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:7px;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" style="color:#2563eb;flex-shrink:0"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
-        <span style="font-size:11px;color:#1d4ed8;font-weight:500;flex:1;" id="roster-from-request-label">Roster pre-filled from request</span>
-        <span style="font-size:10px;color:#6b7280;">editable below</span>
-      </div>
     </div>
 
-    <!-- Specify Roster toggle -->
-    <div class="roster-specify-toggle">
-      <label class="toggle-wrap">
-        <input type="checkbox" id="roster-toggle" onchange="toggleRosterSpecify(this)">
-        <div class="toggle-track"></div>
-      </label>
-      <span class="toggle-label" id="roster-toggle-label">Off — use default schedule</span>
-    </div>
+    <hr class="sp-form-divider">
 
-    <!-- Roster builder (hidden until toggle is On) -->
-    <div id="roster-builder" style="display:none">
-      <div class="roster-tabs">
-        <div class="roster-tab active" onclick="switchRosterTab(this,'pattern')">Pattern</div>
-        <div class="roster-tab" onclick="switchRosterTab(this,'calendar')">Calendar</div>
-        <div class="roster-tab" onclick="switchRosterTab(this,'series')">Pattern Series</div>
-      </div>
-      <div id="roster-tab-pattern">
-        <div id="weeks-container"></div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0 10px;">
-          <button class="add-week-btn" onclick="addWeek()">+ Add Week</button>
+    <!-- ── SCHEDULE ── -->
+    <div class="sp-form-section">
+      <div class="sp-form-section-title">Schedule</div>
+      <div class="sp-form-grid">
+
+        <div class="sp-form-field span2">
+          <label class="sp-form-label">Placement dates <span class="req">*</span></label>
           <div style="display:flex;align-items:center;gap:8px;">
-            <label style="font-size:11px;font-weight:600;color:var(--fg-light);white-space:nowrap;">Exclude Holidays</label>
-            <select style="width:120px;height:28px;border:1px solid var(--border);border-radius:5px;font-size:11px;padding:0 6px;appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%238a93a2' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 6px center;padding-right:20px;">
-              <option>None</option><option>Public Holidays</option><option>School Holidays</option>
+            <input class="sp-form-input sp-diff-input" id="spf-startdate" data-diff="startDate" type="date" style="flex:1" onchange="checkDiff('startDate',this.value)">
+            <span style="font-size:12px;color:#6b7280;">–</span>
+            <input class="sp-form-input sp-diff-input" id="spf-enddate" data-diff="endDate" type="date" style="flex:1" onchange="checkDiff('endDate',this.value)">
+          </div>
+        </div>
+        <div class="sp-form-field">
+          <label class="sp-form-label">Duration <span class="req">*</span></label>
+          <div style="display:flex;gap:8px;">
+            <input class="sp-form-input" id="spf-duration" type="number" min="1" value="8" style="width:80px;flex-shrink:0;">
+            <select class="sp-form-select" id="spf-duration-unit" style="flex:1">
+              <option>Days</option><option>Weeks</option>
             </select>
           </div>
         </div>
-        <button class="btn-schedule-preview" onclick="showToast('Schedule preview','Generating schedule preview based on roster pattern.')">Generate Schedule Preview</button>
-      </div>
-      <div id="roster-tab-calendar" style="display:none">
-        <div style="padding:20px 0;text-align:center;color:var(--muted-fg);font-size:12px;">Calendar view – individual day overrides</div>
-      </div>
-      <div id="roster-tab-series" style="display:none">
-        <div style="padding:20px 0;text-align:center;color:var(--muted-fg);font-size:12px;">Pattern series – repeating schedule blocks</div>
+        <div class="sp-form-field" style="align-self:end;">
+          <!-- spacer -->
+        </div>
+
+        <div class="sp-form-field">
+          <label class="sp-form-label">Fixed dates</label>
+          <div class="sp-yn-group">
+            <button class="sp-yn-btn" id="spf-fixeddates-yes" onclick="spYN('fixeddates','yes')">Yes</button>
+            <button class="sp-yn-btn active-no" id="spf-fixeddates-no" onclick="spYN('fixeddates','no')">No</button>
+          </div>
+        </div>
+        <div class="sp-form-field">
+          <label class="sp-form-label">Fixed duration</label>
+          <div class="sp-yn-group">
+            <button class="sp-yn-btn" id="spf-fixedduration-yes" onclick="spYN('fixedduration','yes')">Yes</button>
+            <button class="sp-yn-btn active-no" id="spf-fixedduration-no" onclick="spYN('fixedduration','no')">No</button>
+          </div>
+        </div>
+
+        <div class="sp-form-field span2">
+          <label class="sp-form-label">Specify roster</label>
+          <div class="sp-toggle-wrap">
+            <div class="sp-toggle-track" id="spf-roster-track" onclick="spToggleRoster()">
+              <div class="sp-toggle-knob"></div>
+            </div>
+            <span class="sp-toggle-label" id="spf-roster-label">Off — use default schedule</span>
+          </div>
+        </div>
+
+        <!-- Roster definition — shown when Specify roster is On -->
+        <div class="sp-form-field span2" id="spf-roster-section" style="display:none;">
+          <label class="sp-form-label">Roster pattern</label>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;" id="spf-roster-days">
+            <label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;"><input type="checkbox" value="Mon" onchange="updateRosterLabel()" style="accent-color:#1976d2;"> Mon</label>
+            <label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;"><input type="checkbox" value="Tue" onchange="updateRosterLabel()" style="accent-color:#1976d2;"> Tue</label>
+            <label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;"><input type="checkbox" value="Wed" onchange="updateRosterLabel()" style="accent-color:#1976d2;"> Wed</label>
+            <label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;"><input type="checkbox" value="Thu" onchange="updateRosterLabel()" style="accent-color:#1976d2;"> Thu</label>
+            <label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;"><input type="checkbox" value="Fri" onchange="updateRosterLabel()" style="accent-color:#1976d2;"> Fri</label>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <label class="sp-form-label" style="white-space:nowrap;">Shift</label>
+            <select class="sp-form-select" id="spf-roster-shift" style="flex:1;">
+              <option value="">Any shift</option>
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+              <option value="Full Day">Full Day</option>
+              <option value="Night">Night</option>
+            </select>
+          </div>
+          <div id="spf-roster-summary" style="font-size:10px;color:#6b7280;margin-top:6px;font-style:italic;"></div>
+        </div>
+
       </div>
     </div>
 
-    </div><!-- /roster-body -->
-
-    <div class="sp-div"></div>
-
-    <!-- ── SUPERVISOR SECTION ── -->
-    <div class="section-label" style="justify-content:space-between;">
-      <span style="display:flex;align-items:center;gap:6px;">
+    <!-- ── AGENCY SUPERVISOR (collapsible) ── -->
+    <div class="sp-collapsible-hdr" onclick="spToggleCollapsible('sp-col-supervisor')" id="sp-col-supervisor-hdr">
+      <span class="sp-collapsible-label">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Supervisor
+        Agency supervisor
       </span>
+      <svg class="sp-collapsible-chev open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+    <div class="sp-collapsible-body" id="sp-col-supervisor" style="max-height:600px;">
+      <div style="padding:14px 20px;">
+        <div class="sp-form-field" style="margin-bottom:12px;">
+          <label class="sp-form-label">Supervised by agency</label>
+          <div class="sp-toggle-wrap">
+            <div class="sp-toggle-track on" id="spf-supervised-track" onclick="spToggleSupervised()">
+              <div class="sp-toggle-knob"></div>
+            </div>
+            <span class="sp-toggle-label" id="spf-supervised-label">Yes</span>
+          </div>
+        </div>
+        <button class="sp-add-sup-btn" onclick="showToast('Add supervisor','Supervisor search not yet connected.')">Add supervisor</button>
+        <table class="sp-sup-table">
+          <thead>
+            <tr>
+              <th>Name</th><th>Personnel role</th><th>Prerequisites</th><th>Verified</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="spf-sup-tbody">
+            <tr><td colspan="5" class="sp-sup-empty">No records found</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <div style="margin-bottom:8px;">
-      <div class="sp-sup-search-wrap" style="position:relative;margin-bottom:8px;">
-        <svg style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--muted-fg);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input id="spSupSearch" type="text" placeholder="Search supervisors..." 
-          style="width:100%;box-sizing:border-box;height:34px;padding:0 10px 0 28px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:var(--font);color:var(--fg);outline:none;"
-          oninput="spRenderSups(this.value)" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
-      </div>
-      <div class="supervisor-list" id="supervisor-list"></div>
+    <!-- ── ADDITIONAL INFORMATION (collapsible) ── -->
+    <div class="sp-collapsible-hdr" onclick="spToggleCollapsible('sp-col-addinfo')" id="sp-col-addinfo-hdr">
+      <span class="sp-collapsible-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        Additional information
+      </span>
+      <svg class="sp-collapsible-chev open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="m9 18 6-6-6-6"/></svg>
     </div>
+    <div class="sp-collapsible-body" id="sp-col-addinfo" style="max-height:2000px;">
+      <div class="sp-form-section" style="padding-bottom:14px;">
+        <div class="sp-form-grid">
 
-    <div class="sp-div"></div>
-
-    <!-- ── ADDITIONAL INFORMATION card ── -->
-    <div class="sp-section-card" id="sp-card-addinfo">
-      <div class="sp-section-card-hdr" onclick="spToggleCard('sp-card-addinfo')">
-        <span class="sp-section-card-title">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-          Additional Information
-        </span>
-        <svg id="sp-card-addinfo-chev" class="sp-section-card-chev collapsed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="m9 18 6-6-6-6"/></svg>
-      </div>
-      <div class="sp-section-card-body collapsed" id="sp-card-addinfo-body">
-
-        <div class="sp-inline-row" id="sp-row-accommodation">
-          <span class="sp-inline-key">Accommodation</span>
-          <span class="sp-inline-val" id="sp-val-accommodation">No</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-accommodation')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><select class="sp-inline-select" id="sp-input-accommodation"><option>No</option><option>Yes</option></select><button class="sp-inline-confirm" onclick="spConfirmEdit('sp-row-accommodation','sp-val-accommodation','sp-input-accommodation')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-accommodation')">Cancel</button></div>
-        </div>
-
-        <div class="sp-inline-row" id="sp-row-allowance">
-          <span class="sp-inline-key">Allowance to Student</span>
-          <span class="sp-inline-val" id="sp-val-allowance">Yes</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-allowance')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><select class="sp-inline-select" id="sp-input-allowance"><option>Yes</option><option>No</option></select><button class="sp-inline-confirm" onclick="spConfirmEdit('sp-row-allowance','sp-val-allowance','sp-input-allowance')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-allowance')">Cancel</button></div>
-        </div>
-
-        <div class="sp-inline-row" id="sp-row-zone">
-          <span class="sp-inline-key">Zone</span>
-          <span class="sp-inline-val" id="sp-val-zone" style="color:var(--muted-fg);font-style:italic;">Not set</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-zone')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><select class="sp-inline-select" id="sp-input-zone"><option value="">Select…</option><option>Metro</option><option>Regional</option><option>Rural</option><option>Remote</option></select><button class="sp-inline-confirm" onclick="spConfirmEdit('sp-row-zone','sp-val-zone','sp-input-zone')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-zone')">Cancel</button></div>
-        </div>
-
-        <div class="sp-inline-row" id="sp-row-po">
-          <span class="sp-inline-key">Purchase Order</span>
-          <span class="sp-inline-val" id="sp-val-po" style="color:var(--muted-fg);font-style:italic;">—</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-po')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><input class="sp-inline-input" id="sp-input-po" placeholder="PO number…"><button class="sp-inline-confirm" onclick="spConfirmEditInput('sp-row-po','sp-val-po','sp-input-po')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-po')">Cancel</button></div>
-        </div>
-
-        <!-- Student Commendation -->
-        <div class="sp-inline-row" style="grid-template-columns:1fr auto;gap:6px;align-items:start;padding:10px 12px;" id="sp-row-commendation">
-          <div>
-            <div style="font-size:11px;font-weight:600;color:var(--muted-fg);margin-bottom:4px;">Student Commendation</div>
-            <div id="sp-commendation-preview" style="font-size:12px;color:var(--muted-fg);font-style:italic;">—</div>
-            <div id="sp-commendation-edit" style="display:none;margin-top:4px;">
-              <textarea id="sp-input-commendation" maxlength="1000" style="width:100%;min-height:70px;border:1.5px solid var(--primary);border-radius:5px;padding:7px 9px;font-family:var(--font);font-size:12px;color:var(--fg);box-shadow:0 0 0 3px rgba(37,99,235,.1);outline:none;resize:vertical;box-sizing:border-box;"></textarea>
-              <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:5px;"><button class="sp-inline-cancel" onclick="spCancelTextarea('commendation')">Cancel</button><button class="sp-inline-confirm" onclick="spSaveTextarea('commendation')">Save</button></div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Accommodation provided</label>
+            <div class="sp-yn-group">
+              <button class="sp-yn-btn" id="spf-accommodation-yes" onclick="spYN('accommodation','yes')">Yes</button>
+              <button class="sp-yn-btn active-no" id="spf-accommodation-no" onclick="spYN('accommodation','no')">No</button>
             </div>
           </div>
-          <button id="sp-commendation-pencil" onclick="spToggleTextarea('commendation')" style="opacity:.5;background:none;border:none;cursor:pointer;color:var(--muted-fg);padding:3px;border-radius:4px;display:flex;align-items:center;margin-top:2px;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-        </div>
-
-        <!-- Student Complaint -->
-        <div class="sp-inline-row" style="grid-template-columns:1fr auto;gap:6px;align-items:start;padding:10px 12px;" id="sp-row-complaint">
-          <div>
-            <div style="font-size:11px;font-weight:600;color:var(--muted-fg);margin-bottom:4px;">Student Complaint</div>
-            <div id="sp-complaint-preview" style="font-size:12px;color:var(--muted-fg);font-style:italic;">—</div>
-            <div id="sp-complaint-edit" style="display:none;margin-top:4px;">
-              <textarea id="sp-input-complaint" maxlength="1000" style="width:100%;min-height:70px;border:1.5px solid var(--primary);border-radius:5px;padding:7px 9px;font-family:var(--font);font-size:12px;color:var(--fg);box-shadow:0 0 0 3px rgba(37,99,235,.1);outline:none;resize:vertical;box-sizing:border-box;"></textarea>
-              <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:5px;"><button class="sp-inline-cancel" onclick="spCancelTextarea('complaint')">Cancel</button><button class="sp-inline-confirm" onclick="spSaveTextarea('complaint')">Save</button></div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Allowance provided to student</label>
+            <div class="sp-yn-group">
+              <button class="sp-yn-btn" id="spf-allowance-yes" onclick="spYN('allowance','yes')">Yes</button>
+              <button class="sp-yn-btn active-no" id="spf-allowance-no" onclick="spYN('allowance','no')">No</button>
             </div>
           </div>
-          <button id="sp-complaint-pencil" onclick="spToggleTextarea('complaint')" style="opacity:.5;background:none;border:none;cursor:pointer;color:var(--muted-fg);padding:3px;border-radius:4px;display:flex;align-items:center;margin-top:2px;flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <div class="sp-form-field span2">
+            <label class="sp-form-label">Zone</label>
+            <select class="sp-form-select" id="spf-zone" style="max-width:50%;">
+              <option value="">Select</option><option>Metro</option><option>Regional</option><option>Rural</option><option>Remote</option>
+            </select>
+          </div>
+          <div class="sp-form-field span2">
+            <label class="sp-form-label">Student commendation</label>
+            <textarea class="sp-form-textarea" id="spf-commendation" maxlength="1000"></textarea>
+            <span style="font-size:10px;color:#9ca3af;text-align:right;" id="spf-commendation-count">0/1000</span>
+          </div>
+          <div class="sp-form-field span2">
+            <label class="sp-form-label">Student complaint</label>
+            <textarea class="sp-form-textarea" id="spf-complaint" maxlength="1000"></textarea>
+            <span style="font-size:10px;color:#9ca3af;text-align:right;" id="spf-complaint-count">0/1000</span>
+          </div>
+          <div class="sp-form-field span2">
+            <label class="sp-form-label">Purchase order number</label>
+            <input class="sp-form-input" id="spf-po" type="text" style="max-width:50%;">
+          </div>
+
         </div>
 
         <!-- Support Package sub-section -->
-        <div class="sp-sub-heading">Support Package</div>
+        <div style="font-size:11px;font-weight:700;color:#1976d2;text-transform:uppercase;letter-spacing:.06em;padding:16px 0 10px;border-top:1px solid #f0f2f5;margin-top:6px;">Support package</div>
+        <div class="sp-form-grid">
 
-        <div class="sp-inline-row" id="sp-row-travel">
-          <span class="sp-inline-key">Travel</span>
-          <span class="sp-inline-val" id="sp-val-travel" style="color:var(--muted-fg);font-style:italic;">Not set</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-travel')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><select class="sp-inline-select" id="sp-input-travel"><option value="">Select…</option><option>Own car</option><option>Public transport</option><option>Provided</option></select><button class="sp-inline-confirm" onclick="spConfirmEdit('sp-row-travel','sp-val-travel','sp-input-travel')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-travel')">Cancel</button></div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Travel to your placement</label>
+            <select class="sp-form-select" id="spf-travel">
+              <option value="">Select</option><option>Own car</option><option>Public transport</option><option>Provided</option>
+            </select>
+          </div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Require accommodation while on placement</label>
+            <div class="sp-yn-group">
+              <button class="sp-yn-btn" id="spf-reqaccom-yes" onclick="spYN('reqaccom','yes')">Yes</button>
+              <button class="sp-yn-btn active-no" id="spf-reqaccom-no" onclick="spYN('reqaccom','no')">No</button>
+            </div>
+          </div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Cultural awareness workshop date</label>
+            <input class="sp-form-input" id="spf-caw" type="date">
+          </div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Orientation date</label>
+            <input class="sp-form-input" id="spf-orientation" type="date">
+          </div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Vehicle hire reference</label>
+            <input class="sp-form-input" id="spf-vehicle" type="text">
+          </div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Driving test completed</label>
+            <div class="sp-yn-group">
+              <button class="sp-yn-btn" id="spf-driving-yes" onclick="spYN('driving','yes')">Yes</button>
+              <button class="sp-yn-btn active-no" id="spf-driving-no" onclick="spYN('driving','no')">No</button>
+            </div>
+          </div>
+          <div class="sp-form-field span2">
+            <label class="sp-form-label">Accommodation reference number</label>
+            <input class="sp-form-input" id="spf-accomref" type="text" style="max-width:50%;">
+          </div>
+
         </div>
-
-        <div class="sp-inline-row" id="sp-row-req-accommodation">
-          <span class="sp-inline-key">Require Accommodation</span>
-          <span class="sp-inline-val" id="sp-val-req-accommodation">Yes</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-req-accommodation')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><select class="sp-inline-select" id="sp-input-req-accommodation"><option>Yes</option><option>No</option></select><button class="sp-inline-confirm" onclick="spConfirmEdit('sp-row-req-accommodation','sp-val-req-accommodation','sp-input-req-accommodation')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-req-accommodation')">Cancel</button></div>
-        </div>
-
-        <div class="sp-inline-row" id="sp-row-caw">
-          <span class="sp-inline-key">Cultural Awareness</span>
-          <span class="sp-inline-val" id="sp-val-caw" style="color:var(--muted-fg);font-style:italic;">—</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-caw')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><input class="sp-inline-input" type="date" id="sp-input-caw"><button class="sp-inline-confirm" onclick="spConfirmEditDate('sp-row-caw','sp-val-caw','sp-input-caw')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-caw')">Cancel</button></div>
-        </div>
-
-        <div class="sp-inline-row" id="sp-row-orientation">
-          <span class="sp-inline-key">Orientation Date</span>
-          <span class="sp-inline-val" id="sp-val-orientation" style="color:var(--muted-fg);font-style:italic;">—</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-orientation')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><input class="sp-inline-input" type="date" id="sp-input-orientation"><button class="sp-inline-confirm" onclick="spConfirmEditDate('sp-row-orientation','sp-val-orientation','sp-input-orientation')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-orientation')">Cancel</button></div>
-        </div>
-
-        <div class="sp-inline-row" id="sp-row-vehicle">
-          <span class="sp-inline-key">Vehicle Hire Ref</span>
-          <span class="sp-inline-val" id="sp-val-vehicle" style="color:var(--muted-fg);font-style:italic;">—</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-vehicle')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><input class="sp-inline-input" id="sp-input-vehicle" placeholder="Reference number…"><button class="sp-inline-confirm" onclick="spConfirmEditInput('sp-row-vehicle','sp-val-vehicle','sp-input-vehicle')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-vehicle')">Cancel</button></div>
-        </div>
-
-        <div class="sp-inline-row" id="sp-row-driving">
-          <span class="sp-inline-key">Driving Test</span>
-          <span class="sp-inline-val" id="sp-val-driving">Yes</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-driving')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><select class="sp-inline-select" id="sp-input-driving"><option>Yes</option><option>No</option></select><button class="sp-inline-confirm" onclick="spConfirmEdit('sp-row-driving','sp-val-driving','sp-input-driving')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-driving')">Cancel</button></div>
-        </div>
-
-        <div class="sp-inline-row" id="sp-row-accom-ref">
-          <span class="sp-inline-key">Accommodation Ref</span>
-          <span class="sp-inline-val" id="sp-val-accom-ref" style="color:var(--muted-fg);font-style:italic;">—</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-accom-ref')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><input class="sp-inline-input" id="sp-input-accom-ref" placeholder="Reference number…"><button class="sp-inline-confirm" onclick="spConfirmEditInput('sp-row-accom-ref','sp-val-accom-ref','sp-input-accom-ref')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-accom-ref')">Cancel</button></div>
-        </div>
-
-      </div><!-- /card-body -->
-    </div><!-- /additional info card -->
-
-    <!-- ── PLACEMENT REQUIREMENT card ── -->
-    <div class="sp-section-card" id="sp-card-req">
-      <div class="sp-section-card-hdr" onclick="spToggleCard('sp-card-req')">
-        <span class="sp-section-card-title">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          Placement Requirement
-        </span>
-        <svg id="sp-card-req-chev" class="sp-section-card-chev collapsed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="m9 18 6-6-6-6"/></svg>
       </div>
-      <div class="sp-section-card-body collapsed" id="sp-card-req-body">
+    </div>
 
-        <div class="sp-inline-row" id="sp-row-assessment">
-          <span class="sp-inline-key">Assessment Required</span>
-          <span class="sp-inline-val" id="sp-val-assessment">Yes</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-assessment')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><select class="sp-inline-select" id="sp-input-assessment"><option>Yes</option><option>No</option></select><button class="sp-inline-confirm" onclick="spConfirmEdit('sp-row-assessment','sp-val-assessment','sp-input-assessment')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-assessment')">Cancel</button></div>
+    <!-- ── PLACEMENT REQUIREMENT (collapsible) ── -->
+    <div class="sp-collapsible-hdr" onclick="spToggleCollapsible('sp-col-req')" id="sp-col-req-hdr">
+      <span class="sp-collapsible-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Placement requirement
+      </span>
+      <svg class="sp-collapsible-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+    <div class="sp-collapsible-body" id="sp-col-req" style="max-height:0;overflow:hidden;">
+      <div class="sp-form-section" style="padding-bottom:14px;">
+        <div class="sp-form-grid">
+          <div class="sp-form-field">
+            <label class="sp-form-label">Assessment required</label>
+            <div class="sp-yn-group">
+              <button class="sp-yn-btn active-yes" id="spf-assessment-yes" onclick="spYN('assessment','yes')">Yes</button>
+              <button class="sp-yn-btn" id="spf-assessment-no" onclick="spYN('assessment','no')">No</button>
+            </div>
+          </div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Timesheet</label>
+            <div class="sp-yn-group">
+              <button class="sp-yn-btn active-yes" id="spf-timesheet-yes" onclick="spYN('timesheet','yes')">Yes</button>
+              <button class="sp-yn-btn" id="spf-timesheet-no" onclick="spYN('timesheet','no')">No</button>
+            </div>
+          </div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Student manages rosters</label>
+            <div class="sp-yn-group">
+              <button class="sp-yn-btn active-yes" id="spf-studroster-yes" onclick="spYN('studroster','yes')">Yes</button>
+              <button class="sp-yn-btn" id="spf-studroster-no" onclick="spYN('studroster','no')">No</button>
+            </div>
+          </div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Billable placement</label>
+            <div class="sp-yn-group">
+              <button class="sp-yn-btn active-yes" id="spf-billable-yes" onclick="spYN('billable','yes')">Yes</button>
+              <button class="sp-yn-btn" id="spf-billable-no" onclick="spYN('billable','no')">No</button>
+            </div>
+          </div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Student can raise incidents</label>
+            <div class="sp-yn-group">
+              <button class="sp-yn-btn active-yes" id="spf-incidents-yes" onclick="spYN('incidents','yes')">Yes</button>
+              <button class="sp-yn-btn" id="spf-incidents-no" onclick="spYN('incidents','no')">No</button>
+            </div>
+          </div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Roster required</label>
+            <div class="sp-yn-group">
+              <button class="sp-yn-btn active-yes" id="spf-rosterreq-yes" onclick="spYN('rosterreq','yes')">Yes</button>
+              <button class="sp-yn-btn" id="spf-rosterreq-no" onclick="spYN('rosterreq','no')">No</button>
+            </div>
+          </div>
+          <div class="sp-form-field span2">
+            <label class="sp-form-label">Supervisor allocation required</label>
+            <div class="sp-yn-group">
+              <button class="sp-yn-btn active-yes" id="spf-supalloc-yes" onclick="spYN('supalloc','yes')">Yes</button>
+              <button class="sp-yn-btn" id="spf-supalloc-no" onclick="spYN('supalloc','no')">No</button>
+            </div>
+          </div>
         </div>
-
-        <div class="sp-inline-row" id="sp-row-timesheet">
-          <span class="sp-inline-key">Timesheet</span>
-          <span class="sp-inline-val" id="sp-val-timesheet">Yes</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-timesheet')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><select class="sp-inline-select" id="sp-input-timesheet"><option>Yes</option><option>No</option></select><button class="sp-inline-confirm" onclick="spConfirmEdit('sp-row-timesheet','sp-val-timesheet','sp-input-timesheet')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-timesheet')">Cancel</button></div>
-        </div>
-
-        <div class="sp-inline-row" id="sp-row-student-rosters">
-          <span class="sp-inline-key">Student Manages Rosters</span>
-          <span class="sp-inline-val" id="sp-val-student-rosters">Yes</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-student-rosters')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><select class="sp-inline-select" id="sp-input-student-rosters"><option>Yes</option><option>No</option></select><button class="sp-inline-confirm" onclick="spConfirmEdit('sp-row-student-rosters','sp-val-student-rosters','sp-input-student-rosters')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-student-rosters')">Cancel</button></div>
-        </div>
-
-        <div class="sp-inline-row" id="sp-row-billable">
-          <span class="sp-inline-key">Billable Placement</span>
-          <span class="sp-inline-val" id="sp-val-billable">Yes</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-billable')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><select class="sp-inline-select" id="sp-input-billable"><option>Yes</option><option>No</option></select><button class="sp-inline-confirm" onclick="spConfirmEdit('sp-row-billable','sp-val-billable','sp-input-billable')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-billable')">Cancel</button></div>
-        </div>
-
-        <div class="sp-inline-row" id="sp-row-incidents">
-          <span class="sp-inline-key">Student Can Raise Incidents</span>
-          <span class="sp-inline-val" id="sp-val-incidents">Yes</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-incidents')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><select class="sp-inline-select" id="sp-input-incidents"><option>Yes</option><option>No</option></select><button class="sp-inline-confirm" onclick="spConfirmEdit('sp-row-incidents','sp-val-incidents','sp-input-incidents')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-incidents')">Cancel</button></div>
-        </div>
-
-        <div class="sp-inline-row" id="sp-row-roster-req">
-          <span class="sp-inline-key">Roster Required</span>
-          <span class="sp-inline-val" id="sp-val-roster-req">Yes</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-roster-req')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><select class="sp-inline-select" id="sp-input-roster-req"><option>Yes</option><option>No</option></select><button class="sp-inline-confirm" onclick="spConfirmEdit('sp-row-roster-req','sp-val-roster-req','sp-input-roster-req')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-roster-req')">Cancel</button></div>
-        </div>
-
-        <div class="sp-inline-row" id="sp-row-sup-alloc">
-          <span class="sp-inline-key">Supervisor Allocation</span>
-          <span class="sp-inline-val" id="sp-val-sup-alloc">Yes</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-sup-alloc')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><select class="sp-inline-select" id="sp-input-sup-alloc"><option>Yes</option><option>No</option></select><button class="sp-inline-confirm" onclick="spConfirmEdit('sp-row-sup-alloc','sp-val-sup-alloc','sp-input-sup-alloc')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-sup-alloc')">Cancel</button></div>
-        </div>
-
-      </div><!-- /card-body -->
-    </div><!-- /placement requirement card -->
-
-    <!-- ── PLACEMENT CONTACT card ── -->
-    <div class="sp-section-card" id="sp-card-contact">
-      <div class="sp-section-card-hdr" onclick="spToggleCard('sp-card-contact')">
-        <span class="sp-section-card-title">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          Placement Contact
-        </span>
-        <svg id="sp-card-contact-chev" class="sp-section-card-chev collapsed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="m9 18 6-6-6-6"/></svg>
       </div>
-      <div class="sp-section-card-body collapsed" id="sp-card-contact-body">
+    </div>
 
-        <div class="sp-inline-row" id="sp-row-contact-name2">
-          <span class="sp-inline-key">Name</span>
-          <span class="sp-inline-val" id="sp-val-contact-name2">Rachel Donovan</span>
-          <button class="sp-pencil-btn" onclick="spStartEdit('sp-row-contact-name2')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <div class="sp-inline-edit-ctrl"><input class="sp-inline-input" id="sp-input-contact-name2" value="Rachel Donovan"><button class="sp-inline-confirm" onclick="spConfirmEditInput('sp-row-contact-name2','sp-val-contact-name2','sp-input-contact-name2')">Save</button><button class="sp-inline-cancel" onclick="spCancelEdit('sp-row-contact-name2')">Cancel</button></div>
+    <!-- ── PLACEMENT CONTACT (collapsible) ── -->
+    <div class="sp-collapsible-hdr" onclick="spToggleCollapsible('sp-col-contact')" id="sp-col-contact-hdr">
+      <span class="sp-collapsible-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Placement contact
+      </span>
+      <svg class="sp-collapsible-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+    <div class="sp-collapsible-body" id="sp-col-contact" style="max-height:0;overflow:hidden;">
+      <div class="sp-form-section" style="padding-bottom:14px;">
+        <div class="sp-form-grid">
+          <div class="sp-form-field span2">
+            <label class="sp-form-label">Name <span class="req">*</span></label>
+            <input class="sp-form-input" id="spf-contact-name" value="Veena Nagendrappa">
+          </div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Email</label>
+            <input class="sp-form-input read" readonly value="veena.nagendrappa+hsp1@quantumit.com.au">
+          </div>
+          <div class="sp-form-field">
+            <label class="sp-form-label">Phone</label>
+            <input class="sp-form-input read" readonly value="+61450000000">
+          </div>
         </div>
-
-        <div class="sp-inline-row locked">
-          <span class="sp-inline-key">Email</span>
-          <span class="sp-inline-val"><a href="mailto:rachel.donovan@greenfield.edu.au" style="color:var(--primary);">rachel.donovan@greenfield.edu.au</a></span>
-        </div>
-
-        <div class="sp-inline-row locked">
-          <span class="sp-inline-key">Phone</span>
-          <span class="sp-inline-val">+61249215000</span>
-        </div>
-
-      </div><!-- /card-body -->
-    </div><!-- /placement contact card -->
-
-    <!-- ── PLACEMENT COMMENT card ── -->
-    <div class="sp-section-card" id="sp-card-comment">
-      <div class="sp-section-card-hdr" onclick="spToggleCard('sp-card-comment')">
-        <span class="sp-section-card-title">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Placement Comment
-        </span>
-        <svg id="sp-card-comment-chev" class="sp-section-card-chev collapsed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="m9 18 6-6-6-6"/></svg>
       </div>
-      <div class="sp-section-card-body collapsed" id="sp-card-comment-body" style="padding:12px;">
-        <div class="erp-comment-list" id="sp-comment-list" style="margin-bottom:10px;">
-          <div style="color:var(--muted-fg);font-size:12px;font-style:italic;padding:4px 0;">No comments yet.</div>
-        </div>
-        <textarea class="erp-textarea" id="sp-new-comment" placeholder="Add a comment…" style="width:100%;min-height:80px;box-sizing:border-box;"></textarea>
+    </div>
+
+    <!-- ── PLACEMENT COMMENT (collapsible) ── -->
+    <div class="sp-collapsible-hdr" onclick="spToggleCollapsible('sp-col-comment')" id="sp-col-comment-hdr">
+      <span class="sp-collapsible-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Placement comment <span id="spf-comment-count" style="font-weight:400;color:#9ca3af;font-size:10px;text-transform:none;letter-spacing:0;">(0)</span>
+      </span>
+      <svg class="sp-collapsible-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+    <div class="sp-collapsible-body" id="sp-col-comment" style="max-height:0;overflow:hidden;">
+      <div style="padding:14px 20px 20px;">
+        <div id="spf-comment-list" style="margin-bottom:10px;color:#9ca3af;font-size:12px;font-style:italic;">No comments yet.</div>
+        <textarea class="sp-comment-textarea" id="spf-new-comment" placeholder="Add a comment…"></textarea>
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;">
-          <label style="display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;">
-            <input type="checkbox" id="sp-private-comment" style="width:14px;height:14px;accent-color:var(--primary);cursor:pointer;">
-            <span style="font-size:12px;color:var(--fg-light);">Private <span style="font-weight:400;color:var(--muted-fg)">(visible to my organisation only)</span></span>
+          <label class="sp-private-label">
+            <input type="checkbox" id="spf-private-comment" style="width:14px;height:14px;accent-color:#1976d2;cursor:pointer;">
+            <span>Private <span style="font-weight:400;color:#9ca3af;">(visible to my organisation only)</span></span>
           </label>
-          <button onclick="spSaveComment()" style="height:30px;padding:0 14px;border:1px solid var(--primary);background:white;border-radius:5px;font-family:var(--font);font-size:12px;font-weight:600;color:var(--primary);cursor:pointer;white-space:nowrap;flex-shrink:0;">Save Comment</button>
+          <button class="sp-save-comment-btn" onclick="showToast('Comment saved','Comment added to placement.')">Save comment</button>
         </div>
-      </div><!-- /card-body -->
-    </div><!-- /comments card -->
+      </div>
+    </div>
+
+    <div style="height:20px;"></div>
 
   </div>
 
-  <div class="sp-footer" id="sp-footer">
+    <div class="sp-footer" id="sp-footer">
     <div class="sp-footer-actions">
       <button class="btn-sp-cancel" onclick="closePanel()">Cancel</button>
-      <button class="btn-sp-offer" id="spBtnOffer" onclick="spGenerate('offered')">Generate &amp; Offer</button>
-      <button class="btn-sp-generate" id="spBtnPublish" onclick="spGenerate('published')">Publish</button>
+      <button class="btn-sp-offer" id="spBtnOffer" onclick="spGenerate('offered')">Allocate &amp; Offer</button>
+      <button class="btn-sp-generate" id="spBtnPublish" onclick="spGenerate('published')">Allocate &amp; Publish</button>
     </div>
   </div>
 
@@ -3666,6 +3798,15 @@ const AGENCIES = [
        comment:'Group placement — 4 students required together for cohort rotation.',
        roster:{days:['Mon'],shift:'AM (06:30-15:30)'},
        cells:{0:4,7:4,14:4,21:4}},
+      // ── Without shifts test request ──
+      {id:'r99001',reqNum:'Req: 99001',status:'pending',
+       ep:'Monash',campus:'Clayton',epCode:'MON',
+       discipline:'Social Work',type:'General',year:'Yr 2',qty:4,dur:'28 days',
+       shiftLabel:'Any shift',shiftBadge:'sb-all',chipStyle:'shift',chipLabel:'Any',
+       shiftId:'all',ptId:'pt-gen',
+       agencyName:'(GM-Testing) Hope Learning Centre',
+       startDate:'2026-08-17',endDate:'2026-09-13',
+       dates:'17 Aug – 13 Sep 2026',comment:'Test: request without shifts',allChip:true},
     ],
     hiddenChildren:[]
   },
@@ -3859,7 +4000,7 @@ const AGENCIES = [
        cells:{7:1,8:1,9:1}},
 
       // ── No-shift request — shift not specified by EP ──────────────────────
-      {id:'r99001',reqNum:'Req: 99001',status:'pending',
+      {id:'r99002',reqNum:'Req: 99002',status:'pending',
        ep:'Deakin',campus:'Geelong Waterfront',epCode:'DKN',
        discipline:'Nursing',type:'General Medical',year:'Yr 2',
        qty:3,allocated:0,dur:'28 days',
@@ -6435,7 +6576,7 @@ function renderTooltipActions(r, isCompeting){
   } else if(r.status === 'offered'){
     el.className = 'tt-actions';
     html += `<button class="tt-btn tt-btn-p" onclick="navigateToAllocOptions('${r.id}')">Process ↗</button>`;
-    html += `<button class="tt-btn tt-btn-green" title="Publish placements to EP">Publish</button>`;
+    html += `<button class="tt-btn tt-btn-green" title="Publish placements to EP">Allocate &amp; Publish</button>`;
   } else if(r.status === 'published'){
     el.className = 'tt-actions';
     html = '';
@@ -6555,7 +6696,7 @@ function onChipEnter(e){
   posTooltip(e);tooltip.classList.add('visible');
 }
 function onChipMove(e){posTooltip(e);}
-function onChipLeave(){hideTimer=setTimeout(()=>tooltip.classList.remove('visible'),400);}
+function onChipLeave(){hideTimer=setTimeout(()=>tooltip.classList.remove('visible'),900);}
 /* ── Competing request kebab menu ── */
 let crKebabReqId = null;
 function openCrKebab(e, reqId){
@@ -6575,7 +6716,7 @@ function closeCrKebab(){
 }
 function closeCrKebabOutside(){ closeCrKebab(); }
 tooltip.addEventListener('mouseenter',()=>clearTimeout(hideTimer));
-tooltip.addEventListener('mouseleave',()=>{hideTimer=setTimeout(()=>tooltip.classList.remove('visible'),150);});
+tooltip.addEventListener('mouseleave',()=>{hideTimer=setTimeout(()=>tooltip.classList.remove('visible'),300);});
 function posTooltip(e){
   const TW=265,TH=280,vw=window.innerWidth,vh=window.innerHeight;
   let x=e.clientX+14,y=e.clientY+14;
@@ -7611,8 +7752,17 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
     return html;
   }
 
-  // ── Section 1: draft groups (planned placements for current request) ──────────
-  // Group allocDraftPlacements by shiftLabel+status → one row per unique combination
+  // ── Section 1: individual placement rows (one row per placement, not grouped) ──
+  // Each draft object with qty=N expands into N individual rows (Plc 1, Plc 2...)
+  // Global placement counter across all agencies for this request
+  const allReqDrafts = allocDraftPlacements.filter(d => d.reqId === currentAllocReqId);
+  let globalPlcCounter = 0;
+  // Count placements from agencies that appear before this one in the grid
+  allReqDrafts.forEach(d => {
+    const dAgName = d.agId ? (findAgById(d.agId)?.name || d.agName) : d.agName;
+    if(dAgName !== agName) globalPlcCounter += (d.qty||1);
+  });
+
   const allDraftEntries = allocDraftPlacements
     .map((d, masterIdx) => ({ d, masterIdx }))
     .filter(({ d }) => {
@@ -7621,12 +7771,28 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
       return d.agName === agName;
     });
 
+  // Expand each draft object into qty individual row entries
   const draftGroups = [];
+  let agencyPlcCounter = 0;
   allDraftEntries.forEach(({ d, masterIdx }) => {
-    const key = (d.status||'draft') + '__' + (d.shiftLabel||'');
-    const existing = draftGroups.find(g => g.key === key);
-    if(existing){ existing.qty += d.qty; existing.indices.push(masterIdx); }
-    else draftGroups.push({ key, status:d.status||'draft', shiftLabel:d.shiftLabel||'', qty:d.qty, dates:d.dates, indices:[masterIdx] });
+    const qty = d.qty || 1;
+    for(let i = 0; i < qty; i++){
+      agencyPlcCounter++;
+      const plcNum = globalPlcCounter + agencyPlcCounter;
+      draftGroups.push({
+        key: (d.status||'draft') + '__' + masterIdx + '__' + i,
+        status: d.status||'draft',
+        shiftLabel: d.shiftLabel||'',
+        qty: 1,
+        dates: d.dates,
+        indices: [masterIdx],
+        plcNum,
+        dateChanged:  d.dateChanged  || false,
+        rosterDays:  d.rosterDays  || null,
+        rosterShift: d.rosterShift || '',
+        plcLabel: d.status && d.status !== 'draft' ? (d.placementId || `P-${10000+plcNum}`) : `Plc ${plcNum}`
+      });
+    }
   });
 
   // Normalise filterShift — strip time/discipline suffix same way confirmAlloc strips shiftLabel
@@ -7671,101 +7837,126 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
       const statusLbl = status.charAt(0).toUpperCase()+status.slice(1);
       const hasShift = shiftLbl && shiftLbl !== 'Any Shift' && shiftLbl !== '—';
 
-      // Offered/published groups → coloured chip format (consistent with EP chips)
-      // Only true draft (not yet generated) → card format with left col detail
-      if(!isDraft){
-        // Render as coloured chip lane — same structure as EP chips but status-coloured
-        const gKey = g.key;
-        const countMap = {};
-        countMap[gKey] = Array(cols).fill(0);
+      // Shared across all render branches
+      const barColor2 = { draft:'#534ab7', offered:'#92400e', published:'#0369ff' }[status] || '#534ab7';
+      const plcLbl    = g.plcLabel || `Plc ${g.plcNum||''}`;
+
+      // All statuses (draft, offered, published) → same Gantt bar renderer
+      // isDraft controls whether × appears on the bar
+
+      // If roster defined (non-draft) → render as shift chips on matching weekdays only
+      // Matches Allocation Options screen pattern (Plc 117509, 117511)
+      if(!isDraft && g.rosterDays && g.rosterDays.length){
+        const rDays  = g.rosterDays;  // e.g. ['Mon','Wed','Fri']
+        const rShift = g.rosterShift || '';
+        const chipColor = { offered:'#b45309', published:'#0369ff' }[status] || '#0369ff';
+        const chipBg    = { offered:'rgba(255,193,7,0.25)', published:'rgba(3,105,255,0.14)' }[status] || 'rgba(3,105,255,0.14)';
+        const dayNames  = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        const parseDMY2 = s => { if(!s) return null; const p=s.trim().split('/'); return p.length===3?new Date(+p[2],+p[1]-1,+p[0]):(s.match(/^\d{4}-\d{2}-\d{2}$/)?new Date(s):null); };
+        const dp2 = (dates||'').split(/\s*[–-]\s*/);
+        const plcS2 = parseDMY2(dp2[0]) || (focusR?.startDate ? new Date(focusR.startDate) : null);
+        const plcE2 = parseDMY2(dp2[1]) || (focusR?.endDate   ? new Date(focusR.endDate)   : null);
+        let rChipsHtml = '';
         for(let i=0;i<cols;i++){
           if(!isVisible[i]) continue;
-          if(isWeekMode){ countMap[gKey][i]=1; continue; }
           const d=new Date(BASE);d.setDate(d.getDate()+allocDateOffset+i);
-          if(d.getDay()!==0&&d.getDay()!==6) countMap[gKey][i]=1;
+          const wknd=d.getDay()===0||d.getDay()===6;
+          if(wknd){ rChipsHtml+=`<div class="ag-plc-cell wknd" style="width:${cellW}px;min-width:${cellW}px;max-width:${cellW}px;"></div>`; continue; }
+          const dayName = dayNames[d.getDay()];
+          const inRange = (!plcS2||d>=plcS2)&&(!plcE2||d<=plcE2);
+          const onRosterDay = inRange && rDays.includes(dayName);
+          if(onRosterDay){
+            rChipsHtml+=`<div class="ag-plc-cell has-data" style="width:${cellW}px;min-width:${cellW}px;max-width:${cellW}px;color:${chipColor};font-weight:700;font-size:10px;background:${chipBg};">${rShift||dayName}</div>`;
+          } else {
+            rChipsHtml+=`<div class="ag-plc-cell" style="width:${cellW}px;min-width:${cellW}px;max-width:${cellW}px;"></div>`;
+          }
         }
-        const lanes = buildLanes(countMap);
-        if(!lanes.length) return;
-        const lbl = hasShift ? `${qty}× ${shiftLbl}` : `${qty}`;
-        const chipFn=(seg,w)=>{
-          let visSpan=0; for(let j=seg.start;j<=seg.end;j++) if(isVisible[j]) visSpan++;
-          const chipW = visSpan*cellW;
-          return `<div class="ag-plc-cell has-data status-${status}" style="min-width:${chipW}px;width:${chipW}px;max-width:${chipW}px;justify-content:flex-start;padding-left:4px;cursor:pointer"
-            onclick="event.stopPropagation();openVpSheet('${safeAgId}')">${lbl}</div>`;
-        };
-        const _reqS = focusR?.shiftLabel ? focusR.shiftLabel.split('(')[0].trim().replace(/ only$/i,'').toLowerCase() : '';
-        const _allS = shiftLbl ? shiftLbl.split('(')[0].trim().replace(/ only$/i,'').toLowerCase() : '';
-        const _dev = _reqS && _allS && _reqS !== 'any' && _allS !== 'any shift' && _allS !== '—' && _reqS !== _allS;
-        const _devIcon = _dev ? `<span class="ag-plc-deviation" title="Shift deviation: requested ${focusR.shiftLabel}, allocated ${shiftLbl}"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Shift deviation"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>` : '';
-        const labelHtml=`<span class="ag-plc-lbl"><span class="ag-plc-status-badge status-${status}" style="margin-right:4px">${statusLbl}</span>${_devIcon}</span>`;
-        html += renderLanes(lanes, chipFn, labelHtml, '');
-        return;
+        html+=`<div class="ag-plc-row ag-plc-planned" style="border-left:none;background:white;border-bottom:1px solid #f0f2f5;">
+          <div class="ag-plc-left" style="padding-left:${indentPx}px">
+            <div class="ag-plc-info">
+              <div class="ag-plc-line1" style="display:flex;align-items:center;gap:5px;">
+                <span style="font-size:11px;font-weight:700;color:${barColor2};">${plcLbl}</span>
+                <span class="sbadge ${status}">${statusLbl}</span>
+              </div>
+            </div>
+          </div>
+          <div class="ag-plc-cells">${rChipsHtml}</div>
+        </div>`;
+        return html;
       }
 
-      // Chip rendering depends on reqDatesOnly:
-      // - Full calendar (off): one chip spanning first→last visible weekday
-      // - Requested dates (on): one small chip per visible weekday column (scattered dates)
+      // Continuous Gantt-style bar spanning placement date range
+      // Bar starts at first in-range weekday col, spans to last, contains date text + × dismiss
       {
-        let firstVis=-1, lastVis=-1, visWeekdayCols=0;
-        for(let i=0;i<cols;i++){
-          if(!isVisible[i]) continue;
-          if(isWeekMode){ if(firstVis<0) firstVis=i; lastVis=i; visWeekdayCols++; continue; }
-          const d=new Date(BASE);d.setDate(d.getDate()+allocDateOffset+i);
-          if(d.getDay()!==0&&d.getDay()!==6){ if(firstVis<0) firstVis=i; lastVis=i; visWeekdayCols++; }
-        }
-        if(visWeekdayCols===0) return;
+        // Parse placement date range
+        const parseDMY = s => {
+          if(!s) return null;
+          // Try DD/MM/YYYY
+          const p = s.trim().split('/');
+          if(p.length===3) return new Date(+p[2],+p[1]-1,+p[0]);
+          // Try YYYY-MM-DD
+          const iso = s.trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
+          if(iso) return new Date(+iso[1],+iso[2]-1,+iso[3]);
+          return null;
+        };
+        const dateParts = (dates||'').split(/\s*[–-]\s*/);
+        const plcStart = parseDMY(dateParts[0]) || (focusR?.startDate ? new Date(focusR.startDate) : null);
+        const plcEnd   = parseDMY(dateParts[1]) || (focusR?.endDate   ? new Date(focusR.endDate)   : null);
 
-        const chipLbl=hasShift ? `${qty}\u00d7 ${shiftLbl}` : `${qty}`;
-        const leftLbl=hasShift ? `${shiftLbl} \u00b7 ${qty}` : `${qty}`;
+        const barBorder = { draft:'#534ab7', offered:'#ffc107', published:'#0369ff' }[status] || '#534ab7';
+        const barBg     = 'white';
+        const barColor  = '#374151'; // date text always muted grey
+
+        // Find first and last visible in-range weekday columns
+        let barStart=-1, barEnd=-1, barVisSpan=0;
+        const inRangeCol = [];
+        for(let i=0;i<cols;i++){
+          if(!isVisible[i]){ inRangeCol.push(false); continue; }
+          if(isWeekMode){
+            const wS=new Date(BASE);wS.setDate(wS.getDate()+allocDateOffset+i*7);
+            const wE=new Date(wS);wE.setDate(wE.getDate()+6);
+            const ok=(!plcStart||wE>=plcStart)&&(!plcEnd||wS<=plcEnd);
+            inRangeCol.push(ok);
+            if(ok){ if(barStart<0)barStart=i; barEnd=i; barVisSpan++; }
+          } else {
+            const d=new Date(BASE);d.setDate(d.getDate()+allocDateOffset+i);
+            const wknd=d.getDay()===0||d.getDay()===6;
+            if(wknd){ inRangeCol.push(false); continue; }
+            const ok=(!plcStart||d>=plcStart)&&(!plcEnd||d<=plcEnd);
+            inRangeCol.push(ok);
+            if(ok){ if(barStart<0)barStart=i; barEnd=i; barVisSpan++; }
+          }
+        }
+
+        // Format date label for inside bar
+        const fmtD = d => { if(!d) return ''; return d.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}); };
+        const barLabel = (plcStart&&plcEnd) ? `${fmtD(plcStart)} – ${fmtD(plcEnd)}` : (dates||'');
+        const barW = barVisSpan * cellW;
+        const safeIndicesBar = JSON.stringify(indices);
+        const removeBtnBar = isDraft
+          ? `<button onclick="event.stopPropagation();removeDraftGroup(${safeIndicesBar})" title="Remove draft"
+               style="background:none;border:none;cursor:pointer;color:${barBorder};opacity:.6;font-size:13px;font-weight:700;padding:0 2px;line-height:1;flex-shrink:0;" aria-label="Remove draft placement">✕</button>`
+          : '';
 
         let cellsHtml='';
-        if(reqDatesOnly){
-          // Requested dates on — emit one chip per visible weekday (scattered columns)
-          for(let i=0;i<cols;i++){
-            if(!isVisible[i]) continue;
-            if(isWeekMode){
-              cellsHtml+=`<div class="ag-plc-cell has-data status-${status}" style="width:${cellW}px;min-width:${cellW}px;max-width:${cellW}px" onclick="event.stopPropagation();openVpSheet('${safeAgId}')">${qty}</div>`;
-              continue;
-            }
+        let barEmitted=false;
+        for(let i=0;i<cols;i++){
+          if(!isVisible[i]) continue;
+          if(!isWeekMode){
             const d=new Date(BASE);d.setDate(d.getDate()+allocDateOffset+i);
-            const wknd=d.getDay()===0||d.getDay()===6;
-            if(wknd){ cellsHtml+=`<div class="ag-plc-cell wknd" style="width:${cellW}px;min-width:${cellW}px;max-width:${cellW}px"></div>`; continue; }
-            cellsHtml+=`<div class="ag-plc-cell has-data status-${status}" style="width:${cellW}px;min-width:${cellW}px;max-width:${cellW}px" onclick="event.stopPropagation();openVpSheet('${safeAgId}')">${qty}</div>`;
+            if(d.getDay()===0||d.getDay()===6){ cellsHtml+=`<div class="ag-plc-cell wknd" style="width:${cellW}px;min-width:${cellW}px;max-width:${cellW}px;"></div>`; continue; }
           }
-        } else if(isWeekMode){
-          // Week mode — 28 week columns, one chip spanning first to last visible week column
-          let firstVis=-1, lastVis=-1, spanCols=0;
-          for(let i=0;i<cols;i++){
-            if(!isVisible[i]) continue;
-            if(firstVis<0) firstVis=i; lastVis=i; spanCols++;
-          }
-          if(spanCols===0) return;
-          const w=spanCols*cellW;
-          let chipEmitted=false;
-          for(let i=0;i<cols;i++){
-            if(!isVisible[i]){ cellsHtml+=`<div class="ag-plc-cell" style="min-width:${cellW}px"></div>`; continue; }
-            if(!chipEmitted && i===firstVis){
-              cellsHtml+=`<div class="ag-plc-cell has-data status-${status}" style="min-width:${w}px;width:${w}px;max-width:${w}px;justify-content:flex-start;padding-left:4px;cursor:pointer" onclick="event.stopPropagation();openVpSheet('${safeAgId}')">${chipLbl}</div>`;
-              chipEmitted=true; i=lastVis; continue;
-            }
-            cellsHtml+=`<div class="ag-plc-cell" style="min-width:${cellW}px"></div>`;
-          }
-        } else {
-          // Full calendar — one chip spanning first to last visible weekday
-          let spanCols=0;
-          for(let i=firstVis;i<=lastVis;i++){ if(isVisible[i]) spanCols++; }
-          const w=spanCols*cellW;
-          let chipEmitted=false;
-          for(let i=0;i<cols;i++){
-            if(!isVisible[i]) continue;
-            const d=new Date(BASE);d.setDate(d.getDate()+allocDateOffset+i);
-            const wknd=d.getDay()===0||d.getDay()===6;
-            if(wknd){ cellsHtml+=`<div class="ag-plc-cell wknd" style="width:${cellW}px;min-width:${cellW}px;max-width:${cellW}px"></div>`; continue; }
-            if(!chipEmitted&&i===firstVis){
-              cellsHtml+=`<div class="ag-plc-cell has-data status-${status}" style="min-width:${w}px;width:${w}px;max-width:${w}px;justify-content:flex-start;padding-left:4px;cursor:pointer" onclick="event.stopPropagation();openVpSheet('${safeAgId}')">${chipLbl}</div>`;
-              chipEmitted=true; i=lastVis; continue;
-            }
-            cellsHtml+=`<div class="ag-plc-cell" style="width:${cellW}px;min-width:${cellW}px;max-width:${cellW}px"></div>`;
+          if(!barEmitted && i===barStart && barVisSpan>0){
+            cellsHtml+=`<div class="ag-plc-cell" style="width:${barW}px;min-width:${barW}px;max-width:${barW}px;padding:0;overflow:hidden;">
+              <div style="display:flex;align-items:center;height:100%;width:${barW}px;background:white;border-left:4px solid ${barBorder};border-top:1px solid #f0f2f5;border-bottom:1px solid #f0f2f5;padding:0 6px 0 8px;box-sizing:border-box;gap:6px;overflow:hidden;">
+                <span style="font-size:10px;color:#6b7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">${barLabel}</span>
+                ${removeBtnBar}
+              </div>
+            </div>`;
+            barEmitted=true;
+            i=barEnd;
+          } else if(i<barStart||i>barEnd||!inRangeCol[i]){
+            cellsHtml+=`<div class="ag-plc-cell" style="width:${cellW}px;min-width:${cellW}px;max-width:${cellW}px;"></div>`;
           }
         }
 
@@ -7781,12 +7972,22 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
               <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Shift deviation warning"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             </span>` : '';
 
-        html+=`<div class="ag-plc-row ag-plc-planned status-${status}">
+        // Date deviation warning — show ⚠ when placement dates differ from request dates
+        // ⚠ only when coordinator explicitly changed dates in review panel
+        const dateWarnIcon = g.dateChanged
+          ? `<span title="Placement dates differ from request dates" style="color:#f59e0b;font-size:11px;flex-shrink:0;" aria-label="Date deviation warning">⚠</span>`
+          : '';
+
+        // Left column: Plc N label only — × is on the bar (plcLbl and barColor2 defined above)
+        html+=`<div class="ag-plc-row ag-plc-planned" style="border-left:none;background:white;border-bottom:1px solid #f0f2f5;">
           <div class="ag-plc-left" style="padding-left:${indentPx}px">
             <div class="ag-plc-info">
-              <div class="ag-plc-line1"><span class="ag-plc-status-badge status-${status}">${statusLbl}</span><span class="ag-plc-shift-lbl">${leftLbl}</span>${deviationWarn}</div>
-              <div class="ag-plc-line2">${dates||focusR?.dates||''}</div>
-            </div>${removeBtn}
+              <div class="ag-plc-line1" style="display:flex;align-items:center;gap:5px;">
+                <span style="font-size:11px;font-weight:700;color:${barColor2};">${plcLbl}</span>
+                <span class="sbadge ${status}">${statusLbl}</span>
+                ${dateWarnIcon}
+              </div>
+            </div>
           </div>
           <div class="ag-plc-cells">${cellsHtml}</div>
         </div>`;
@@ -7922,6 +8123,9 @@ function renderAgencyBlock(ag, focusReq, depth, isPinned){
     <div class="ag-row-right">${renderAllocCells(sumCaps, focusReq, 'ag-cell', ag.id)}</div>
   </div>`;
 
+  // Placement rows always appear directly below the agency row (before sub-rows)
+  html += renderAllocPlacementRow(ag.name, pad, '__ANY__', ag.id);
+
   if(ag.expanded){
     const isLeaf = !(ag.children && ag.children.length);
     if(isLeaf && allocGroupBy === 'shift'){
@@ -7940,8 +8144,6 @@ function renderAgencyBlock(ag, focusReq, depth, isPinned){
         // Placement rows for THIS shift immediately below it
         html += renderAllocPlacementRow(ag.name, pad + 18, shiftName, ag.id);
       });
-      // Any-shift / unmatched placements at the bottom
-      html += renderAllocPlacementRow(ag.name, pad, '__ANY__', ag.id);
     } else if(isLeaf && allocGroupBy === 'pt'){
       (ag.pts||[]).forEach(pt=>{
         const parts = pt.label.split('|').map(s=>s.trim());
@@ -7959,8 +8161,6 @@ function renderAgencyBlock(ag, focusReq, depth, isPinned){
           ${renderAllocCells(pt.caps, focusReq, 'ag-shift-cell', ag.id)}
         </div>`;
       });
-      // Placement rows after PT sub-rows
-      html += renderAllocPlacementRow(ag.name, pad, undefined, ag.id);
     } else if(isLeaf && allocGroupBy === 'ep'){
       const epGroups = {};
       (ag.reqs||[]).forEach(r=>{ if(!epGroups[r.ep]) epGroups[r.ep]=[]; epGroups[r.ep].push(r); });
@@ -7973,7 +8173,6 @@ function renderAgencyBlock(ag, focusReq, depth, isPinned){
           ${renderAllocCells(sumCaps, focusReq, 'ag-shift-cell', ag.id)}
         </div>`;
       });
-      html += renderAllocPlacementRow(ag.name, pad, undefined, ag.id);
     } else if(isLeaf && allocGroupBy === 'availability'){
       const sorted = [...(ag.shifts||[])].sort((a,b)=>{
         const sumA = a.caps.filter(x=>x!==null&&x>0).reduce((s,v)=>s+v,0);
@@ -7994,17 +8193,11 @@ function renderAgencyBlock(ag, focusReq, depth, isPinned){
           ${renderAllocCells(s.caps, focusReq, 'ag-shift-cell', ag.id)}
         </div>`;
       });
-      html += renderAllocPlacementRow(ag.name, pad, undefined, ag.id);
     } else if(isLeaf){
-      // groupBy=none — placement row directly under agency (no shift sub-rows)
-      html += renderAllocPlacementRow(ag.name, pad, undefined, ag.id);
+      // groupBy=none — no additional placement row needed (rendered above)
     }
 
-    // Parent agency (non-leaf): render placement row at this level so drafts/placements
-    // stored against the parent agency row itself are visible on the grid.
-    if(!isLeaf){
-      html += renderAllocPlacementRow(ag.name, pad, '__ANY__', ag.id);
-    }
+    // Placement rows already rendered directly below agency row above
 
     // Recurse into children
     (ag.children||[]).forEach(child=>{
@@ -8748,6 +8941,44 @@ function openPanel(){
   // Scroll body to top
   const body = document.getElementById('sp-body');
   if(body) body.scrollTop = 0;
+
+  // Set Number of placements default to remaining count (Offered + Published only)
+  const r = REQ_META[currentAllocReqId];
+  if(r) {
+    const genQty = allocDraftPlacements
+      .filter(d => d.reqId === currentAllocReqId && d.status && d.status !== 'draft')
+      .reduce((sum, d) => sum + (d.qty||1), 0);
+    const rem = Math.max(0, r.qty - genQty);
+    const numInput = document.getElementById('spf-num');
+    // Default = this group's drafted qty (not total remaining)
+    const groupQty = spAgGroups[spAgIdx] ? spAgGroups[spAgIdx].drafts.reduce((s,d)=>s+(d.qty||1),0) : rem;
+    if(numInput) { numInput.value = groupQty; numInput.max = rem; }
+
+    // Populate Placement Details fields from request defaults
+    const setVal = (id, val) => { const el = document.getElementById(id); if(el && val) el.value = val; };
+    setVal('spf-discipline', r.discipline || '');
+    setVal('spf-yearlevel',  r.year || '');
+    // Parse start/end from dates string (e.g. "17 Aug 2026 – 13 Sep 2026") or ISO
+    if(r.startDate) setVal('spf-startdate', r.startDate);
+    if(r.endDate)   setVal('spf-enddate',   r.endDate);
+    // Agency: pre-populate with DRAFTED agency (the one coordinator clicked Allocate on)
+    // Diff will highlight if this differs from the requested agency (window.spDefaults.agency)
+    const draftedAgName = spAgGroups[spAgIdx]?.agName || '';
+    setVal('spf-agency', draftedAgName);
+
+    // Reset all diff highlights on open
+    document.querySelectorAll('.sp-diff-input').forEach(el => el.classList.remove('changed'));
+    document.querySelectorAll('.sp-diff-tag').forEach(el => el.classList.remove('visible'));
+
+    // Trigger diff check for all pre-populated fields — agency may differ immediately
+    if(draftedAgName) checkDiff('agency', draftedAgName);
+    if(r.discipline) checkDiff('discipline', r.discipline);
+    if(r.year) checkDiff('year', r.year);
+    if(r.startDate) checkDiff('startDate', r.startDate);
+    if(r.endDate) checkDiff('endDate', r.endDate);
+
+    validateSpfNum();
+  }
 }
 
 function closePanel(){
@@ -8770,8 +9001,40 @@ function spGenerate(type){
   if(typeof spAgGroups==='undefined'||!spAgGroups.length) return generatePlacements(type);
   const group = spAgGroups[spAgIdx];
   if(!group) return;
-  // Mark this agency's drafts with the generated status
-  group.drafts.forEach(d=>{ d.status = type; });
+  // Capture date changes and roster state from panel before generating
+  const startInput = document.getElementById('spf-startdate');
+  const endInput   = document.getElementById('spf-enddate');
+  const panelStart = startInput?.value || '';
+  const panelEnd   = endInput?.value   || '';
+  const rosterTrack = document.getElementById('spf-roster-track');
+  const rosterOn = rosterTrack && rosterTrack.classList.contains('on');
+  let rosterDays = [], rosterShift = '';
+  if(rosterOn){
+    rosterDays = [...document.querySelectorAll('#spf-roster-days input:checked')].map(el=>el.value);
+    rosterShift = document.getElementById('spf-roster-shift')?.value || '';
+  }
+  // Mark this agency's drafts with the generated status and roster
+  group.drafts.forEach(d=>{
+    d.status = type;
+    // Store date changes — format as DD/MM/YYYY for bar renderer
+    const r2 = REQ_META[currentAllocReqId];
+    const fmtISO = iso => { if(!iso) return ''; const [y,m,d2]=iso.split('-'); return `${d2}/${m}/${y}`; };
+    const effectiveStart = panelStart || r2?.startDate || '';
+    const effectiveEnd   = panelEnd   || r2?.endDate   || '';
+    const startChanged = panelStart && r2 && panelStart !== (r2.startDate||'');
+    const endChanged   = panelEnd   && r2 && panelEnd   !== (r2.endDate  ||'');
+    if(startChanged || endChanged){
+      d.dateChanged = true;
+      d.dates = `${fmtISO(effectiveStart)} – ${fmtISO(effectiveEnd)}`;
+    }
+    if(rosterOn && rosterDays.length){
+      d.rosterDays  = rosterDays;
+      d.rosterShift = rosterShift;
+    } else {
+      d.rosterDays  = null;
+      d.rosterShift = null;
+    }
+  });
   // Remove from group list
   spAgGroups.splice(spAgIdx, 1);
 
@@ -9157,7 +9420,8 @@ function addWeek() {
 }
 
 
-function spToggleRoster(el){
+function spToggleRosterLegacy(el){
+  if(!el) return;
   el.classList.toggle('on');
   const lbl = document.getElementById('spRosterLabel');
   if(lbl) lbl.textContent = el.classList.contains('on') ? 'On — specify roster' : 'Off — use default schedule';
@@ -9525,7 +9789,7 @@ function renderPlacementRail(){
   const tray = document.getElementById('placementTray');
   if(tray && hasDrafts){
     tray.classList.add('visible');
-    // show footer (contains Review & Generate) whenever tray is visible
+    // show footer (contains Review & Allocate) whenever tray is visible
     const footer = document.getElementById('ptFooter');
     if(footer) footer.style.display = '';
   }
@@ -9875,7 +10139,14 @@ function showInput(agId, shift, agency){ showStandardInput(agId, shift, agency);
 function showStandardInput(agId, shift, agency) {
   if(fulfillmentMode === 'rotation') return;
   const r = REQ_META[currentAllocReqId];
-  const remaining = r ? r.qty - (r.allocated||0) : 0;
+  // Remaining = requested minus generated minus drafted (UI counter matches this per CPN-15682)
+  const generatedQty = allocDraftPlacements
+    .filter(d => d.reqId === currentAllocReqId && d.status && d.status !== 'draft')
+    .reduce((sum, d) => sum + (d.qty||1), 0);
+  const draftedQty = allocDraftPlacements
+    .filter(d => d.reqId === currentAllocReqId && (!d.status || d.status === 'draft'))
+    .reduce((sum, d) => sum + (d.qty||1), 0);
+  const remaining = r ? Math.max(0, r.qty - generatedQty - draftedQty) : 0;
   if(remaining <= 0){
     const btn = document.getElementById('btn-alloc-' + agId);
     if(btn) btn.style.display = 'none';
@@ -9892,8 +10163,10 @@ function showStandardInput(agId, shift, agency) {
   div.id = 'ai-' + agId;
   div.onclick = e => e.stopPropagation();
   div.innerHTML = `
-    <input class="qty-input" type="number" min="1" max="${remaining}" value="${remaining}" id="qi-${agId}" onclick="event.stopPropagation()">
-    <button class="btn-sel" onclick="event.stopPropagation();confirmAlloc('${agId}','${shift}','${agency}')">Select</button>
+    <input class="qty-input" type="number" min="1" max="${remaining}" value="${remaining}" id="qi-${agId}"
+      onclick="event.stopPropagation()"
+      oninput="validateAllocQty('${agId}',${remaining})">
+    <button class="btn-sel" id="btn-sel-${agId}" onclick="event.stopPropagation();confirmAlloc('${agId}','${shift}','${agency}')">Select</button>
     <button class="btn-cancel-alloc" onclick="event.stopPropagation();cancelInput('${agId}')">✕</button>`;
   rowLeft.appendChild(div);
   setTimeout(() => document.getElementById('qi-' + agId)?.focus(), 50);
@@ -9904,9 +10177,18 @@ function confirmAlloc(agId, shift, agency) {
   if(!input) return;
   const r = REQ_META[currentAllocReqId];
   if(!r) return;
-  const remaining = r.qty - (r.allocated||0);
+  // Remaining = requested minus generated minus already drafted
+  const generatedQtyC = allocDraftPlacements
+    .filter(d => d.reqId === currentAllocReqId && d.status && d.status !== 'draft')
+    .reduce((sum, d) => sum + (d.qty||1), 0);
+  const draftedQtyC = allocDraftPlacements
+    .filter(d => d.reqId === currentAllocReqId && (!d.status || d.status === 'draft'))
+    .reduce((sum, d) => sum + (d.qty||1), 0);
+  const remaining = Math.max(0, r.qty - generatedQtyC - draftedQtyC);
   if(remaining <= 0) return;
-  const qty = Math.max(1, Math.min(parseInt(input.value)||1, remaining));
+  const rawQty = parseInt(input.value)||1;
+  if(rawQty < 1 || rawQty > remaining) return; // validation guard
+  const qty = rawQty;
   // agId may be a shift-row composite id (e.g. 'hope-AM_06_30') — resolve real agency
   let ag = findAgById(agId);
   let realAgId = agId;
@@ -10267,8 +10549,8 @@ function showRotationReview(){
   const footerActions = document.querySelector('.sp-footer .sp-footer-actions');
   if(footerActions) footerActions.innerHTML = `
     <button class="btn-sp-cancel" onclick="closePanel()">← Back</button>
-    <button class="btn-sp-offer"    onclick="generatePlacements('offered')">Generate &amp; Offer</button>
-    <button class="btn-sp-generate" onclick="generatePlacements('published')">Publish</button>`;
+    <button class="btn-sp-offer"    onclick="generatePlacements('offered')">Allocate &amp; Offer</button>
+    <button class="btn-sp-generate" onclick="generatePlacements('published')">Allocate &amp; Publish</button>`;
 
   spRenderSups('');
 
@@ -10667,7 +10949,7 @@ function saveRotationPlacement(){
     showRotationFrame('Building');
     const btn = document.getElementById('rrConfirmBtn');
     if(btn){
-      btn.textContent = 'Review & Generate →';
+      btn.textContent = 'Review & Allocate →';
       btn.disabled = false;
       btn.style.background = '#7c3aed';
       btn.onclick = showRotationReview;
@@ -10708,6 +10990,19 @@ function renderPanelForV24(){
   const agDrafts = group.drafts;
   const total = spAgGroups.length;
   const totalQtyGroup = agDrafts.reduce((s,d)=>s+d.qty,0);
+
+  // Store request defaults for diff highlighting (Placement Details fields)
+  // agency default = the REQUESTED agency (r.agencyName), not the drafted one
+  window.spDefaults = {
+    discipline:   r.discipline || '',
+    type:         r.type || '',
+    year:         r.year || '',
+    qty:          String(r.qty || ''),
+    startDate:    r.startDate || '',
+    endDate:      r.endDate || '',
+    region:       r.region || '',
+    agency:       r.agencyName || ''
+  };
 
   // Nav
   const nav = document.getElementById('sp-nav');
@@ -11582,6 +11877,128 @@ function allocConfirmReject(mode){
     : `${count} placement${count!==1?'s':''} for Request #${currentAllocReqId} rejected.`;
   showAllocToast('Request Rejected', msg);
 }
+
+
+/* ── Allocate quantity validation ── */
+function validateAllocQty(agId, remaining) {
+  const input = document.getElementById('qi-' + agId);
+  const btn   = document.getElementById('btn-sel-' + agId);
+  if(!input || !btn) return;
+  const val = parseInt(input.value);
+  const invalid = !val || val < 1 || val > remaining;
+  btn.disabled = invalid;
+  btn.style.opacity = invalid ? '0.45' : '1';
+  input.style.borderColor = invalid ? '#dc2626' : '#d1d5db';
+}
+
+function validateSpfNum() {
+  const r = REQ_META[currentAllocReqId];
+  if(!r) return;
+  const generatedQty = allocDraftPlacements
+    .filter(d => d.reqId === currentAllocReqId && d.status && d.status !== 'draft')
+    .reduce((sum, d) => sum + (d.qty||1), 0);
+  const remaining = Math.max(0, r.qty - generatedQty);
+  const input = document.getElementById('spf-num');
+  if(!input) return;
+  const val = parseInt(input.value);
+  const invalid = !val || val < 1 || val > remaining;
+  // Update placeholder/max
+  input.max = remaining;
+  input.style.borderColor = invalid ? '#dc2626' : '#d1d5db';
+  // Disable generate buttons if invalid
+  const btnPub  = document.getElementById('spBtnPublish');
+  const btnOff  = document.getElementById('spBtnOffer');
+  if(btnPub) { btnPub.disabled = invalid; btnPub.style.opacity = invalid ? '0.45' : '1'; }
+  if(btnOff) { btnOff.disabled = invalid; btnOff.style.opacity = invalid ? '0.45' : '1'; }
+}
+
+function checkDiff(fieldKey, currentVal) {
+  if(!window.spDefaults) return;
+  const def = window.spDefaults[fieldKey];
+  if(def === undefined) return;
+  const defStr = String(def).trim();
+  const changed = String(currentVal).trim() !== defStr;
+  const inputEl = document.querySelector('[data-diff="' + fieldKey + '"]');
+  const tagEl   = document.querySelector('[data-diff-tag="' + fieldKey + '"]');
+  if(inputEl){ inputEl.classList.toggle('changed', changed); }
+  if(tagEl){
+    tagEl.classList.toggle('visible', changed);
+    if(changed) tagEl.textContent = defStr ? 'Request: ' + defStr : 'Not the requested agency';
+  }
+  // Re-run validation in case num changed
+  if(fieldKey === 'qty') validateSpfNum();
+}
+
+function spYN(field, val) {
+  const yesBtn = document.getElementById('spf-' + field + '-yes');
+  const noBtn  = document.getElementById('spf-' + field + '-no');
+  if (!yesBtn || !noBtn) return;
+  yesBtn.className = 'sp-yn-btn' + (val === 'yes' ? ' active-yes' : '');
+  noBtn.className  = 'sp-yn-btn' + (val === 'no'  ? ' active-no'  : '');
+}
+
+function spToggleCollapsible(id) {
+  const body = document.getElementById(id);
+  const hdr  = document.getElementById(id + '-hdr');
+  if (!body) return;
+  const chev = hdr ? hdr.querySelector('.sp-collapsible-chev') : null;
+  const isOpen = body.style.maxHeight && body.style.maxHeight !== '0px' && body.style.maxHeight !== '0';
+  if (isOpen) {
+    body.style.maxHeight = '0';
+    body.style.overflow  = 'hidden';
+    if (chev) chev.classList.remove('open');
+  } else {
+    body.style.maxHeight = body.scrollHeight + 200 + 'px';
+    body.style.overflow  = 'visible';
+    if (chev) chev.classList.add('open');
+  }
+}
+
+function spToggleRoster() {
+  const track   = document.getElementById('spf-roster-track');
+  const label   = document.getElementById('spf-roster-label');
+  const section = document.getElementById('spf-roster-section');
+  if (!track) return;
+  const on = track.classList.toggle('on');
+  if (label)   label.textContent = on ? 'On — specify roster pattern' : 'Off — use default schedule';
+  if (section) section.style.display = on ? '' : 'none';
+  // Expand the collapsible body if collapsed
+  const body = document.getElementById('sp-col-supervisor');
+  if(on && body) {
+    const hdr = document.getElementById('sp-col-supervisor-hdr');
+    spToggleCollapsible('sp-col-supervisor');
+  }
+}
+
+function updateRosterLabel() {
+  const days = [...document.querySelectorAll('#spf-roster-days input:checked')].map(el => el.value);
+  const shift = document.getElementById('spf-roster-shift')?.value || '';
+  const summary = document.getElementById('spf-roster-summary');
+  if(summary) {
+    summary.textContent = days.length
+      ? `${days.join(', ')}${shift ? ' · ' + shift : ''}`
+      : 'Select days above';
+  }
+}
+
+function spToggleSupervised() {
+  const track = document.getElementById('spf-supervised-track');
+  const label = document.getElementById('spf-supervised-label');
+  if (!track) return;
+  const on = track.classList.toggle('on');
+  if (label) label.textContent = on ? 'Yes' : 'No';
+}
+
+// Wire up textarea character counts
+document.addEventListener('DOMContentLoaded', function() {
+  ['commendation','complaint'].forEach(function(id) {
+    var ta = document.getElementById('spf-' + id);
+    var ct = document.getElementById('spf-' + id + '-count');
+    if (ta && ct) {
+      ta.addEventListener('input', function() { ct.textContent = ta.value.length + '/1000'; });
+    }
+  });
+});
 </script>
 
 <!-- ── PLACEMENT DETAIL PANEL ── -->
