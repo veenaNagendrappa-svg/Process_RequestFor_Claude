@@ -689,6 +689,14 @@ th,td{border:1px solid #e8e8e8;padding:0}
 .tt-comment{padding:3px 0;border-bottom:1px solid #f5f5f5;font-size:11px;color:#333;font-style:normal;display:flex;gap:0}
 .tt-comment .tt-lbl{color:#888;flex-shrink:0;min-width:90px}
 .tt-comment .tt-val{color:#333;text-align:left}
+/* Roster compact table in tooltip (CPN-15605) */
+.tt-roster-tbl{border-collapse:collapse;font-size:10px;width:100%}
+.tt-roster-tbl th{background:#f5f5f5;padding:2px 4px;text-align:center;color:#888;font-weight:600;border:1px solid #e8e8e8}
+.tt-roster-tbl th:first-child{min-width:28px}
+.tt-roster-tbl td{padding:2px 4px;text-align:center;border:1px solid #e8e8e8;color:#333;font-size:10px}
+.tt-roster-wk{font-weight:600;color:#555;background:#fafafa;white-space:nowrap}
+.tt-roster-dash{color:#ccc}
+.tt-roster-more{font-size:10px;color:#888;margin-top:3px;text-align:right}
 .tt-actions{padding:8px 12px;border-top:1px solid #eee;display:flex;gap:6px}
 .tt-btn{flex:1;height:26px;font-family:inherit;font-size:11px;font-weight:500;border-radius:3px;cursor:pointer;border:1px solid transparent;pointer-events:all}
 .tt-btn-p{background:#1976d2;color:white;border-color:#1976d2}
@@ -1402,17 +1410,53 @@ body.rotation-mode #btnBuildRotation{display:none;}
 .alloc-ctx-row.ctx-req:hover{background:#f5f8ff;}
 .alloc-ctx-row.ctx-req:hover .alloc-ctx-left{background:#f5f8ff;}
 /* Competing request row left — matches Request Grid label style */
-.cr-req-left{flex-direction:row;align-items:center;gap:5px;}
-.cr-req-lbl-wrap{flex:1;min-width:0;overflow:hidden;}
-.cr-req-lbl-top{display:flex;align-items:center;flex-wrap:nowrap;overflow:hidden;white-space:nowrap;}
-.cr-req-ep{font-size:11px;font-weight:600;color:#1976d2;white-space:nowrap;}
-.cr-req-plain{font-size:11px;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.cr-req-status{font-size:11px;color:#888;white-space:nowrap;flex-shrink:0;}
+.cr-req-left{flex-direction:column;align-items:flex-start;gap:0;justify-content:center;}
+.cr-req-lbl-wrap{width:100%;min-width:0;overflow:hidden;}
+.cr-req-lbl-top{display:flex;align-items:center;flex-wrap:nowrap;overflow:hidden;white-space:nowrap;width:100%;gap:0;}
+.cr-req-id{font-size:11px;font-weight:600;color:#1976d2;white-space:nowrap;flex-shrink:0;}
+.cr-req-plain{font-size:11px;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;}
+.cr-req-sub{font-size:10px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;}
+/* Hide sub line when process btn is hovered into view — keep compact */
+.alloc-ctx-row.ctx-req:hover .cr-req-sub{display:none;}
 /* Alloc ctx cells */
 .alloc-ctx-cell{width:46px;min-width:46px;text-align:left;font-size:10px;font-weight:500;padding:0;border-right:1px solid #e8e8e8;}
 .alloc-ctx-cells{flex:1;display:flex;}
 .alloc-ctx-cell.plc-active{background:#dbeafe;color:#1d4ed8;}
 .alloc-ctx-cell.wknd{background:#fafafa;}
+/* Competing request row — inline actions shown on row hover (matches Request Grid pattern) */
+.cr-req-actions{
+  display:none;align-items:center;gap:3px;margin-top:2px;
+}
+.alloc-ctx-row.ctx-req:hover .cr-req-actions{display:flex;}
+.alloc-ctx-row.ctx-req:hover .cr-req-dates{display:none;}
+.cr-action-btn{
+  height:20px;padding:0 8px;border-radius:10px;border:1px solid transparent;
+  font-family:inherit;font-size:10px;font-weight:600;cursor:pointer;
+  white-space:nowrap;transition:background .1s;
+}
+.cr-action-primary{background:#1976d2;color:#fff;border-color:#1976d2;}
+.cr-action-primary:hover{background:#1565c0;}
+/* ⋮ kebab button */
+.cr-kebab-btn{
+  height:20px;width:20px;padding:0;border-radius:3px;border:1px solid #bbb;
+  background:white;color:#555;font-size:13px;line-height:1;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  position:relative;flex-shrink:0;
+}
+.cr-kebab-btn:hover{background:#f5f5f5;border-color:#999;}
+/* Kebab dropdown */
+.cr-kebab-menu{
+  position:fixed;background:white;border:1px solid #e0e0e0;
+  border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,.15);
+  z-index:9999;min-width:120px;padding:4px 0;display:none;
+}
+.cr-kebab-menu.open{display:block;}
+.cr-kebab-item{
+  display:block;width:100%;text-align:left;padding:7px 14px;
+  background:none;border:none;font-family:inherit;font-size:12px;
+  color:#333;cursor:pointer;white-space:nowrap;
+}
+.cr-kebab-item:hover{background:#f5f5f5;}
 /* ── Alloc placement rows — base ── */
 .ag-plc-row{
   display:flex;align-items:stretch;
@@ -2762,6 +2806,7 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
     <div style="display:flex;align-items:center;gap:6px;margin-left:8px;flex-shrink:0;">
       <span class="alb-lbl">Group availability by</span>
       <select id="allocGroupBySelect" onchange="setAllocGroupBy(this.value)" style="height:26px;border:1px solid #ddd;border-radius:4px;background:white;font-size:11px;color:#333;padding:0 6px;cursor:pointer;">
+        <option value="none">None</option>
         <option value="shift" selected>Shift</option>
         <option value="pt">Placement Type</option>
       </select>
@@ -3441,8 +3486,8 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
     <div class="tt-row"><span class="tt-lbl">Year Level</span><span class="tt-val" id="ttYear">—</span></div>
     <div class="tt-row" id="ttQtyRow"><span class="tt-lbl">No. of Placements</span><span class="tt-val" id="ttQty">—</span></div>
     <div class="tt-row"><span class="tt-lbl">Duration</span><span class="tt-val" id="ttDur">—</span></div>
-    <div class="tt-row"><span class="tt-lbl">Shift</span><span class="tt-val" id="ttShift">—</span></div>
-    <div class="tt-row"><span class="tt-lbl">Date Range</span><span class="tt-val" id="ttDates">—</span></div>
+    <div class="tt-row" id="ttShiftRow"><span class="tt-lbl">Shift</span><span class="tt-val" id="ttShift">—</span></div>
+    <div class="tt-row"><span class="tt-lbl">Dates</span><span class="tt-val" id="ttDates">—</span></div>
     <div class="tt-row" id="ttRosterRow" style="display:none"><span class="tt-lbl">Roster</span><span class="tt-val" id="ttRoster">—</span></div>
     <div id="ttComment" class="tt-comment" style="display:none"></div>
   </div>
@@ -3458,7 +3503,11 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
   </div>
 </div>
 
-<!-- PLACEMENT TOOLTIP -->
+<!-- COMPETING REQUEST KEBAB MENU -->
+<div class="cr-kebab-menu" id="crKebabMenu" role="menu">
+  <button class="cr-kebab-item" id="crKebabView" role="menuitem"
+    onclick="closeCrKebab();window.open('/network/request/edit/'+crKebabReqId,'_blank')">View</button>
+</div>
 <div class="req-tooltip" id="plcTooltip" style="width:240px">
   <div class="tt-hdr">
     <span class="tt-rid" id="ptId">—</span>
@@ -3568,7 +3617,8 @@ const AGENCIES = [
        discipline:'Nursing',type:'General Medical',year:'Yr 2',qty:3,dur:'28 days',
        shiftLabel:'AM only',shiftBadge:'sb-am',chipStyle:'ep',chipLabel:'AM',
        shiftId:'s-am',ptId:'pt-gm',
-       dates:'13 May – 9 Jun 2026',comment:'',
+       dates:'13 May – 9 Jun 2026',
+       comment:'Please allocate early in the week where possible.',
        roster:{days:['Mon'],shift:'AM (06:30-15:30)'},
        cells:{0:3,7:3,14:3,21:3}},
       {id:'r92901',reqNum:'Req: 92901',status:'pending',
@@ -6367,14 +6417,12 @@ function reinstateRequest(rid){
 
 function renderTooltipActions(r, isCompeting){
   const el = document.getElementById('ttActions');
+  // Competing request rows — actions are inline on the row; tooltip is read-only
+  if(isCompeting){ el.innerHTML=''; el.style.display='none'; return; }
   const isPartial = !r.reqType && r.allocated && r.allocated > 0 && r.allocated < r.qty;
   let html = '';
-
   if(r.status === 'pending'){
-    if(isCompeting){
-      el.className = 'tt-actions';
-      html += `<button class="tt-btn tt-btn-p" onclick="navigateToAllocOptions('${r.id}')">Process ↗</button>`;
-    } else if(isPartial){
+    if(isPartial){
       el.className = 'tt-actions two-secondary';
       html += `<button class="tt-btn tt-btn-p" onclick="navigateToAllocOptions('${r.id}')">Process ↗</button>`;
       html += `<button class="tt-btn tt-btn-warn" onclick="openGridReject('${r.id}','remaining')">Reject Remaining</button>`;
@@ -6430,23 +6478,64 @@ function onChipEnter(e){
   document.getElementById('ttQty').textContent=r.qty;
   document.getElementById('ttDur').textContent=r.dur;
   const shiftDisplay = r.shiftLabel && !['Any shift','All shifts','Any'].includes(r.shiftLabel) ? r.shiftLabel : '';
-  document.getElementById('ttShift').textContent=shiftDisplay;
+  const shiftRow = document.getElementById('ttShiftRow');
+  if(shiftDisplay){
+    document.getElementById('ttShift').textContent = shiftDisplay;
+    shiftRow.style.display = '';
+  } else {
+    shiftRow.style.display = 'none';
+  }
   document.getElementById('ttDates').textContent=r.dates;
   const cw=document.getElementById('ttComment');
   if(r.comment){
-    // Preserve newlines as <br> for rotation guidance notes
     const formatted = r.comment.replace(/\n/g,'<br>');
     cw.innerHTML='<span class="tt-lbl">Comment</span><span class="tt-val">'+formatted+'</span>';
     cw.style.display='';
   }else{cw.style.display='none';}
+  // Roster — compact Mon–Fri × Wk table (CPN-15605)
   const rrow=document.getElementById('ttRosterRow');
   const rval=document.getElementById('ttRoster');
-  if(r.roster){
+  if(r.rosterShifts && r.rosterShifts.length){
     rrow.style.display='';
-    rval.textContent=r.roster.days.join(', ')+' · '+r.roster.shift;
-  } else if(r.rosterShifts){
+    // Map day name → array of week entries: [{wk, label}]
+    const DAY_ORDER = ['Mon','Tue','Wed','Thu','Fri'];
+    const DAY_IDX = {Mon:0,Tue:1,Wed:2,Thu:3,Fri:4,Sat:5,Sun:6};
+    // Find all weeks present (cell index / 7 = week number, 0-based)
+    const weekSet = new Set();
+    r.rosterShifts.forEach(rs => Object.keys(rs.cells||{}).forEach(ci => weekSet.add(Math.floor(Number(ci)/7))));
+    const weeks = [...weekSet].sort((a,b)=>a-b);
+    const displayWeeks = weeks.slice(0,2);
+    const extraWeeks = weeks.length > 2 ? weeks.length - 2 : 0;
+    // Build grid: dayName → {wkIndex → label}
+    const grid = {};
+    DAY_ORDER.forEach(d => { grid[d] = {}; });
+    r.rosterShifts.forEach(rs => {
+      Object.keys(rs.cells||{}).forEach(ci => {
+        const wk = Math.floor(Number(ci)/7);
+        const dayOfWeek = Number(ci) % 7; // 0=Sun,1=Mon,...
+        // Find day name from rs.day (already given)
+        grid[rs.day] = grid[rs.day] || {};
+        grid[rs.day][wk] = rs.chipLabel || '—';
+      });
+    });
+    // Render compact table
+    let tbl = '<table class="tt-roster-tbl"><thead><tr><th></th>';
+    DAY_ORDER.forEach(d => { tbl += `<th>${d}</th>`; });
+    tbl += '</tr></thead><tbody>';
+    displayWeeks.forEach((wk,wi) => {
+      tbl += `<tr><td class="tt-roster-wk">Wk ${wk+1}</td>`;
+      DAY_ORDER.forEach(d => {
+        const lbl = (grid[d]||{})[wk];
+        tbl += `<td>${lbl || '<span class="tt-roster-dash">—</span>'}</td>`;
+      });
+      tbl += '</tr>';
+    });
+    tbl += '</tbody></table>';
+    if(extraWeeks) tbl += `<div class="tt-roster-more">+ ${extraWeeks} more week${extraWeeks>1?'s':''}</div>`;
+    rval.innerHTML = tbl;
+  } else if(r.roster){
     rrow.style.display='';
-    rval.textContent=r.rosterShifts.map(rs=>rs.day+': '+rs.chipLabel).join(' | ');
+    rval.textContent = r.roster.days ? r.roster.days.join(', ')+' · '+r.roster.shift : JSON.stringify(r.roster);
   } else {
     rrow.style.display='none';
   }
@@ -6467,6 +6556,24 @@ function onChipEnter(e){
 }
 function onChipMove(e){posTooltip(e);}
 function onChipLeave(){hideTimer=setTimeout(()=>tooltip.classList.remove('visible'),400);}
+/* ── Competing request kebab menu ── */
+let crKebabReqId = null;
+function openCrKebab(e, reqId){
+  crKebabReqId = reqId;
+  const menu = document.getElementById('crKebabMenu');
+  menu.classList.add('open');
+  // Position below button
+  const rect = e.currentTarget.getBoundingClientRect();
+  menu.style.top = (rect.bottom + 2) + 'px';
+  menu.style.left = rect.left + 'px';
+  // Close on outside click
+  setTimeout(()=>document.addEventListener('click', closeCrKebabOutside, {once:true}), 0);
+}
+function closeCrKebab(){
+  document.getElementById('crKebabMenu').classList.remove('open');
+  crKebabReqId = null;
+}
+function closeCrKebabOutside(){ closeCrKebab(); }
 tooltip.addEventListener('mouseenter',()=>clearTimeout(hideTimer));
 tooltip.addEventListener('mouseleave',()=>{hideTimer=setTimeout(()=>tooltip.classList.remove('visible'),150);});
 function posTooltip(e){
@@ -8441,17 +8548,42 @@ function insertAllocContextRows(){
     const lblEl = agRow.querySelector('.ag-lbl');
     if(!lblEl) return;
 
-    // Insert after placements, before next agency row
-    let insertAfter = agRow;
-    let sib = agRow.nextElementSibling;
-    while(sib && !sib.classList.contains('ag-row')){
-      if(sib.classList.contains('ag-shift') ||
-         sib.classList.contains('ag-plc-row') ||
-         (sib.classList.contains('alloc-ctx-row') && sib.classList.contains('ctx-plc'))){
-        insertAfter = sib;
+    // Get current group-by from allocGroupBy variable (not .alb-pill which doesn't exist here)
+    const groupBy = allocGroupBy || 'shift';
+
+    // Build map of shift sub-rows: keyed by normalised shift label from id="ward-{agId}-{shiftName}"
+    // Build map of PT sub-rows: keyed by data-ptname attribute
+    const shiftRowMap = {};
+    const ptRowMap = {};
+    let sib2 = agRow.nextElementSibling;
+    while(sib2 && !sib2.classList.contains('ag-row')){
+      if(sib2.classList.contains('ag-shift')){
+        const rawId = sib2.id || '';
+        // id format: "ward-{agId}-{ShiftName_underscored}" — take everything after second hyphen
+        const parts = rawId.split('-');
+        if(parts.length >= 3){
+          const shiftKey = parts.slice(2).join('-').replace(/_/g,' ').toLowerCase();
+          if(shiftKey) shiftRowMap[shiftKey] = sib2;
+        }
+        const ptname = sib2.getAttribute('data-ptname');
+        if(ptname) ptRowMap[ptname.toLowerCase()] = sib2;
       }
-      sib = sib.nextElementSibling;
+      sib2 = sib2.nextElementSibling;
     }
+
+    // Default insert point: after placements/ctx-plc rows, above first ag-req
+    const getDefaultInsert = () => {
+      let ins = agRow;
+      let s = agRow.nextElementSibling;
+      while(s && !s.classList.contains('ag-row')){
+        if(s.classList.contains('ag-plc-row') ||
+           (s.classList.contains('alloc-ctx-row') && s.classList.contains('ctx-plc'))){
+          ins = s;
+        } else { break; }
+        s = s.nextElementSibling;
+      }
+      return ins;
+    };
 
     displayList.forEach(r => {
       const reqId  = (r.reqNum||r.id).toString().replace(/^Req:\s*/i,'').trim();
@@ -8462,9 +8594,10 @@ function insertAllocContextRows(){
       const shiftLbl = shiftIsUnspec ? '' : (r.shiftLabel||'').replace(' only','').replace(' shift','');
 
       const allocated = r.allocated || 0;
-      const shortDates = r.dates ? r.dates.replace(/\s+\d{4}/g,'').replace(/(\d{2}\/\d{2}\/\d{4})/g, d => d.slice(0,5)) : '';
 
-      // Left label — matches Request Grid exactly, no View button (hover panel handles interaction)
+      // Left label — line1: R-ID · 0/QTY · Pending; line2: dates (sub)
+      // Actions: Process (primary) + ⋮ kebab → View — shown on row hover
+      const line2Text = r.dates || '';
       const leftHtml = `
         <div class="alloc-ctx-left cr-req-left"
           data-rid="${r.id}"
@@ -8473,9 +8606,18 @@ function insertAllocContextRows(){
           onmouseleave="onChipLeave()">
           <div class="cr-req-lbl-wrap">
             <div class="cr-req-lbl-top">
-              <span class="cr-req-ep">${reqId}</span>
-              <span class="cr-req-plain"> · ${allocated}/${r.qty||0}${r.dates ? ' · ' + r.dates : ''}</span>
-              <span class="cr-req-status"> · Pending</span>
+              <span class="cr-req-id">${reqId}</span>
+              <span class="cr-req-plain"> · ${allocated}/${r.qty||0} · Pending</span>
+            </div>
+            ${line2Text ? `<div class="cr-req-sub cr-req-dates">${line2Text}</div>` : ''}
+            <div class="cr-req-actions">
+              <button class="cr-action-btn cr-action-primary"
+                onclick="event.stopPropagation();navigateToAllocOptions('${safeId}')"
+                aria-label="Process request ${reqNum}">Process</button>
+              <button class="cr-kebab-btn"
+                onclick="event.stopPropagation();openCrKebab(event,'${safeId}')"
+                aria-label="More actions for request ${reqNum}"
+                aria-haspopup="true">⋮</button>
             </div>
           </div>
         </div>`;
@@ -8516,8 +8658,55 @@ function insertAllocContextRows(){
       div.setAttribute('aria-label', `Competing request ${reqNum}`);
       div.innerHTML = leftHtml + cellsHtml;
 
+      // Determine insert point based on group-by
+      let insertAfter;
+      const shiftIsUnspec2 = !r.shiftLabel || ['Any shift','All shifts','Any'].includes(r.shiftLabel);
+      const hasRoster = !!(r.roster || r.rosterShifts);
+
+      if(groupBy === 'shift' && !shiftIsUnspec2 && !hasRoster && r.shiftLabel){
+        // Specific named shift — find matching shift sub-row by normalised label
+        const shiftKey = r.shiftLabel.replace(' only','').replace(' shift','').toLowerCase();
+        const shiftRow = shiftRowMap[shiftKey];
+        if(shiftRow){
+          // Insert after shift sub-row's placements (ctx-plc rows), before next shift or ag-row
+          let ins = shiftRow;
+          let s = ins.nextElementSibling;
+          while(s && !s.classList.contains('ag-shift') && !s.classList.contains('ag-row')){
+            if(s.classList.contains('ag-plc-row') ||
+               (s.classList.contains('alloc-ctx-row') && s.classList.contains('ctx-plc'))){
+              ins = s;
+            } else { break; }
+            s = s.nextElementSibling;
+          }
+          insertAfter = ins;
+        } else {
+          insertAfter = getDefaultInsert();
+        }
+      } else if(groupBy === 'pt' && r.type){
+        // Placement type match — find PT sub-row by ptname
+        const ptKey = (r.type||'').toLowerCase();
+        const ptRow = ptRowMap[ptKey];
+        if(ptRow){
+          let ins = ptRow;
+          let s = ins.nextElementSibling;
+          while(s && !s.classList.contains('ag-shift') && !s.classList.contains('ag-row')){
+            if(s.classList.contains('ag-plc-row') ||
+               (s.classList.contains('alloc-ctx-row') && s.classList.contains('ctx-plc'))){
+              ins = s;
+            } else { break; }
+            s = s.nextElementSibling;
+          }
+          insertAfter = ins;
+        } else {
+          // No PT match — float above PT sub-rows (default position)
+          insertAfter = getDefaultInsert();
+        }
+      } else {
+        // Group by None, Any/All shift, roster, or no sub-row match — insert at default position
+        insertAfter = getDefaultInsert();
+      }
+
       insertAfter.insertAdjacentElement('afterend', div);
-      insertAfter = div;
     });
   });
 }
