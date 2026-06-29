@@ -853,12 +853,11 @@ th,td{border:1px solid #e8e8e8;padding:0}
 /* ── SLIDE NAVIGATION SHELL ── */
 html,body{height:100%;overflow:hidden}
 /* Allow fixed children to escape screen overflow */
-.screen{width:50%;height:100%;display:flex;flex-direction:column;overflow:hidden;position:relative;}.screens{display:flex;width:200%;height:100%;transition:transform .42s cubic-bezier(.4,0,.2,1);will-change:transform}
-.screens.on-alloc{transform:translateX(-50%)}
+
+
 /* screen must clip for slide, but filter/toolbar are flex-shrink:0, main-area scrolls internally */
 .screen{width:50%;height:100%;display:flex;flex-direction:column;overflow:hidden}
-.nav-flash{position:fixed;inset:0;background:#e3f2fd;opacity:0;pointer-events:none;z-index:9998;transition:opacity .18s}
-.nav-flash.flash{opacity:.35}
+
 
 /* ── ALLOCATION SCREEN (Screen 2) ── */
 .alloc-top-bar{
@@ -1475,7 +1474,7 @@ body.rotation-mode #btnBuildRotation{display:none;}
   background:#f0f5ff;
   min-height:22px;
 }
-.ag-plc-row:hover{background:#e6eeff;}
+.ag-plc-row:hover{background:#f9fafb;}
 .ag-plc-left{
   width:220px;min-width:220px;flex-shrink:0;
   border-right:2px solid #c7d9f5;position:sticky;left:0;z-index:5;
@@ -2491,278 +2490,42 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
   margin-top: 3px; white-space: nowrap;
 }
 .sp-diff-tag.visible { display: inline-block; }
+
+/* ── Placement row hover panel ── */
+#plcHoverPanel {
+  position:fixed;z-index:500;background:white;
+  border:1px solid #e2e5ea;border-radius:6px;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+  min-width:220px;max-width:280px;
+  pointer-events:none;
+  opacity:0;transition:opacity .15s;
+}
+#plcHoverPanel.visible{opacity:1;}
+.plc-tt-header{
+  padding:8px 12px 6px;border-bottom:1px solid #f0f2f5;
+  font-size:11px;font-weight:700;color:#111827;
+}
+.plc-tt-body{padding:6px 12px 8px;}
+.plc-tt-row{
+  display:flex;gap:8px;padding:3px 0;
+  border-bottom:1px solid #f9fafb;font-size:11px;
+}
+.plc-tt-row:last-child{border:none;}
+.plc-tt-lbl{color:#9ca3af;flex-shrink:0;min-width:80px;}
+.plc-tt-val{color:#374151;font-weight:500;}
+.plc-tt-roster{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;}
+.plc-tt-chip{
+  font-size:10px;font-weight:600;padding:1px 6px;
+  border-radius:10px;background:#f0f4ff;color:#1976d2;
+}
 </style>
 </head>
 <body>
-
-<div class="nav-flash" id="navFlash"></div>
-<div class="screens" id="screens">
-<div class="screen" id="screen-grid">
-
-<!-- BREADCRUMB -->
-<div class="breadcrumb">
-  <a href="#">
-    <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#555"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-  </a>
-  <span class="sep">/</span>
-  <a href="#">
-    <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:#555"><path d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"/></svg>
-    Request
-  </a>
-  <span class="sep">/</span>
-  <span class="current">Request Grid</span>
-</div>
-
-<!-- FILTER BAR -->
-<div class="filter-bar">
-  <div class="filter-field">
-    <label>Region <span class="req">*</span></label>
-    <select id="fRegion" onchange="onRegionChange()">
-      <option value="">Select region...</option>
-      <option value="vic" selected>Victoria</option>
-      <option value="tulsa">Tulsa</option>
-      <option value="nsw">New South Wales</option>
-      <option value="qld">Queensland</option>
-    </select>
-  </div>
-  <div class="filter-field">
-    <label>Discipline</label>
-    <div class="ms-wrap" id="msDisc">
-      <div class="ms-display" tabindex="0" onclick="toggleMs('msDisc')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMs('msDisc')">
-        <span class="ms-value placeholder" id="msDiscVal">All disciplines</span>
-        <svg class="ms-chevron" viewBox="0 0 10 7"><path d="M0 0l5 7 5-7z"/></svg>
-      </div>
-      <div class="ms-dropdown" id="msDiscDd">
-        <div class="ms-select-all" onclick="msSelectAll('msDisc',event)">Select all</div>
-        <label class="ms-option"><input type="checkbox" value="Nursing" onchange="msChanged('msDisc')"> Nursing</label>
-        <label class="ms-option"><input type="checkbox" value="Midwifery" onchange="msChanged('msDisc')"> Midwifery</label>
-        <label class="ms-option"><input type="checkbox" value="Allied Health" onchange="msChanged('msDisc')"> Allied Health</label>
-        <label class="ms-option"><input type="checkbox" value="Pharmacy" onchange="msChanged('msDisc')"> Pharmacy</label>
-        <label class="ms-option"><input type="checkbox" value="Paramedicine" onchange="msChanged('msDisc')"> Paramedicine</label>
-        <label class="ms-option"><input type="checkbox" value="Social Work" onchange="msChanged('msDisc')"> Social Work</label>
-        <label class="ms-option"><input type="checkbox" value="Audiology" onchange="msChanged('msDisc')"> Audiology</label>
-      </div>
-    </div>
-  </div>
-  <div class="filter-field">
-    <label>Placement Type</label>
-    <div class="ms-wrap" id="msPt">
-      <div class="ms-display" tabindex="0" onclick="toggleMs('msPt')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMs('msPt')">
-        <span class="ms-value placeholder" id="msPtVal">All placement types</span>
-        <svg class="ms-chevron" viewBox="0 0 10 7"><path d="M0 0l5 7 5-7z"/></svg>
-      </div>
-      <div class="ms-dropdown" id="msPtDd">
-        <div class="ms-select-all" onclick="msSelectAll('msPt',event)">Select all</div>
-        <label class="ms-option"><input type="checkbox" value="General Medical" onchange="msChanged('msPt')"> General Medical</label>
-        <label class="ms-option"><input type="checkbox" value="Surgical" onchange="msChanged('msPt')"> Surgical</label>
-        <label class="ms-option"><input type="checkbox" value="Paediatric" onchange="msChanged('msPt')"> Paediatric</label>
-        <label class="ms-option"><input type="checkbox" value="Mental Health" onchange="msChanged('msPt')"> Mental Health</label>
-        <label class="ms-option"><input type="checkbox" value="Aged Care" onchange="msChanged('msPt')"> Aged Care</label>
-        <label class="ms-option"><input type="checkbox" value="Community" onchange="msChanged('msPt')"> Community</label>
-        <label class="ms-option"><input type="checkbox" value="Perioperative" onchange="msChanged('msPt')"> Perioperative</label>
-        <label class="ms-option"><input type="checkbox" value="Oncology" onchange="msChanged('msPt')"> Oncology</label>
-        <label class="ms-option"><input type="checkbox" value="Observation" onchange="msChanged('msPt')"> Observation</label>
-        <label class="ms-option"><input type="checkbox" value="Critical Care" onchange="msChanged('msPt')"> Critical Care</label>
-      </div>
-    </div>
-  </div>
-  <div class="filter-field">
-    <label>Status</label>
-    <div class="ms-wrap" id="msStatus">
-      <div class="ms-display" tabindex="0" onclick="toggleMs('msStatus')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMs('msStatus')">
-        <span class="ms-value" id="msStatusVal">Pending</span>
-        <svg class="ms-chevron" viewBox="0 0 10 7"><path d="M0 0l5 7 5-7z"/></svg>
-      </div>
-      <div class="ms-dropdown" id="msStatusDd">
-        <div class="ms-select-all" onclick="msStatusSelectAll(event)">Select all</div>
-        <label class="ms-option selected"><input type="checkbox" value="pending" checked onchange="msStatusChanged()"><span class="ms-status-dot ms-opt-dot-pending"></span> Pending</label>
-        <label class="ms-option"><input type="checkbox" value="offered" onchange="msStatusChanged()"><span class="ms-status-dot ms-opt-dot-offered"></span> Offered</label>
-        <label class="ms-option"><input type="checkbox" value="allocated" onchange="msStatusChanged()"><span class="ms-status-dot ms-opt-dot-allocated"></span> Allocated</label>
-        <label class="ms-option"><input type="checkbox" value="rejected" onchange="msStatusChanged()"><span class="ms-status-dot ms-opt-dot-rejected"></span> Rejected</label>
-        <label class="ms-option"><input type="checkbox" value="completed" onchange="msStatusChanged()"><span class="ms-status-dot ms-opt-dot-completed"></span> Completed</label>
-        <label class="ms-option"><input type="checkbox" value="withdrawn-ep" onchange="msStatusChanged()"><span class="ms-status-dot ms-opt-dot-withdrawn"></span> Withdrawn Education Provider</label>
-        <label class="ms-option"><input type="checkbox" value="withdrawn-student" onchange="msStatusChanged()"><span class="ms-status-dot ms-opt-dot-withdrawn"></span> Withdrawn Student</label>
-      </div>
-    </div>
-  </div>
-  <div class="filter-field">
-    <label>Agency</label>
-    <input type="text" placeholder="Search agency...">
-  </div>
-  <div class="filter-field">
-    <label>EP / Campus</label>
-    <select>
-      <option value=""></option>
-      <option>ACU · Melbourne</option>
-      <option>ACU · Ballarat</option>
-      <option>Deakin · Geelong Waterfront</option>
-      <option>Deakin · Melbourne Burwood</option>
-      <option>La Trobe · Bundoora</option>
-      <option>Monash · Clayton</option>
-      <option>Victoria Uni · Footscray</option>
-    </select>
-  </div>
-  <div class="filter-bar-actions">
-    <button class="btn-more-filters" onclick="openMoreFilters()">
-      <svg viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
-      More Filters
-    </button>
-    <button class="btn-filter" onclick="loadGrid()">Filter</button>
-    <button class="btn-reset" onclick="resetAll()">Reset</button>
-  </div>
-</div>
-
-<!-- STATUS INDICATOR (replaces summary bar) -->
-<div class="status-indicator-bar" id="statusIndicatorBar">
-  <span class="si-text" id="statusIndicatorText">Showing 0 Pending</span>
-</div>
-
-<!-- TOOLBAR -->
-<div class="toolbar">
-
-  <!-- 1. Date navigation -->
-  <div class="nav-grp">
-    <button class="nav-arrow" onclick="navigate(-1)">
-      <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-    </button>
-    <div class="date-btn">
-      <svg viewBox="0 0 24 24"><path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>
-      <span id="dateLbl">13 May 2026</span>
-    </div>
-    <button class="nav-arrow" onclick="navigate(1)">
-      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-    </button>
-  </div>
-
-  <!-- 2. View toggle (no label) -->
-  <div class="viewby-grp">
-    <button class="vb-btn" id="vbWeek" onclick="setView('week',this)">Week</button>
-    <button class="vb-btn active" id="vbDay" onclick="setView('day',this)">
-      <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-      Day
-    </button>
-  </div>
-
-  <div style="width:1px;height:18px;background:#e0e0e0;margin:0 4px;flex-shrink:0"></div>
-
-  <!-- 3. Show Placements toggle -->
-  <span class="toolbar-section-lbl">Show</span>
-  <div class="status-filter-grp">
-    <button class="sf-chip sf-off" id="showPlcBtn" onclick="toggleShowPlacements()" title="Show placements nested under their requests"
-      style="background:white;border-color:#e0e0e0;color:#bbb;border-style:dashed">
-      <svg viewBox="0 0 24 24" style="width:8px;height:8px;fill:currentColor;flex-shrink:0"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
-      Placements
-    </button>
-  </div>
-
-  <div style="width:1px;height:18px;background:#e0e0e0;margin:0 4px;flex-shrink:0"></div>
-
-  <!-- 4. Group by -->
-  <span class="toolbar-section-lbl">Group by</span>
-  <div style="display:flex;align-items:center;gap:4px">
-    <select class="grouping-select" id="primaryGroupSelect" onchange="onPrimaryGroupChange(this.value)">
-      <option value="none">None</option>
-      <option value="agency">Shift</option>
-      <option value="pt">Placement Type</option>
-    </select>
-    <span style="font-size:11px;color:#ccc">+</span>
-    <select class="grouping-select" id="secondaryGroupSelect" onchange="onSecondaryGroupChange(this.value)">
-      <option value="none">–</option>
-      <option value="ep">EP</option>
-    </select>
-  </div>
-  <!-- Expand All / Collapse All — shown only when EP grouping active -->
-  <button class="expand-all-btn" id="expandAllBtn" onclick="toggleExpandAll()" style="display:none">
-    <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:currentColor"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>
-    Expand All
-  </button>
-
-  <!-- 5. Spacer pushes EP Balance to far right -->
-  <div class="toolbar-spacer"></div>
-
-  <!-- 6. Compact toggle + EP Balance — far right -->
-  <div style="display:flex;align-items:center;gap:4px;margin-right:6px">
-    <span class="toolbar-section-lbl">Compact</span>
-    <div class="groupby-grp" title="Toggle compact view">
-      <button class="gb-btn active" id="densityNormal" onclick="setDensity('normal',this)" style="padding:3px 8px;font-size:11px" title="Comfortable">
-        <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:currentColor"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
-      </button>
-      <button class="gb-btn" id="densityCondensed" onclick="setDensity('condensed',this)" style="padding:3px 8px;font-size:11px" title="Compact">
-        <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:currentColor"><path d="M3 15h18v-2H3v2zm0 4h18v-2H3v2zm0-8h18V9H3v2zm0-6v2h18V5H3z"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <button class="ep-toggle-btn" id="epToggleBtn" onclick="toggleEp('modal')">
-    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-    EP Balance
-  </button>
-
-</div>
-
-<!-- MAIN -->
-<div class="main-area" id="mainArea">
-  <!-- empty state shown by default -->
-  <div class="empty-state" id="emptyState">
-    <div class="empty-inner">
-      <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
-      <h3>Select a region to view requests</h3>
-      <p>The Request Grid shows all incoming placement requests for a region and discipline across a date range.</p>
-      <select class="empty-select" id="emptyRegionSelect" onchange="document.getElementById('fRegion').value=this.value;onRegionChange()">
-        <option value="">Region</option>
-        <option value="vic" selected>Victoria</option>
-        <option value="tulsa">Tulsa</option>
-        <option value="nsw">New South Wales</option>
-        <option value="qld">Queensland</option>
-      </select>
-      <button class="empty-cta" id="emptyCta" onclick="loadGrid()" disabled>Load request grid</button>
-      <div class="empty-hint">or select from the Region filter above</div>
-    </div>
-  </div>
-
-  <!-- grid shown after filter -->
-  <div class="grid-area" id="gridArea" style="display:none">
-    <div class="table-wrap" id="tableWrap">
-      <table id="calTable">
-        <thead id="tHead"></thead>
-        <tbody id="tBody"></tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- MORE FILTERS PANEL -->
-<div class="more-filters-overlay" id="mfOverlay" onclick="closeMoreFilters()"></div>
-<div class="more-filters-panel" id="mfPanel">
-  <div class="mf-header">
-    <span>More Filters</span>
-    <button class="mf-close" onclick="closeMoreFilters()">×</button>
-  </div>
-  <div class="mf-body">
-    <div class="mf-field"><label>Region <span class="req">*</span></label><select><option selected>Victoria</option></select></div>
-    <div class="mf-field"><label>Discipline</label><select><option></option><option selected>Nursing</option><option>Midwifery</option></select></div>
-    <div class="mf-field"><label>Placement Type</label><select><option></option><option>General Medical</option><option>Surgical</option></select></div>
-    <div class="mf-field"><label>Agency</label><select><option></option></select></div>
-    <div class="mf-field"><label>Network Agency</label><select><option></option></select></div>
-    <div class="mf-field"><label>Agency Type</label><select><option></option><option>Hospital</option><option>Community</option></select></div>
-    <div class="mf-field"><label>Year Level</label><select><option></option><option>Year 1</option><option>Year 2</option><option>Year 3</option></select></div>
-    <div class="mf-field"><label>Requester</label><select><option></option><option>ACU</option><option>Deakin</option></select></div>
-    <div class="mf-field"><label>EP / Campus</label><select><option></option><option>Melbourne</option><option>Bundoora</option></select></div>
-  </div>
-  <div class="mf-footer">
-    <button class="btn-mf-clear" onclick="closeMoreFilters()">Clear</button>
-    <button class="btn-mf-apply" onclick="closeMoreFilters();loadGrid()">Apply</button>
-  </div>
-</div>
-
-</div><!-- /screen-grid -->
-
-<!-- ══ SCREEN 2 — ALLOCATION OPTIONS ══ -->
-<div class="screen" id="screen-alloc">
-
+<div id="screen-alloc" style="display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
+  <input type="hidden" id="fRegion" value="vic">
   <!-- Top nav bar -->
   <div class="alloc-top-bar">
-    <button class="btn-back-grid" onclick="goBack()" style="flex-shrink:0;">
+    <button class="btn-back-grid" onclick="goBack()" style="display:none;">
       <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
       Back to Request Grid
     </button>
@@ -3044,8 +2807,8 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
         <div id="rrDistribution" style="padding:0 14px"></div>
         <div style="flex:1"></div>
         <div style="padding:12px 14px;border-top:1px solid #e5e7eb;display:flex;flex-direction:column;gap:6px;flex-shrink:0">
-          <button class="btn-sp-offer"    onclick="generatePlacements('offered')">Allocate &amp; Offer</button>
-          <button class="btn-sp-generate" onclick="generatePlacements('published')">Allocate &amp; Publish</button>
+          <button class="btn-sp-offer"    onclick="generatePlacements('offered')">Allocate &amp; publish</button>
+          <button class="btn-sp-generate" onclick="generatePlacements('published')">Allocate as planned</button>
           <button onclick="showRotationBuilding()" style="height:34px;border:1px solid #e2e5ea;background:white;border-radius:6px;cursor:pointer;font-family:inherit;font-size:11px;color:#374151;">← Back</button>
         </div>
       </div>
@@ -3174,9 +2937,6 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
     <button class="btn-abb-review" onclick="rotationMode ? showRotationReview() : openPanel()">Review &amp; Allocate →</button>
   </div>
 
-</div><!-- /screen-alloc -->
-
-</div><!-- /screens -->
 
 <!-- View Placements side sheet — outside screens to avoid overflow:hidden clipping -->
 <div class="vp-overlay" id="vpOverlay" onclick="closeVpSheet()"></div>
@@ -3197,6 +2957,12 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
 
 <!-- ══ SIDE PANEL — Finalise Placements (v23 style) ══ -->
 <div class="sp-overlay" id="spOverlay" onclick="closePanel()"></div>
+
+<!-- Placement row hover panel -->
+<div id="plcHoverPanel">
+  <div class="plc-tt-header" id="plcHoverTitle">Plc 1</div>
+  <div class="plc-tt-body" id="plcHoverBody"></div>
+</div>
 
 <!-- View placement confirmation dialog -->
 <div id="viewPlacementModal" style="display:none;position:fixed;inset:0;z-index:600;align-items:center;justify-content:center;background:rgba(0,0,0,0.35);">
@@ -3221,7 +2987,7 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <span id="sp-agency-name"></span>
     </div>
-    <div class="sp-title" id="sp-title">Review placements</div>
+    <div class="sp-title" id="sp-title">Allocate placements</div>
     <div class="sp-subtitle" id="sp-subtitle"></div>
   </div>
 
@@ -3598,8 +3364,8 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
     <div class="sp-footer" id="sp-footer">
     <div class="sp-footer-actions">
       <button class="btn-sp-cancel" onclick="closePanel()">Cancel</button>
-      <button class="btn-sp-offer" id="spBtnOffer" onclick="spGenerate('offered')">Allocate &amp; Offer</button>
-      <button class="btn-sp-generate" id="spBtnPublish" onclick="spGenerate('published')">Allocate &amp; Publish</button>
+      <button class="btn-sp-offer" id="spBtnOffer" onclick="spGenerate('offered')">Allocate &amp; publish</button>
+      <button class="btn-sp-generate" id="spBtnPublish" onclick="spGenerate('published')">Allocate as planned</button>
     </div>
   </div>
 
@@ -5455,6 +5221,10 @@ flattenReqs(TULSA_AGENCIES);
 VICTORIA_REQS.forEach(r=>{REQ_META[r.id]=r;});
 TULSA_REQS.forEach(r=>{REQ_META[r.id]=r;});
 
+function initProcessRequest(){
+  if(REQ_META['r99001']) navigateToAllocOptions('r99001');
+}
+
 // EP Balance data computed from REQUESTS (slot counts) + PLACEMENTS (record counts)
 // Keyed by EP name only — campus differences don't create separate rows
 //
@@ -5478,7 +5248,7 @@ function computeEpData(){
   };
 
   // ── Requests — used only for Pending (unactioned slots) and Rejected (wholly rejected, no placements) ──
-  const isTulsaEp = document.getElementById('fRegion').value === 'tulsa';
+  const isTulsaEp = document.getElementById('fRegion')?.value === 'tulsa';
   const activeRegionReqsEp = isTulsaEp ? TULSA_REQS : VICTORIA_REQS;
   const allReqs = [...activeRegionReqsEp, ...getAllReqs()];
   allReqs.forEach(r => {
@@ -5525,7 +5295,7 @@ function computeEpData(){
 
 function getAllReqs(){
   const all=[];
-  const isTulsa = document.getElementById('fRegion').value === 'tulsa';
+  const isTulsa = document.getElementById('fRegion')?.value === 'tulsa';
   const activeAgencies = isTulsa ? TULSA_AGENCIES : AGENCIES;
   function walk(ags){ags.forEach(ag=>{(ag.reqs||[]).forEach(r=>all.push(r));(ag.children||[]).forEach(ch=>walk([ch]));});}
   walk(activeAgencies);
@@ -5631,7 +5401,7 @@ function render(){
   if(!gridLoaded) return;
   window._lastEpKeys = []; // reset EP key tracking each render
   const d0=getDate(0);
-  document.getElementById('dateLbl').textContent=d0.getDate()+' '+d0.toLocaleString('en',{month:'short'})+' '+d0.getFullYear();
+  {const _g=document.getElementById('dateLbl');if(_g)_g.textContent=d0.getDate()+' '+d0.toLocaleString('en',{month:'short'})+' '+d0.getFullYear();}
 
   const cols = viewMode==='week'?WEEKS:DAYS;
   renderHead(cols);
@@ -5655,11 +5425,11 @@ function renderHead(cols){
       h+=`<th class="th-day col-day${wc}${tc}"><span class="dd">${fmtDDMM(d)}</span><span class="dw">${DOW[d.getDay()]}</span></th>`;
     }
   }
-  document.getElementById('tHead').innerHTML=h+'</tr>';
+  {const _g=document.getElementById('tHead');if(_g)_g.innerHTML=h+'</tr>';};
 }
 
 function countRegionSummary(){
-  const isTulsa = document.getElementById('fRegion').value === 'tulsa';
+  const isTulsa = document.getElementById('fRegion')?.value === 'tulsa';
   const activeAgencies = isTulsa ? TULSA_AGENCIES : AGENCIES;
   const activeRegionReqs = isTulsa ? TULSA_REQS : VICTORIA_REQS;
 
@@ -5690,7 +5460,7 @@ function countRegionSummary(){
 
 function renderBody(cols){
   let rows='';
-  const activeRegion = document.getElementById('fRegion').value;
+  const activeRegion = document.getElementById('fRegion')?.value || 'vic';
   const isTulsa = activeRegion === 'tulsa';
   const activeAgencies = isTulsa ? TULSA_AGENCIES : AGENCIES;
   const activeRegionReqs = isTulsa ? TULSA_REQS : VICTORIA_REQS;
@@ -5743,7 +5513,7 @@ function renderBody(cols){
   // Agency rows
   rows+=renderAgencies(activeAgencies,cols,0);
 
-  document.getElementById('tBody').innerHTML=rows;
+  {const _g=document.getElementById('tBody');if(_g)_g.innerHTML=rows};
   setTimeout(updateStickyOffsets, 0);
 }
 
@@ -6219,7 +5989,7 @@ function renderPlcRow(p, cols, depth){
 /* Get available capacity for a specific request on a specific day index.
    Reads from the requested shift if shiftId is set, otherwise agency total. */
 function getCapacityForRequest(r, dayIdx){
-  const _isTulsa = document.getElementById('fRegion').value === 'tulsa';
+  const _isTulsa = document.getElementById('fRegion')?.value === 'tulsa';
   const _activeRegReqs = _isTulsa ? TULSA_REQS : VICTORIA_REQS;
   const _activeCap = _isTulsa ? CAP_TULSA : CAP_VIC;
   const _activeAgs = _isTulsa ? TULSA_AGENCIES : AGENCIES;
@@ -6614,7 +6384,7 @@ function renderTooltipActions(r, isCompeting){
 }
 
 /* ─── TOOLTIP ───────────────────────────────────── */
-const tooltip=document.getElementById('reqTooltip');
+let tooltip=null; // assigned in DOMContentLoaded
 let hideTimer=null;
 let currentRid=null;
 function onChipEnter(e){
@@ -6715,10 +6485,10 @@ function onChipEnter(e){
   } else {
     progressWrap.style.display='none';
   }
-  posTooltip(e);tooltip.classList.add('visible');
+  posTooltip(e);if(tooltip)tooltip.classList.add('visible');
 }
 function onChipMove(e){posTooltip(e);}
-function onChipLeave(){hideTimer=setTimeout(()=>tooltip.classList.remove('visible'),900);}
+function onChipLeave(){hideTimer=setTimeout(()=>{if(tooltip)tooltip.classList.remove('visible');},900);}
 /* ── Competing request kebab menu ── */
 let crKebabReqId = null;
 function openCrKebab(e, reqId){
@@ -6737,14 +6507,13 @@ function closeCrKebab(){
   crKebabReqId = null;
 }
 function closeCrKebabOutside(){ closeCrKebab(); }
-tooltip.addEventListener('mouseenter',()=>clearTimeout(hideTimer));
-tooltip.addEventListener('mouseleave',()=>{hideTimer=setTimeout(()=>tooltip.classList.remove('visible'),300);});
+// tooltip listeners added in DOMContentLoaded
 function posTooltip(e){
   const TW=265,TH=280,vw=window.innerWidth,vh=window.innerHeight;
   let x=e.clientX+14,y=e.clientY+14;
   if(x+TW>vw-8)x=e.clientX-TW-10;
   if(y+TH>vh-8)y=e.clientY-TH-10;
-  tooltip.style.left=x+'px';tooltip.style.top=y+'px';
+  if(tooltip){tooltip.style.left=x+'px';tooltip.style.top=y+'px';}
 }
 
 /* ─── EP CHART ──────────────────────────────────── */
@@ -6817,10 +6586,10 @@ function updateStatusIndicator(){
   const wrap = document.getElementById('msStatus');
   if(!wrap) return;
   const checked = [...wrap.querySelectorAll('input[type=checkbox]:checked')];
-  const textEl = document.getElementById('statusIndicatorText');
+  const textEl = document.getElementById('statusIndicatorText') || null;
   if(!textEl) return;
 
-  const _isTulsa = document.getElementById('fRegion').value === 'tulsa';
+  const _isTulsa = document.getElementById('fRegion')?.value === 'tulsa';
   // Total across ALL statuses regardless of filter — the full dataset for context
   const allReqsUnfiltered = [
     ...(_isTulsa ? TULSA_REQS : VICTORIA_REQS),
@@ -6969,7 +6738,7 @@ function autoCollapseEmptyAgencies(ags){
 }
 
 function loadGrid(){
-  const reg=document.getElementById('fRegion').value;
+  const reg=document.getElementById('fRegion')?.value || 'vic';
   if(!reg){showEmpty();return;}
   hideEmpty();
   gridLoaded=true;
@@ -6978,17 +6747,17 @@ function loadGrid(){
   render();
 }
 function showEmpty(){
-  document.getElementById('emptyState').style.display='flex';
-  document.getElementById('gridArea').style.display='none';
+  (document.getElementById('emptyState')||{style:{}}).style.display='flex';
+  {const _el=document.getElementById('gridArea');if(_el)_el.style.display='none';}
 }
 function hideEmpty(){
-  document.getElementById('emptyState').style.display='none';
-  document.getElementById('gridArea').style.display='flex';
+  (document.getElementById('emptyState')||{style:{}}).style.display='none';
+  {const _el=document.getElementById('gridArea');if(_el)_el.style.display='flex';}
 }
 function onRegionChange(){
-  const v=document.getElementById('fRegion').value;
-  document.getElementById('emptyCta').disabled=!v;
-  document.getElementById('emptyRegionSelect').value=v;
+  const v=document.getElementById('fRegion')?.value || 'vic';
+  {const _g=document.getElementById('emptyCta');if(_g)_g.disabled=!v};
+  const _ers=document.getElementById('emptyRegionSelect'); if(_ers) _ers.value=v;
   if(gridLoaded && v){ render(); }
 }
 function navigate(dir){
@@ -7090,15 +6859,15 @@ function resetAll(){
   }
   statusFilters.clear(); statusFilters.add('pending');
   showEmpty(); gridLoaded=false;
-  document.getElementById('emptyCta').disabled=true;
+  {const _g=document.getElementById('emptyCta');if(_g)_g.disabled=true};
 }
 function openMoreFilters(){
-  document.getElementById('mfOverlay').classList.add('open');
-  document.getElementById('mfPanel').classList.add('open');
+  document.getElementById('mfOverlay')?.classList.add('open');
+  document.getElementById('mfPanel')?.classList.add('open');
 }
 function closeMoreFilters(){
-  document.getElementById('mfOverlay').classList.remove('open');
-  document.getElementById('mfPanel').classList.remove('open');
+  document.getElementById('mfOverlay')?.classList.remove('open');
+  document.getElementById('mfPanel')?.classList.remove('open');
 }
 
 /* ─── MULTISELECT ──────────────────────────────── */
@@ -7190,7 +6959,7 @@ let pendingReqIds = [];
 function buildPendingList(){
   const seen = new Set();
   pendingReqIds = [];
-  const _isTulsaBP = document.getElementById('fRegion').value === 'tulsa';
+  const _isTulsaBP = document.getElementById('fRegion')?.value === 'tulsa';
   (_isTulsaBP ? TULSA_REQS : VICTORIA_REQS).forEach(r=>{
     if(r.status==='pending' && !seen.has(r.id)){ seen.add(r.id); pendingReqIds.push(r.id); }
   });
@@ -7202,7 +6971,9 @@ function buildPendingList(){
 }
 
 function navigateToAllocOptions(rid){
-  tooltip.classList.remove('visible');
+  try {
+
+  if(tooltip) tooltip.classList.remove('visible');
   const r = REQ_META[rid];
   if(!r) return;
   currentAllocReqId = rid;
@@ -7250,8 +7021,7 @@ function navigateToAllocOptions(rid){
 
   // Flash
   const flash = document.getElementById('navFlash');
-  flash.classList.add('flash');
-  setTimeout(()=>flash.classList.remove('flash'), 280);
+  if(flash){ flash.classList.add('flash'); setTimeout(()=>flash.classList.remove('flash'), 280); }
 
   // Populate context bar
   // Breadcrumb: [ID] – [EP] – [Discipline] – [Start Mon-DD]
@@ -7286,8 +7056,6 @@ function navigateToAllocOptions(rid){
   const regionLbl = document.getElementById('allocRegionLabel');
   if(regionLbl){ regionLbl.innerHTML = (regionNames[activeRegionVal]||'All regions') + `<svg class="aff-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>`; regionLbl.style.cssText='cursor:default;background:#f5f5f5;color:#888;pointer-events:none;'; }
 
-  document.getElementById('allocFilterDiscTxt') && (document.getElementById('allocFilterDiscTxt').textContent = r.discipline);
-  document.getElementById('allocFilterPTTxt') && (document.getElementById('allocFilterPTTxt').textContent = r.type);
 
   // Filters initialised via initAllocFilters(r) called above
 
@@ -7397,11 +7165,13 @@ function navigateToAllocOptions(rid){
   document.getElementById('fulfillModeIndicator')?.remove();
 
   // Slide
-  setTimeout(()=>{ document.getElementById('screens').classList.add('on-alloc'); }, 60);
+  setTimeout(()=>{ document.getElementById('screens')?.classList.add('on-alloc'); }, 60);
+
+  } catch(_navErr) { console.error("navigateToAllocOptions:", _navErr); }
 }
 
 function goBack(){
-  document.getElementById('screens').classList.remove('on-alloc');
+  // No grid screen — back button hidden
 }
 
 function closeAllocOptions(){
@@ -7435,11 +7205,6 @@ function refreshCounters(){
   document.getElementById('ctrRemaining') && (document.getElementById('ctrRemaining').textContent = `Remaining: ${open}`);
   document.getElementById('ctrAllocated') && (document.getElementById('ctrAllocated').textContent = draftedQty > 0 ? `Drafted: ${draftedQty}` : `Allocated: ${generatedQty}`);
   document.getElementById('ctrRejected')  && (document.getElementById('ctrRejected').textContent  = `Rejected: 0`);
-  document.getElementById('allocQtyBadge')   && (document.getElementById('allocQtyBadge').textContent   = `${r.qty} requested`);
-  document.getElementById('allocAllocBadge') && (document.getElementById('allocAllocBadge').textContent =
-    generatedQty > 0 ? `${generatedQty} allocated · ${open} remaining` :
-    draftedQty > 0   ? `${draftedQty} drafted · ${open} remaining` :
-                       `${open} open`);
 }
 
 /* ─── ALLOCATION SCREEN STATE ──────────────────────── */
@@ -7808,6 +7573,7 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
         qty: 1,
         dates: d.dates,
         indices: [masterIdx],
+        rowIdx: i,
         plcNum,
         dateChanged:  d.dateChanged  || false,
         rosterDays:  d.rosterDays  || null,
@@ -7893,7 +7659,15 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
             rChipsHtml+=`<div class="ag-plc-cell" style="width:${cellW}px;min-width:${cellW}px;max-width:${cellW}px;"></div>`;
           }
         }
-        html+=`<div class="ag-plc-row ag-plc-planned" style="border-left:none;background:white;border-bottom:1px solid #f0f2f5;">
+        const rDateLabel = (dates||'');
+        html+=`<div class="ag-plc-row ag-plc-planned" style="border-left:none;background:white;border-bottom:1px solid #f0f2f5;"
+          onmouseenter="showPlcHover(event,this)"
+          onmouseleave="hidePlcHover()"
+          data-plc-lbl="${plcLbl}"
+          data-plc-status="${statusLbl}"
+          data-plc-dates="${rDateLabel}"
+          data-plc-roster-days="${(g.rosterDays||[]).join(',')}"
+          data-plc-roster-shift="${g.rosterShift||''}">
           <div class="ag-plc-left" style="padding-left:${indentPx}px">
             <div class="ag-plc-info">
               <div class="ag-plc-line1" style="display:flex;align-items:center;gap:5px;">
@@ -7902,6 +7676,7 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
                 ${g.dateChanged ? '<span title="Placement dates differ from request dates" style="color:#f59e0b;font-size:11px;flex-shrink:0;" aria-label="Date deviation warning">⚠</span>' : ''}
                 <button class="ag-plc-view-btn" onclick="event.stopPropagation();confirmViewPlacement('${currentAllocReqId}')" aria-label="View placement">View</button>
               </div>
+              ${rDateLabel ? `<div style="font-size:10px;color:#9ca3af;margin-top:1px;">${rDateLabel}</div>` : ''}
             </div>
           </div>
           <div class="ag-plc-cells">${rChipsHtml}</div>
@@ -7928,8 +7703,9 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
         const plcEnd   = parseDMY(dateParts[1]) || (focusR?.endDate   ? new Date(focusR.endDate)   : null);
 
         const barBorder = { draft:'#534ab7', offered:'#ffc107', published:'#0369ff' }[status] || '#534ab7';
-        const barBg     = 'white';
-        const barColor  = '#374151'; // date text always muted grey
+        const barFill   = { draft:'#eeedfe', offered:'rgba(255,193,7,0.18)', published:'rgba(3,105,255,0.12)' }[status] || '#eeedfe';
+        const barBorderTop = { draft:'rgba(83,74,183,0.3)', offered:'rgba(255,193,7,0.4)', published:'rgba(3,105,255,0.25)' }[status] || 'rgba(83,74,183,0.3)';
+        const barColor  = barBorder; // date text matches status accent
 
         // Find first and last visible in-range weekday columns
         let barStart=-1, barEnd=-1, barVisSpan=0;
@@ -7957,8 +7733,9 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
         const barLabel = (plcStart&&plcEnd) ? `${fmtD(plcStart)} – ${fmtD(plcEnd)}` : (dates||'');
         const barW = barVisSpan * cellW;
         const safeIndicesBar = JSON.stringify(indices);
+        const safeRowIdx = typeof g.rowIdx !== 'undefined' ? g.rowIdx : 0;
         const removeBtnBar = isDraft
-          ? `<button onclick="event.stopPropagation();removeDraftGroup(${safeIndicesBar})" title="Remove draft"
+          ? `<button onclick="event.stopPropagation();removeSingleDraft(${safeIndicesBar},${safeRowIdx})" title="Remove placement"
                style="background:none;border:none;cursor:pointer;color:${barBorder};opacity:.6;font-size:13px;font-weight:700;padding:0 2px;line-height:1;flex-shrink:0;" aria-label="Remove draft placement">✕</button>`
           : '';
         const viewBtnHtml = !isDraft
@@ -7975,8 +7752,8 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
           }
           if(!barEmitted && i===barStart && barVisSpan>0){
             cellsHtml+=`<div class="ag-plc-cell" style="width:${barW}px;min-width:${barW}px;max-width:${barW}px;padding:0;overflow:hidden;">
-              <div style="display:flex;align-items:center;height:100%;width:${barW}px;background:white;border-left:4px solid ${barBorder};border-top:1px solid #f0f2f5;border-bottom:1px solid #f0f2f5;padding:0 6px 0 8px;box-sizing:border-box;gap:6px;overflow:hidden;">
-                <span style="font-size:10px;color:#6b7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">${barLabel}</span>
+              <div style="display:flex;align-items:center;height:100%;width:${barW}px;background:${barFill};border-left:3px solid ${barBorder};border-top:1px solid ${barBorderTop};border-bottom:1px solid ${barBorderTop};padding:0 6px 0 8px;box-sizing:border-box;gap:6px;overflow:hidden;">
+                <span style="flex:1;"></span>
                 ${removeBtnBar}
               </div>
             </div>`;
@@ -7988,7 +7765,8 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
         }
 
         const safeIndices=JSON.stringify(indices);
-        const removeBtn=isDraft?`<button class="ag-plc-remove" onclick="event.stopPropagation();removeDraftGroup(${safeIndices})" title="Remove">✕</button>`:'';
+        const safeRowIdx2 = typeof g.rowIdx !== 'undefined' ? g.rowIdx : 0;
+        const removeBtn=isDraft?`<button class="ag-plc-remove" onclick="event.stopPropagation();removeSingleDraft(${safeIndices},${safeRowIdx2})" title="Remove">✕</button>`:'';
 
         // Deviation warning — show when allocated shift differs from requested shift
         const reqShift = focusR?.shiftLabel ? focusR.shiftLabel.split('(')[0].split('|')[0].trim().replace(' only','').replace(' shift','').toLowerCase() : '';
@@ -8006,7 +7784,15 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
           : '';
 
         // Left column: Plc N label only — × is on the bar (plcLbl and barColor2 defined above)
-        html+=`<div class="ag-plc-row ag-plc-planned" style="border-left:none;background:white;border-bottom:1px solid #f0f2f5;">
+        const barDateLabel = (plcStart&&plcEnd) ? `${fmtD(plcStart)}–${fmtD(plcEnd)}` : (dates||'');
+        html+=`<div class="ag-plc-row ag-plc-planned" style="border-left:none;background:white;border-bottom:1px solid #f0f2f5;"
+          onmouseenter="showPlcHover(event,this)"
+          onmouseleave="hidePlcHover()"
+          data-plc-lbl="${plcLbl}"
+          data-plc-status="${statusLbl}"
+          data-plc-dates="${barDateLabel}"
+          data-plc-roster-days="${(g.rosterDays||[]).join(',')}"
+          data-plc-roster-shift="${g.rosterShift||''}">
           <div class="ag-plc-left" style="padding-left:${indentPx}px">
             <div class="ag-plc-info">
               <div class="ag-plc-line1" style="display:flex;align-items:center;gap:5px;">
@@ -8015,6 +7801,7 @@ function renderAllocPlacementRow(agName, pad, filterShift, agId){
                 ${dateWarnIcon}
                 ${viewBtnHtml}
               </div>
+              ${barDateLabel ? `<div style="font-size:10px;color:#9ca3af;margin-top:1px;">${barDateLabel}</div>` : ''}
             </div>
           </div>
           <div class="ag-plc-cells">${cellsHtml}</div>
@@ -8069,6 +7856,36 @@ function removeDraftGroup(indices){
     allocDraftPlacements.splice(idx, 1);
   });
   if(r) r.allocated = Math.max(0, (r.allocated||0) - totalQty);
+  if(agId){
+    const badge = document.getElementById('ward-count-' + agId);
+    if(badge){
+      const total = allocDraftPlacements.filter(d=>d.agId===agId&&d.reqId===currentAllocReqId).reduce((s,d)=>s+d.qty,0);
+      badge.textContent = total > 0 ? `${total} allocated` : '';
+      badge.style.display = total > 0 ? '' : 'none';
+    }
+    if(r){
+      const newRem = r.qty - (r.allocated||0);
+      const btn = document.getElementById('btn-alloc-' + agId);
+      if(btn && newRem > 0) btn.style.display = '';
+    }
+  }
+  if(!allocDraftPlacements.filter(d=>d.reqId===currentAllocReqId).length) hidePlacementRail();
+  renderAllocRows(currentAllocReqId); renderPlacementRail(); updateBottomBar(); refreshCounters();
+}
+
+// Remove a single placement row (one qty unit) from a draft entry
+function removeSingleDraft(indices, rowIdx){
+  const r = REQ_META[currentAllocReqId];
+  const masterIdx = indices[0];
+  const draft = allocDraftPlacements[masterIdx];
+  if(!draft || (draft.status && draft.status !== 'draft')) return;
+  const agId = draft.agId;
+  if(draft.qty > 1){
+    draft.qty -= 1;
+  } else {
+    allocDraftPlacements.splice(masterIdx, 1);
+  }
+  if(r) r.allocated = Math.max(0, (r.allocated||0) - 1);
   if(agId){
     const badge = document.getElementById('ward-count-' + agId);
     if(badge){
@@ -8504,7 +8321,7 @@ function openStudentPanel(s, code2){
   const initials = name.split(' ').filter(Boolean).map(w=>w[0]).slice(0,2).join('').toUpperCase();
   document.getElementById('studentAvatar').textContent = initials||'?';
   document.getElementById('studentPanelName').textContent = name;
-  document.getElementById('studentPanelCode').textContent = code;
+  {const _g=document.getElementById('studentPanelCode');if(_g)_g.textContent=code};
 
   // Build body — show fields only when available
   const body = document.getElementById('studentPanelBody');
@@ -9337,7 +9154,7 @@ function spSaveComment() {
   item.innerHTML = `${textarea.value.trim()}<div class="erp-comment-item-meta">You · just now${badge}</div>`;
   list.appendChild(item);
   textarea.value = '';
-  if (document.getElementById('sp-private-comment')) document.getElementById('sp-private-comment').checked = false;
+  const _spc=document.getElementById('sp-private-comment'); if(_spc) _spc.checked=false;
   showToast('Comment saved', 'Your comment has been added.');
 }
 
@@ -9396,7 +9213,7 @@ function toggleRosterSpecify(checkbox) {
   if (checkbox.checked) {
     label.textContent = 'On — specify roster pattern';
     builder.style.display = 'block';
-    if (document.getElementById('weeks-container').children.length === 0) addWeek();
+    if (document.getElementById('weeks-container')?.children.length === 0) addWeek();
   } else {
     label.textContent = 'Off — use default schedule';
     builder.style.display = 'none';
@@ -10518,13 +10335,11 @@ function showRotationReview(){
   const dateEnd   = r.dates?.split('–')[1]?.trim() || '';
 
   // Header
-  document.getElementById('spAgencyName').innerHTML =
-    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Rotation Placement`;
-  document.getElementById('spSubtitle').textContent =
-    `${total} day${total!==1?'s':''} across ${rotationPtTally.length} placement type${rotationPtTally.length!==1?'s':''}`;
+  document.getElementById('spAgencyName')?.innerHTML && (document.getElementById('spAgencyName').innerHTML = 'Rotation Placement');
+  document.getElementById('spSubtitle') && (document.getElementById('spSubtitle').textContent = `${total} day${total!==1?'s':''} across ${rotationPtTally.length} placement type${rotationPtTally.length!==1?'s':''}`);
 
   // Pill
-  document.getElementById('spPills').innerHTML = `
+  document.getElementById('spPills') && (document.getElementById('spPills').innerHTML = `
     <div class="sp-pill" style="border-left:3px solid #7c3aed">
       <div class="sp-pill-dot" style="background:#7c3aed"></div>
       <div class="sp-pill-body">
@@ -10535,10 +10350,10 @@ function showRotationReview(){
           <div class="sp-pill-date-field"><label>End</label><input type="text" value="${dateEnd}"></div>
         </div>
       </div>
-    </div>`;
+    </div>`);
 
   // Detail grid
-  document.getElementById('spDetailGrid').innerHTML = [
+  document.getElementById('spDetailGrid') && (document.getElementById('spDetailGrid').innerHTML = [
     ['EP / Campus',    `${r.ep} · ${r.campus||'—'}`],
     ['Discipline',     r.discipline],
     ['Placement Type', 'Rotation'],
@@ -10550,7 +10365,7 @@ function showRotationReview(){
     <div class="sp-detail-row">
       <span class="sp-detail-lbl">${lbl}</span>
       <span class="sp-detail-val">${val}</span>
-    </div>`).join('');
+    </div>`).join(''));
 
   // Roster — day-by-day timeline from cell selections
   // Force Roster section open and populate with timeline
@@ -10577,8 +10392,8 @@ function showRotationReview(){
   const footerActions = document.querySelector('.sp-footer .sp-footer-actions');
   if(footerActions) footerActions.innerHTML = `
     <button class="btn-sp-cancel" onclick="closePanel()">← Back</button>
-    <button class="btn-sp-offer"    onclick="generatePlacements('offered')">Allocate &amp; Offer</button>
-    <button class="btn-sp-generate" onclick="generatePlacements('published')">Allocate &amp; Publish</button>`;
+    <button class="btn-sp-offer"    onclick="generatePlacements('offered')">Allocate &amp; publish</button>
+    <button class="btn-sp-generate" onclick="generatePlacements('published')">Allocate as planned</button>`;
 
   spRenderSups('');
 
@@ -11001,7 +10816,7 @@ function setDensity(mode, btn){
   condensedView = mode === 'condensed';
   document.getElementById('densityNormal')?.classList.toggle('active', !condensedView);
   document.getElementById('densityCondensed')?.classList.toggle('active', condensedView);
-  const screen = document.getElementById('screen-grid');
+  const screen = document.getElementById('screen-grid') || document.getElementById('screen-alloc');
   if(screen) screen.classList.toggle('condensed', condensedView);
 }
 
@@ -11035,14 +10850,16 @@ function renderPanelForV24(){
   // Nav
   const nav = document.getElementById('sp-nav');
   const counter = document.getElementById('sp-nav-counter');
-  if(nav){ nav.style.display = total > 1 ? '' : 'none'; }
-  if(counter){ counter.textContent = `Agency ${spAgIdx+1} of ${total}`; }
+  if(nav){ nav.style.display = 'none'; } // group info now in subtitle only
 
   // Header
-  const agBadge = document.getElementById('sp-agency-name');
-  if(agBadge) agBadge.textContent = agName;
+  const agBadge = document.getElementById('sp-agency-badge');
+  if(agBadge) agBadge.style.display = 'none';
   const subtitle = document.getElementById('sp-subtitle');
-  if(subtitle) subtitle.textContent = `Review ${totalQtyGroup} placement${totalQtyGroup!==1?'s':''} before generating`;
+  if(subtitle){
+    const groupPfx = total > 1 ? `Placement group ${spAgIdx+1} of ${total} · ` : '';
+    subtitle.textContent = `${groupPfx}${totalQtyGroup} placement${totalQtyGroup!==1?'s':''} to review`;
+  }
 
   // Pills
   const isTulsa = document.getElementById('fRegion')?.value === 'tulsa';
@@ -11998,6 +11815,56 @@ function spToggleRoster() {
   }
 }
 
+/* ── Placement row hover panel ── */
+let plcHoverTimer = null;
+function showPlcHover(e, el) {
+  clearTimeout(plcHoverTimer);
+  const panel = document.getElementById('plcHoverPanel');
+  const title = document.getElementById('plcHoverTitle');
+  const body  = document.getElementById('plcHoverBody');
+  if(!panel || !el) return;
+
+  const ds = el.dataset;
+  const plcLbl      = ds.plcLbl      || 'Placement';
+  const status      = ds.plcStatus   || '';
+  const dates       = ds.plcDates    || '';
+  const rosterDays  = ds.plcRosterDays  ? ds.plcRosterDays.split(',').filter(Boolean) : [];
+  const rosterShift = ds.plcRosterShift || '';
+  const r = REQ_META[currentAllocReqId] || {};
+
+  title.textContent = plcLbl;
+
+  const row = (lbl, val) => val ? `<div class="plc-tt-row"><span class="plc-tt-lbl">${lbl}</span><span class="plc-tt-val">${val}</span></div>` : '';
+  let html = '';
+  if(r.group)      html += row('Group',          r.group);
+  if(r.year)       html += row('Year level',      r.year);
+  if(r.discipline) html += row('Discipline',      r.discipline);
+  if(r.type)       html += row('Placement type',  r.type);
+  if(dates)        html += row('Dates',           dates);
+  if(status)       html += row('Status',          status);
+  if(rosterDays.length){
+    const chips = rosterDays.map(d=>`<span class="plc-tt-chip">${d}${rosterShift?' · '+rosterShift:''}</span>`).join('');
+    html += `<div class="plc-tt-row"><span class="plc-tt-lbl">Roster</span><span class="plc-tt-val"><div class="plc-tt-roster">${chips}</div></span></div>`;
+  }
+  if(r.agencySupervisor)   html += row('Agency sup.',   r.agencySupervisor);
+  if(r.academicSupervisor) html += row('Academic sup.', r.academicSupervisor);
+
+  body.innerHTML = html || '<div class="plc-tt-row"><span class="plc-tt-lbl" style="color:#9ca3af;font-style:italic;">No details available</span></div>';
+
+  const TW=280, TH=panel.scrollHeight||200, vw=window.innerWidth, vh=window.innerHeight;
+  let x=e.clientX+14, y=e.clientY+14;
+  if(x+TW>vw-8) x=e.clientX-TW-10;
+  if(y+TH>vh-8) y=e.clientY-TH-10;
+  panel.style.left=x+'px'; panel.style.top=y+'px';
+  panel.classList.add('visible');
+}
+function hidePlcHover() {
+  plcHoverTimer = setTimeout(()=>{
+    const panel = document.getElementById('plcHoverPanel');
+    if(panel) panel.classList.remove('visible');
+  }, 200);
+}
+
 function confirmViewPlacement(reqId) {
   const modal = document.getElementById('viewPlacementModal');
   if(modal) {
@@ -12044,6 +11911,12 @@ document.addEventListener('DOMContentLoaded', function() {
       ta.addEventListener('input', function() { ct.textContent = ta.value.length + '/1000'; });
     }
   });
+  tooltip = document.getElementById('reqTooltip');
+  if(tooltip){
+    tooltip.addEventListener('mouseenter',()=>clearTimeout(hideTimer));
+    tooltip.addEventListener('mouseleave',()=>{hideTimer=setTimeout(()=>tooltip.classList.remove('visible'),300);});
+  }
+  requestAnimationFrame(function(){ initProcessRequest(); });
 });
 </script>
 
@@ -12077,5 +11950,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <button class="plc-detail-back" onclick="closePlcDetail()">← Back to list</button>
   </div>
 </div>
+
+</div><!-- /screen-alloc -->
 </body>
 </html>
