@@ -1223,7 +1223,7 @@ body.rotation-mode #btnBuildRotation{display:none;}
 /* Alloc grid */
 .alloc-grid-wrap{flex:1;overflow:auto;background:white;min-width:0;}
 .ag-col-header{display:flex;background:#fafafa;border-bottom:1px solid #e0e0e0;position:sticky;top:0;z-index:3 !important}
-.ag-col-left{width:300px;min-width:300px;padding:6px 10px;font-size:13px;font-weight:600;color:#003179;border-right:2px solid #ddd;position:sticky;left:0;background:#fafafa;z-index:4}
+.ag-col-left{width:220px;min-width:220px;padding:6px 10px;font-size:13px;font-weight:600;color:#003179;border-right:2px solid #ddd;position:sticky;left:0;background:#fafafa;z-index:4}
 .ag-col-right{flex:1;display:flex}
 .ag-th{width:46px;min-width:46px;text-align:center;padding:4px 2px;font-size:11px;border-right:1px solid #e8e8e8;background:#fafafa}
 .ag-th .dd{display:block;font-size:11px;font-weight:600;color:#003179}
@@ -1239,6 +1239,22 @@ body.rotation-mode #btnBuildRotation{display:none;}
 .ag-th.wknd .dd{color:#888}
 
 /* Agency rows */
+/* Region heading row — Process Request allocation grid. Non-interactive, rollup numbers only. No badge here — badge placement rules live on the facility/agency or region row per CPN-15699 (5a). */
+.ag-region-row{display:flex;align-items:stretch;border-bottom:2px solid #ddd;background:#fafafa;cursor:default}
+.ag-region-left{
+  width:220px;min-width:220px;padding:6px 10px;display:flex;align-items:center;gap:5px;
+  border-right:2px solid #ddd;position:sticky;left:0;background:#fafafa;z-index:5;
+}
+.ag-region-lbl{font-size:13px;font-weight:700;color:#003179;}
+.ag-region-right{flex:1;display:flex}
+.ag-region-cap{
+  width:46px;min-width:46px;text-align:center;font-size:11px;font-weight:600;color:#003179;
+  padding:6px 2px;border-right:1px solid #e8e8e8;background:#fafafa;
+}
+.ag-region-cap.wknd{background:#f0f0f0;color:#999}
+.ag-region-cap.neg{color:#c62828}
+.alloc-week-view .ag-region-cap{width:60px;min-width:60px;max-width:60px;}
+
 .ag-row{display:flex;align-items:stretch;border-bottom:1px solid #e8e8e8;cursor:pointer;transition:background .1s}
 .ag-row:hover{background:#fafbff}
 .ag-row.requested{background:white;}
@@ -1293,7 +1309,7 @@ body.rotation-mode #btnBuildRotation{display:none;}
   cursor:pointer;transition:all .15s;white-space:nowrap;
 }
 .req-dates-toggle.active{background:#eff6ff;border-color:#2563eb;color:#2563eb;}
-.ag-th.hidden-col,.ag-cell.hidden-col,.ag-shift-cell.hidden-col,.ag-req-shift-cell.hidden-col{display:none!important;}
+.ag-th.hidden-col,.ag-cell.hidden-col,.ag-shift-cell.hidden-col,.ag-req-shift-cell.hidden-col,.ag-region-cap.hidden-col{display:none!important;}
 /* Placement card row */
 .ag-card-row{display:flex;border-bottom:1px solid #f0f0f0;background:white;min-height:36px}
 .ag-card-left{width:300px;min-width:300px;border-right:2px solid #ddd;position:sticky;left:0;background:white;z-index:5;display:flex;align-items:center;padding:0 8px;font-size:10px;color:#bbb}
@@ -2715,7 +2731,7 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
         Select shifts directly from the grid to build the rotation. Click a cell to assign it to a placement type.
       </div>
       <div class="ag-col-header" id="agColHeaderWrap">
-        <div style="width:300px;min-width:300px;flex-shrink:0;border-right:2px solid #ddd;position:sticky;left:0;z-index:4;background:#fafafa;">
+        <div style="width:220px;min-width:220px;flex-shrink:0;border-right:2px solid #ddd;position:sticky;left:0;z-index:4;background:#fafafa;">
           <div class="ag-col-left" style="width:auto;min-width:auto;border-right:none;">Agency</div>
         </div>
         <div style="flex:1;overflow:hidden;min-width:0;">
@@ -2725,7 +2741,7 @@ body.rotation-mode .ward-alloc-badge{display:none!important;}
       <!-- Requested shifts row — same flex structure as ag-row so cells align with grid -->
       <div id="agReqShiftsRowWrap" style="display:none;background:#eff6ff;border-bottom:1px solid #e2e8f0;position:sticky;top:36px;z-index:2;">
         <div style="display:flex;width:max-content;min-width:100%;">
-          <div id="agReqShiftsLeft" style="width:300px;min-width:300px;flex-shrink:0;padding:4px 8px;font-size:11px;font-weight:700;color:#1d4ed8;background:#eff6ff;position:sticky;left:0;z-index:3;border-right:1px solid #e8eaed;display:flex;align-items:center;gap:4px;letter-spacing:0.02em;"></div>
+          <div id="agReqShiftsLeft" style="width:220px;min-width:220px;flex-shrink:0;padding:4px 8px;font-size:11px;font-weight:700;color:#1d4ed8;background:#eff6ff;position:sticky;left:0;z-index:3;border-right:1px solid #e8eaed;display:flex;align-items:center;gap:4px;letter-spacing:0.02em;"></div>
           <div id="agReqShiftsCells" style="display:flex;background:#eff6ff;"></div>
         </div>
       </div>
@@ -8501,6 +8517,22 @@ function agHasReq(ag, focusReqId){
   return (ag.children||[]).some(c=>agHasReq(c, focusReqId));
 }
 
+function renderAllocRegionRow(focusReq){
+  // CPN-15699 (4a/5a): region row reuses the same rollup data as the Request Grid
+  // region row (CPN-15431) — display only, never pinned, never clickable.
+  // This is a heading/rollup row only. The Requested badge itself is rendered on
+  // the agency row (renderAgencyBlock) or, when the request has no agency, would
+  // attach here per 5a — that branch is out of scope for this prototype pass.
+  const isTulsa = document.getElementById('fRegion')?.value === 'tulsa';
+  const activeRegionName = isTulsa ? 'Tulsa' : 'Victoria';
+  const activeCapRegion  = isTulsa ? CAP_TULSA : CAP_VIC;
+
+  return `<div class="ag-region-row">
+    <div class="ag-region-left"><span class="ag-region-lbl">${activeRegionName}</span></div>
+    <div class="ag-region-right">${renderAllocCells(activeCapRegion, focusReq, 'ag-region-cap', null)}</div>
+  </div>`;
+}
+
 function renderAllocRows(focusReqId){
   if(!focusReqId) return;
   const focusReq = REQ_META[focusReqId];
@@ -8511,7 +8543,7 @@ function renderAllocRows(focusReqId){
   const requestedAgs = activeAgencies.filter(ag=>agHasReq(ag, focusReqId));
   const otherAgs     = activeAgencies.filter(ag=>!agHasReq(ag, focusReqId));
 
-  let html = '';
+  let html = renderAllocRegionRow(focusReq);
 
   if(requestedAgs.length){
     requestedAgs.forEach(ag=>{ html += renderAgencyBlock(ag, focusReq, 0, true); });
